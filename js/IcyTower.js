@@ -167,27 +167,27 @@ function preloadDone() {
         },
         rev:{
             idle:{
-            0: new Sprite(g_images.character_rev,30,52,50,162),
-            1: new Sprite(g_images.character_rev,30,52,562,36),
-            2: new Sprite(g_images.character_rev,30,52,434,37)
+            0: new Sprite(g_images.character_rev,30,52,176,37),
+            1: new Sprite(g_images.character_rev,30,52,48,36),
+            2: new Sprite(g_images.character_rev,30,52,176,37)
             },
             walk:{
-                0: new Sprite(g_images.character_rev,27,52,180,288),
-                1: new Sprite(g_images.character_rev,29,52,308,289),
-                2: new Sprite(g_images.character_rev,29,52,436,289),
-                3: new Sprite(g_images.character_rev,28,52,562,287)
+                0: new Sprite(g_images.character_rev,27,51,433,289),
+                1: new Sprite(g_images.character_rev,28,52,304,289),
+                2: new Sprite(g_images.character_rev,28,51,176,290),
+                3: new Sprite(g_images.character_rev,28,52,50,287)
             },
             jump:{
-                0:new Sprite(g_images.character_rev,30,52,178,163),
-                1: new Sprite(g_images.character_rev,30,52,306,162),
-                2: new Sprite(g_images.character_rev,30,52,433,163),
-                3: new Sprite(g_images.character_rev,30,57,561,161)
+                0:new Sprite(g_images.character_rev,29,52,433,163),
+                1: new Sprite(g_images.character_rev,29,52,305,162),
+                2: new Sprite(g_images.character_rev,29,52,178,163),
+                3: new Sprite(g_images.character_rev,28,57,50,161)
             },
-            chock: new Sprite(g_images.character_rev,30,52,50,36),
+            chock: new Sprite(g_images.character_rev,30,52,560,36),
             rotate: new Sprite(g_images.character_rev,44,58,42,287),
             edge:{ 
-                0:new Sprite(g_images.character_rev,32,51,177,37),
-                1: new Sprite(g_images.character_rev,31,51,306,37)
+                0:new Sprite(g_images.character_rev,32,51,431,37),
+                1: new Sprite(g_images.character_rev,30,52,560,36)
             }
         }
     }

@@ -17,6 +17,8 @@ function Character(descr) {
     this._wall = false;
     this._animFrame = 0;
     this.jumpHeight = 0;
+    this._animTicker = 0;
+    this.rotationJump = false;
     
     // Default sprite, if not otherwise specified
     this.sprite = this.sprite || g_sprites.character;
@@ -56,17 +58,6 @@ Character.prototype.jumpSound = new Audio(
     "sounds/something");
 */
 
-Character.prototype.jumpRight = function () {
-
-    //this.jumpSound.play();
-    //Implement jumping right
-};
-
-Character.prototype.jumpLeft = function(){
-    //this.jumpSound.play()
-    //Implement jumping left
-}
-
 
     
 Character.prototype.update = function (du) {    
@@ -81,10 +72,15 @@ Character.prototype.update = function (du) {
             this.computeSubStep(dStep);
         }
 
+        //Check whether there should be rotation
+        if(this._rotationJump && this._jumping){
+            this.computeRotation(du);
+        }
+        else this.rotation = 0;
+
 
         // TODO: Handle collisions
         if(this.isColliding() && this.isColliding().getSpatialID() !== this.getSpatialID()){
-            this.warp();
         }
         else{
             spatialManager.register(this);
@@ -92,7 +88,18 @@ Character.prototype.update = function (du) {
     }
 };
 
+
+// Function that rotates the character
+var NOMINAL_ROTATION_RATE = 30;
+Character.prototype.computeRotation = function(du){
+    this.rotation += du*(Math.PI/NOMINAL_ROTATION_RATE);
+}
+
 Character.prototype.computeSubStep = function (du) {
+    /*
+        TODO: x þarf hröðun á skynsamlegan hátt
+        Það er eitthvað bug þannig að hraðinn í y stefnu þegar hann á að vera kyrrstæður (stendur á botninum) er ekki alveg 0
+    */
     this.velX = this.computeAccelX()*du;
     var accelY = -this.computeThrustMag();
         accelY += this.computeGravity();
@@ -101,8 +108,11 @@ Character.prototype.computeSubStep = function (du) {
     
     var nextX = this.cx + this.velX;
     var nextY = this.cy + this.velY;
-    if(g_isUpdateOdd){
+    if(this._animTicker < 10){
+        this._animTicker +=1*du;
+    }else{
         this.chooseSprite(this.velX,this.velY,nextX,nextY);
+        this._animTicker = 0;
     }
     this.cx += this.velX;
     this.cy += this.velY;
@@ -129,11 +139,11 @@ Character.prototype.computeGravity = function () {
     return 0;
 };
 
-var NOMINAL_THRUST = 10;
+var NOMINAL_THRUST = 1;
 
 Character.prototype.computeThrustMag = function () {
         
-    if ((eatKey(this.KEY_UP) || eatKey(32))&& !this._jumping ) {
+    if ((keys[this.KEY_UP] || keys[32])&& !this._jumping ) {
         return NOMINAL_THRUST;
     }
     
@@ -165,7 +175,7 @@ Character.prototype.render = function (ctx) {
 };
 
 
-
+var ROTATION_JUMP_THRESHOLD = 5;
 Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     var prevLeft = this._left;
     var prevJumping = this._jumping;
@@ -173,6 +183,9 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     var incrAnimFrame = false;
     var sprite_base = this.sprite;
     var transition = false;
+
+    if(Math.abs(velX) > ROTATION_JUMP_THRESHOLD) this._rotationJump = true;
+    else this._rotationJump = false;
 
     //Check if in transition
     if(prevLeft && velX > 0 || prevJumping && velY === 0 || !prevLeft && velX < 0){
@@ -182,7 +195,6 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     //If there's speed in y direction we are jumping
     if(velY !== 0) this._jumping = true;
     else this._jumping = false;
-    console.log(velY)
     
     //If there's negative speed in the x direction we are going to the left
     if(velX < 0){
@@ -207,6 +219,9 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
         if(velX === 0){
             this.activeSprite = this.sprite.jump[3];
         }
+        if(this._rotationJump){
+            this.activeSprite = this.sprite.rotate;
+        }
         else if(this._wall){
             this.activeSprite = sprite_base.edge[this._animFrame];
             if(this._animFrame === 0){
@@ -230,6 +245,7 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
             this.activeSprite = this.sprite.idle[0];
         }
         else{
+            console.log(this._animFrame);
             this.activeSprite = sprite_base.walk[this._animFrame];
             if(this._animFrame === 3){
                 this._animFrame -=1;
@@ -240,6 +256,7 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
         }
 
     }
+
 
     
 }
