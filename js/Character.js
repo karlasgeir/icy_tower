@@ -133,7 +133,7 @@ var NOMINAL_THRUST = 10;
 
 Character.prototype.computeThrustMag = function () {
         
-    if (eatKey(this.KEY_UP) || eatKey(32) ) {
+    if ((eatKey(this.KEY_UP) || eatKey(32))&& !this._jumping ) {
         return NOMINAL_THRUST;
     }
     
