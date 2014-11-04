@@ -13,6 +13,7 @@ function Character(descr) {
 
     this.rememberResets();
     this._jumping = false;
+    this._running = false;
     this._left = false;
     this._wall = false;
     this._animFrame = 0;
@@ -50,6 +51,7 @@ Character.prototype.cy = 200;
 Character.prototype.velX = 0;
 Character.prototype.velY = 0;
 Character.prototype.numSubSteps = 1;
+Character.prototype.speed = 0;
 
 // HACKED-IN AUDIO (no preloading)
 /*Include audio:
@@ -96,42 +98,76 @@ Character.prototype.computeRotation = function(du){
 }
 
 Character.prototype.computeSubStep = function (du) {
-    /*
-        TODO: x þarf hröðun á skynsamlegan hátt
-        Það er eitthvað bug þannig að hraðinn í y stefnu þegar hann á að vera kyrrstæður (stendur á botninum) er ekki alveg 0
-    */
-    this.velX = this.computeAccelX()*du;
+
+    this.wallBounce();
+
+    this.speed = this.computeSpeed();
+
+    var accelX = this.speed;
+
+    this.applyAccelX(accelX, du);
+
     var accelY = -this.computeThrustMag();
-        accelY += this.computeGravity();
-    //avVel = (2v + at)/2 = v + at/2
+    accelY += this.computeGravity();
     this.velY = this.velY + (accelY*du)/2;
-    
+
+    this.cy += this.velY;
+
     var nextX = this.cx + this.velX;
     var nextY = this.cy + this.velY;
+
     if(this._animTicker < 10){
         this._animTicker +=1*du;
     }else{
         this.chooseSprite(this.velX,this.velY,nextX,nextY);
         this._animTicker = 0;
     }
-    this.cx += this.velX;
-    this.cy += this.velY;
 
-    
     this.wrapPosition();
 };
 
-var NOMINAL_Accel = 3;
-Character.prototype.computeAccelX = function(){
-    if(keys[this.KEY_RIGHT]) return NOMINAL_Accel;
-    else if(keys[this.KEY_LEFT]) return -NOMINAL_Accel;
+var NOMINAL_SPEED = 0.5;
+var NOMINAL_SLOW = 0.5;
+
+Character.prototype.computeSpeed = function(){
+
+    if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT]) {
+        if (this.velX===0) {return;}
+        if (this.velX<0) {this.velX +=NOMINAL_SLOW;}
+        if (this.velX>0) {this.velX -=NOMINAL_SLOW}
+
+    }
+    if(keys[this.KEY_RIGHT]) {
+        this.velX += NOMINAL_SPEED;
+    }
+    else if(keys[this.KEY_LEFT]) {
+        this.velX -= NOMINAL_SPEED;
+    } 
     else return 0;
 }
 
+Character.prototype.applyAccelX = function(accelX, du){
 
-var NOMINAL_GRAVITY = 0.12;
+    var initial_velX = this.velX;
+    var average_velX = 0;
+    var final_velX = 0;
+
+    average_velX = ((initial_velX + final_velX)/2)*du;
+
+    final_velX = initial_velX + accelX*du;
+
+    this.cx += average_velX*du;
+    
+    //console.log('velX: ' + this.velX);
+    console.log('velY: ' + this.velY);
+    console.log('velX: ' + this.velX);
+}
+
+
+var NOMINAL_GRAVITY = 1;
 
 Character.prototype.computeGravity = function () {
+
     if(this.cy+this.activeSprite.height/2 < g_canvas.height){
         return g_useGravity ? NOMINAL_GRAVITY : 0;
     }
@@ -139,17 +175,30 @@ Character.prototype.computeGravity = function () {
     return 0;
 };
 
-var NOMINAL_THRUST = 1;
+var NOMINAL_THRUST = 20;
 
 Character.prototype.computeThrustMag = function () {
-        
-    if ((keys[this.KEY_UP] || keys[32])&& !this._jumping ) {
-        return NOMINAL_THRUST;
+
+    if ((keys[this.KEY_UP] || (keys[32]) && !this._jumping) ) {
+        this._jumping = true;
+        return this.velY += NOMINAL_THRUST;
     }
-    
     return 0;
 };
 
+Character.prototype.checkForPlatform = function () {
+    //TODO: implement this
+}
+
+Character.prototype.wallBounce = function () {
+    //TODO: implement this
+    if(this.cx+this.activeSprite.width/2 >= g_canvas.width) {
+        this.velX *=-1;
+    }
+    if(this.cx-this.activeSprite.width/2 <= 0) {
+        this.velX *=-1;
+    }
+}
 
 Character.prototype.getRadius = function () {
     return (this.sprite.width / 2) * 0.9;
