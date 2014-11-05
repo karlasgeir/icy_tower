@@ -106,6 +106,7 @@ Character.prototype.computeSubStep = function (du) {
 
     if (this.velY === 0) {
         this._jumping = false;
+        this._rotationJump = false;
     }
 
     this.speed = this.computeSpeed();
@@ -135,10 +136,14 @@ Character.prototype.computeSubStep = function (du) {
 };
 
 var NOMINAL_SPEED = 0.5;
-var NOMINAL_SLOW = 0.35;
+var NOMINAL_SLOW = 0.45;
 var MAX_SPEED = 12;
 
 Character.prototype.computeSpeed = function(){
+
+    if (this._jumping) {
+        MAX_SPEED = 16;
+    }
 
     if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT]) {
         if (this.velX===0) {return;}
@@ -180,8 +185,11 @@ Character.prototype.computeSpeed = function(){
 }
 
 Character.prototype.sharpTurns = function () {
-    
+
     if (this._jumping) {return;}
+    if (this.cx+this.activeSprite.width/2 >= g_canvas.width) {return;}
+    if (this.cx-this.activeSprite.width/2 <= 0) {return;}
+
     if (this._goingRight && keys[this.KEY_LEFT]) {
         this.velX = 0;
     }
@@ -204,7 +212,6 @@ Character.prototype.applyAccelX = function(accelX, du){
 
 }
 
-
 var NOMINAL_GRAVITY = 1;
 
 Character.prototype.computeGravity = function () {
@@ -222,7 +229,7 @@ var NOMINAL_THRUST = 20;
 
 Character.prototype.computeThrustMag = function () {
 
-    var speedInfluence = 0.12*Math.abs(this.velX);
+    var speedInfluence = 0.1*Math.abs(this.velX);
 
     //Needs more work
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
@@ -243,23 +250,19 @@ Character.prototype.checkForPlatform = function () {
 
 Character.prototype.wallBounce = function (velX, velY) {
     //TODO: implement this
-    var speed = Math.abs(this.velX);
-    var BoostThreshold = 8;
-
     this.checkForRotation(velX, velY);
-    console.log(this._rotationJump);
     
-    if(this.cx+this.activeSprite.width/2 >= g_canvas.width) {
+    if(this.cx+this.activeSprite.width/2 >= g_canvas.width ||
+        (this.cx-this.activeSprite.width/2 <= 0)) { 
+
+        this._goingRight = !this._goingRight;
+        this._goingLeft = !this._goingLeft;
+        
         if (this._rotationJump) {
-            return this.velX *=-2;
+            return this.velX *=-1.5;
+        } else {
+            return this.velX *=-1;
         }
-        else return this.velX *=-1;
-    }
-    if(this.cx-this.activeSprite.width/2 <= 0) {
-        if (this._rotationJump) {
-            return this.velX *=-2;
-        }
-        else return this.velX *=-1;
     }
 }
 
@@ -287,8 +290,12 @@ Character.prototype.render = function (ctx) {
 };
 
 Character.prototype.checkForRotation = function(velX,velY) {
-    if(Math.abs(velX) > ROTATION_JUMP_THRESHOLD) this._rotationJump = true;
-    else this._rotationJump = false;
+    if((Math.abs(velX) > ROTATION_JUMP_THRESHOLD) && this._jumping) {
+        this._rotationJump = true;
+    }
+    else {
+        this._rotationJump = false;
+    }
 }
 
 var ROTATION_JUMP_THRESHOLD = 8;
@@ -360,7 +367,6 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
             this.activeSprite = this.sprite.idle[0];
         }
         else{
-            console.log(this._animFrame);
             this.activeSprite = sprite_base.walk[this._animFrame];
             if(this._animFrame === 3){
                 this._animFrame -=1;
