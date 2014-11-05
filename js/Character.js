@@ -180,17 +180,19 @@ Character.prototype.computeGravity = function () {
     if(this.cy+this.activeSprite.height/2 < g_canvas.height){
         return g_useGravity ? NOMINAL_GRAVITY : 0;
     }
-    this.velY = 0;
+    else{
+        this.velY = 0;
+    }
     return 0;
 };
 
-var NOMINAL_THRUST = 20;
+var NOMINAL_THRUST = 12;
 
 Character.prototype.computeThrustMag = function () {
 
-    if ((keys[this.KEY_UP] || (keys[32]) && !this._jumping) ) {
+    if ((eatKey(this.KEY_UP) || (eatKey(32)) && !this._jumping) ) {
         this._jumping = true;
-        return this.velY += NOMINAL_THRUST;
+        return this.velY = NOMINAL_THRUST;
     }
     return 0;
 };
