@@ -116,7 +116,8 @@ Character.prototype.computeSubStep = function (du) {
     var nextX = this.cx + this.velX;
     var nextY = this.cy + this.velY;
 
-    if(this._animTicker < 10){
+
+    if(this._animTicker < Math.abs(20-Math.abs(this.velX))){
         this._animTicker +=1*du;
     }else{
         this.chooseSprite(this.velX,this.velY,nextX,nextY);
@@ -126,22 +127,30 @@ Character.prototype.computeSubStep = function (du) {
     this.wrapPosition();
 };
 
-var NOMINAL_SPEED = 0.5;
+var NOMINAL_SPEED = 0.2;
 var NOMINAL_SLOW = 0.5;
-
+var MAX_SPEED = 12;
 Character.prototype.computeSpeed = function(){
 
     if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT]) {
         if (this.velX===0) {return;}
-        if (this.velX<0) {this.velX +=NOMINAL_SLOW;}
-        if (this.velX>0) {this.velX -=NOMINAL_SLOW}
+        if (this.velX<0) {
+            if(this.velX + NOMINAL_SLOW >0) this.velX=0;
+            else this.velX += NOMINAL_SLOW;
+        }
+        if (this.velX>0) {
+            if(this.velX + NOMINAL_SLOW <0) this.velX=0;
+            else this.velX -= NOMINAL_SLOW;
+        }
 
     }
     if(keys[this.KEY_RIGHT]) {
-        this.velX += NOMINAL_SPEED;
+        if(this.velX + NOMINAL_SPEED > MAX_SPEED) this.velX = MAX_SPEED;
+        else this.velX += NOMINAL_SPEED;
     }
     else if(keys[this.KEY_LEFT]) {
-        this.velX -= NOMINAL_SPEED;
+        if(this.velX - NOMINAL_SPEED < -MAX_SPEED) this.velX = -MAX_SPEED;
+        else this.velX -= NOMINAL_SPEED;
     } 
     else return 0;
 }
