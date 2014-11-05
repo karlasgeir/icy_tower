@@ -13,6 +13,8 @@ function Character(descr) {
 
     this.rememberResets();
     this._jumping = false;
+    this._goingLeft = false;
+    this._goingRight = false;
     this._running = false;
     this._left = false;
     this._wall = false;
@@ -100,6 +102,7 @@ Character.prototype.computeRotation = function(du){
 Character.prototype.computeSubStep = function (du) {
 
     this.wallBounce();
+    this.sharpTurns();
 
     if (this.velY === 0) {
         this._jumping = false;
@@ -131,8 +134,8 @@ Character.prototype.computeSubStep = function (du) {
     this.wrapPosition();
 };
 
-var NOMINAL_SPEED = 0.2;
-var NOMINAL_SLOW = 0.5;
+var NOMINAL_SPEED = 0.5;
+var NOMINAL_SLOW = 0.35;
 var MAX_SPEED = 12;
 
 Character.prototype.computeSpeed = function(){
@@ -150,14 +153,41 @@ Character.prototype.computeSpeed = function(){
 
     }
     if(keys[this.KEY_RIGHT]) {
-        if(this.velX + NOMINAL_SPEED > MAX_SPEED) this.velX = MAX_SPEED;
-        else this.velX += NOMINAL_SPEED;
+
+        this._goingRight = true;
+        this._goingLeft =  false;
+
+        if(this.velX + NOMINAL_SPEED > MAX_SPEED) {
+            this.velX = MAX_SPEED;
+        }
+        else {
+            this.velX += NOMINAL_SPEED;
+        }
     }
     else if(keys[this.KEY_LEFT]) {
-        if(this.velX - NOMINAL_SPEED < -MAX_SPEED) this.velX = -MAX_SPEED;
-        else this.velX -= NOMINAL_SPEED;
+
+        this._goingRight = false;
+        this._goingLeft =  true;
+
+        if(this.velX - NOMINAL_SPEED < -MAX_SPEED) {
+            this.velX = -MAX_SPEED;
+        }
+        else {
+            this.velX -= NOMINAL_SPEED;
+        }
     } 
     else return 0;
+}
+
+Character.prototype.sharpTurns = function () {
+    
+    if (this._jumping) {return;}
+    if (this._goingRight && keys[this.KEY_LEFT]) {
+        this.velX = 0;
+    }
+    if (this._goingLeft && keys[this.KEY_RIGHT]) {
+        this.velX = 0;
+    }
 }
 
 Character.prototype.applyAccelX = function(accelX, du){
@@ -196,9 +226,15 @@ var NOMINAL_THRUST = 20;
 
 Character.prototype.computeThrustMag = function () {
 
+    var speedInfluence = 0.12*Math.abs(this.velX);
+    //Needs more work
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
         this._jumping = true;
-        return this.velY = NOMINAL_THRUST;
+        var speed = Math.abs(this.velX);
+        if (speed===0 || speed <8) {
+            return this.velY = NOMINAL_THRUST;
+        }
+        else return this.velY = NOMINAL_THRUST*speedInfluence;
     }
     return 0;
 };
