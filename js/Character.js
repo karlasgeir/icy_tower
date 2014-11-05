@@ -101,6 +101,10 @@ Character.prototype.computeSubStep = function (du) {
 
     this.wallBounce();
 
+    if (this.velY === 0) {
+        this._jumping = false;
+    }
+
     this.speed = this.computeSpeed();
 
     var accelX = this.speed;
@@ -108,7 +112,7 @@ Character.prototype.computeSubStep = function (du) {
     this.applyAccelX(accelX, du);
 
     var accelY = -this.computeThrustMag();
-    accelY += this.computeGravity()*du;
+    accelY += this.computeGravity();
     this.velY = this.velY + (accelY*du)/2;
 
     this.cy += this.velY*du;
@@ -130,6 +134,7 @@ Character.prototype.computeSubStep = function (du) {
 var NOMINAL_SPEED = 0.2;
 var NOMINAL_SLOW = 0.5;
 var MAX_SPEED = 12;
+
 Character.prototype.computeSpeed = function(){
 
     if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT]) {
@@ -170,6 +175,7 @@ Character.prototype.applyAccelX = function(accelX, du){
     //console.log('velX: ' + this.velX);
     console.log('velY: ' + this.velY);
     console.log('velX: ' + this.velX);
+    console.log('isjumping' + this._jumping);
 }
 
 
@@ -190,7 +196,7 @@ var NOMINAL_THRUST = 20;
 
 Character.prototype.computeThrustMag = function () {
 
-    if ((eatKey(this.KEY_UP) || (eatKey(32)) && !this._jumping) ) {
+    if ((keys[this.KEY_JUMP] && !this._jumping) ) {
         this._jumping = true;
         return this.velY = NOMINAL_THRUST;
     }
