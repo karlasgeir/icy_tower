@@ -101,7 +101,7 @@ Character.prototype.computeRotation = function(du){
 
 Character.prototype.computeSubStep = function (du) {
 
-    this.wallBounce();
+    this.wallBounce(this.velX, this.velY);
     this.sharpTurns();
 
     if (this.velY === 0) {
@@ -201,11 +201,7 @@ Character.prototype.applyAccelX = function(accelX, du){
     final_velX = initial_velX + accelX*du;
 
     this.cx += average_velX*du;
-    
-    //console.log('velX: ' + this.velX);
-    console.log('velY: ' + this.velY);
-    console.log('velX: ' + this.velX);
-    console.log('isjumping' + this._jumping);
+
 }
 
 
@@ -227,10 +223,12 @@ var NOMINAL_THRUST = 20;
 Character.prototype.computeThrustMag = function () {
 
     var speedInfluence = 0.12*Math.abs(this.velX);
+
     //Needs more work
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
         this._jumping = true;
         var speed = Math.abs(this.velX);
+
         if (speed===0 || speed <8) {
             return this.velY = NOMINAL_THRUST;
         }
@@ -243,13 +241,25 @@ Character.prototype.checkForPlatform = function () {
     //TODO: implement this
 }
 
-Character.prototype.wallBounce = function () {
+Character.prototype.wallBounce = function (velX, velY) {
     //TODO: implement this
+    var speed = Math.abs(this.velX);
+    var BoostThreshold = 8;
+
+    this.checkForRotation(velX, velY);
+    console.log(this._rotationJump);
+    
     if(this.cx+this.activeSprite.width/2 >= g_canvas.width) {
-        this.velX *=-1;
+        if (this._rotationJump) {
+            return this.velX *=-2;
+        }
+        else return this.velX *=-1;
     }
     if(this.cx-this.activeSprite.width/2 <= 0) {
-        this.velX *=-1;
+        if (this._rotationJump) {
+            return this.velX *=-2;
+        }
+        else return this.velX *=-1;
     }
 }
 
@@ -276,8 +286,12 @@ Character.prototype.render = function (ctx) {
     this.sprite.scale = origScale;
 };
 
+Character.prototype.checkForRotation = function(velX,velY) {
+    if(Math.abs(velX) > ROTATION_JUMP_THRESHOLD) this._rotationJump = true;
+    else this._rotationJump = false;
+}
 
-var ROTATION_JUMP_THRESHOLD = 5;
+var ROTATION_JUMP_THRESHOLD = 8;
 Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     var prevLeft = this._left;
     var prevJumping = this._jumping;
@@ -286,8 +300,7 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     var sprite_base = this.sprite;
     var transition = false;
 
-    if(Math.abs(velX) > ROTATION_JUMP_THRESHOLD) this._rotationJump = true;
-    else this._rotationJump = false;
+    this.checkForRotation(velX,velY);
 
     //Check if in transition
     if(prevLeft && velX > 0 || prevJumping && velY === 0 || !prevLeft && velX < 0){
