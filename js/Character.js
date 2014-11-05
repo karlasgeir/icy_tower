@@ -108,13 +108,13 @@ Character.prototype.computeSubStep = function (du) {
     this.applyAccelX(accelX, du);
 
     var accelY = -this.computeThrustMag();
-    accelY += this.computeGravity();
+    accelY += this.computeGravity()*du;
     this.velY = this.velY + (accelY*du)/2;
 
-    this.cy += this.velY;
+    this.cy += this.velY*du;
 
-    var nextX = this.cx + this.velX;
-    var nextY = this.cy + this.velY;
+    var nextX = this.cx + this.velX*du;
+    var nextY = this.cy + this.velY*du;
 
 
     if(this._animTicker < Math.abs(20-Math.abs(this.velX))){
@@ -177,7 +177,7 @@ var NOMINAL_GRAVITY = 1;
 
 Character.prototype.computeGravity = function () {
 
-    if(this.cy+this.activeSprite.height/2 < g_canvas.height){
+    if(this.cy+this.activeSprite.height/2 < g_canvas.height && this._jumping){
         return g_useGravity ? NOMINAL_GRAVITY : 0;
     }
     else{
@@ -186,7 +186,7 @@ Character.prototype.computeGravity = function () {
     return 0;
 };
 
-var NOMINAL_THRUST = 12;
+var NOMINAL_THRUST = 20;
 
 Character.prototype.computeThrustMag = function () {
 
