@@ -96,7 +96,9 @@ Character.prototype.update = function (du) {
 // Function that rotates the character
 var NOMINAL_ROTATION_RATE = 30;
 Character.prototype.computeRotation = function(du){
-    this.rotation += du*(Math.PI/NOMINAL_ROTATION_RATE);
+    if (this.velX>0){
+    this.rotation += du*(Math.PI/NOMINAL_ROTATION_RATE);}
+    else {this.rotation += du*-(Math.PI/NOMINAL_ROTATION_RATE);}
 }
 
 Character.prototype.computeSubStep = function (du) {
