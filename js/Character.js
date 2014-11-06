@@ -259,10 +259,12 @@ Character.prototype.wallBounce = function (velX, velY) {
         this._goingLeft = !this._goingLeft;
         
         if (this._rotationJump) {
-            return this.velX *=-1.5;
+            return this.velX *=-1.5, this.velY *= 1.05;
         } else {
             return this.velX *=-1;
+
         }
+
     }
 }
 
