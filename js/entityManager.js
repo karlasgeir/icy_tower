@@ -52,7 +52,26 @@ KILL_ME_NOW : -1,
 //
 
 _generatePlatform : function() {
-    this.generatePlatform();
+
+    //Pseudo code for +certain numerofPlatforms
+    //if numofplatforms=<100 use this:
+    var base_cy = 600;
+    var base_cx = 1;
+
+    var numPlatforms = g_canvas.height;
+    var platformCount = 0;
+
+    for (var i = 0; i < g_canvas.height; i++) {
+        base_cy -=50;
+        base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + 0;
+        platformCount +=1;
+        this.generatePlatform({
+            cx: base_cx,
+            cy: base_cy
+        });
+    }
+
+    //if num of platforms>100 use this: 
 },
 
 deferredSetup : function () {

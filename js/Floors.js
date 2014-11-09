@@ -7,28 +7,24 @@
 
 
 function Platform(descr) {
-
-	for (var property in descr) {
-        this[property] = descr[property];
-    }
+	this.setup(descr);
 };
-
-var g_platform = new Platform({
-    cx : 150,
-    cy : 150,
-    platWidth : 50,
-    platHeight : 10
-});
 
 Platform.prototype = new Entity();
 
+Platform.prototype.cx = 50;
+Platform.prototype.cy = 550;
+Platform.prototype.platHeight = 10;
+Platform.prototype.platWidth = 150;
+
+
 Platform.prototype.render = function (ctx) {
-	//Placeholder 
+
 	ctx.fillStyle="#FF0000";
-	ctx.fillRect(g_platform.cx, g_platform.cy, g_platform.platWidth, g_platform.platHeight);
+	ctx.fillRect(this.cx, this.cy, this.platWidth, this.platHeight);
 };
 
-Platform.prototype.collides = function(){
+Platform.prototype.collides = function() {
 
 }; 
 

@@ -31,7 +31,6 @@ function createInitialCharacter() {
     });
 }
 
-
 // =============
 // GATHER INPUTS
 // =============
