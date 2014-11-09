@@ -20,15 +20,41 @@ Platform.prototype.platWidth = 150;
 
 Platform.prototype.render = function (ctx) {
 
-	ctx.fillStyle="#FF0000";
+	ctx.fillStyle="#0000FF";
 	ctx.fillRect(this.cx, this.cy, this.platWidth, this.platHeight);
 };
 
-Platform.prototype.collides = function() {
+Platform.prototype.collidesWith = function(prevX, prevY, 
+                                          nextX, nextY, height, width) {
 
-}; 
+	var halfWidth = Platform.prototype.platWidth/2;
+	var platformEdge = this.cy;
 
-Platform.prototype.update = function (du) {    
+	if ((nextY - height < platformEdge && prevY - height >= platformEdge) ||
+        (nextY + height > platformEdge && prevY + height <= platformEdge)) {
+        // Check X coords
+        if (nextX + width >= this.cx - halfWidth &&
+            nextX - width <= this.cx + halfWidth) {
+            return true;
+        }
+    }
+    return false;
+};
+
+Platform.prototype.update = function (du) {
+
+	spatialManager.unregister(this);
+
+	if (this._isDeadNow) {
+        return entityManager.KILL_ME_NOW;
+    }
+
+    if (this.cy>600) {
+    	this.kill();
+    }
+    this.cy +=0.15*du;
+
+    spatialManager.register(this);    
 
 };
 

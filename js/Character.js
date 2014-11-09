@@ -81,7 +81,6 @@ Character.prototype.update = function (du) {
         }
         else this.rotation = 0;
 
-
         // TODO: Handle collisions
         if(this.isColliding() && this.isColliding().getSpatialID() !== this.getSpatialID()){
         }
@@ -105,6 +104,17 @@ Character.prototype.computeSubStep = function (du) {
     this.wallBounce(this.velX, this.velY);
     this.sharpTurns();
 
+    var prevX = this.cx;
+    var prevY = this.cy;
+
+    var nextX = prevX + this.velX * du;
+    var nextY = prevY + this.velY * du;
+
+    if (Platform.prototype.collidesWith(prevX, prevY, nextX, nextY, this.activeSprite.height, this.activeSprite.width))
+    {   
+        console.log('yo');
+    }
+
     if (this.velY === 0) {
         this._jumping = false;
         this._rotationJump = false;
@@ -121,10 +131,6 @@ Character.prototype.computeSubStep = function (du) {
     this.velY = this.velY + (accelY*du)/2;
 
     this.cy += this.velY*du;
-
-    var nextX = this.cx + this.velX*du;
-    var nextY = this.cy + this.velY*du;
-
 
     if(this._animTicker < Math.abs(20-Math.abs(this.velX))){
         this._animTicker +=1*du;

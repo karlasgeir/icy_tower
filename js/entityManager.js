@@ -29,7 +29,8 @@ var entityManager = {
 _characters: [],
 _platforms: [],
 _bShowPlatforms: true,
-
+base_cy: 600,
+base_cx: 0,
 
 // "PRIVATE" METHODS
 
@@ -55,19 +56,16 @@ _generatePlatform : function() {
 
     //Pseudo code for +certain numerofPlatforms
     //if numofplatforms=<100 use this:
-    var base_cy = 600;
-    var base_cx = 1;
+    
+    var initPlatforms = 12;
 
-    var numPlatforms = g_canvas.height;
-    var platformCount = 0;
+    for (var i = 0; i < initPlatforms; i++) {
+        this.base_cy -=50;
+        this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + 0;
 
-    for (var i = 0; i < g_canvas.height; i++) {
-        base_cy -=50;
-        base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + 0;
-        platformCount +=1;
         this.generatePlatform({
-            cx: base_cx,
-            cy: base_cy
+            cx: this.base_cx,
+            cy: this.base_cy
         });
     }
 
@@ -117,6 +115,12 @@ update: function(du) {
             if (status === this.KILL_ME_NOW) {
                 // remove the dead guy, and shuffle the others down to
                 // prevent a confusing gap from appearing in the array
+                this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + 0;
+                this.generatePlatform({
+                    cx: this.base_cx,
+                    cy: this.base_cy
+                });
+
                 aCategory.splice(i,1);
             }
             else {
@@ -124,11 +128,14 @@ update: function(du) {
             }
         }
     }
+
+    //console.log(entityManager._platforms);
     
     //Some function to generate new platform when the time is right
     /*
         if ( something ) this._generatePlatform();
     */
+
 
 },
 
