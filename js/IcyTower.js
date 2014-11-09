@@ -29,8 +29,8 @@ function createInitialCharacter() {
         cy :g_canvas.height,
         _scale:5
     });
-    
 }
+
 
 // =============
 // GATHER INPUTS
@@ -90,9 +90,9 @@ function processDiagnostics() {
 
     if (eatKey(KEY_SPATIAL)) g_renderSpatialDebug = !g_renderSpatialDebug;
 
-    if (eatKey(KEY_HALT)) entityManager.haltShips();
+    if (eatKey(KEY_HALT)) entityManager.haltCharacters();
 
-    if (eatKey(KEY_RESET)) entityManager.resetShips();
+    if (eatKey(KEY_RESET)) entityManager.resetCharacters();
 
 }
 
@@ -140,7 +140,6 @@ var g_sprites = {};
 function preloadDone() {
 
     //Loading all the sprite
-    
     g_sprites.character = {
         idle:{
             0: new Sprite(g_images.character,30,52,50,162),

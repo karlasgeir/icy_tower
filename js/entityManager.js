@@ -33,9 +33,6 @@ _bShowPlatforms: true,
 
 // "PRIVATE" METHODS
 
-_generatePlatforms : function() {
-    
-},
 
 _forEachOf: function(aCategory, fn) {
     for (var i = 0; i < aCategory.length; ++i) {
@@ -53,20 +50,26 @@ KILL_ME_NOW : -1,
 // Some things must be deferred until after initial construction
 // i.e. thing which need `this` to be defined.
 //
+
+_generatePlatform : function() {
+    this.generatePlatform();
+},
+
 deferredSetup : function () {
     this._categories = [this._characters, this._platforms];
 },
 
-init: function() {
-    //this._generatePlatforms();
-},
-
 generatePlatform : function(descr) {
-    //this._platforms.push(new Platform(descr));
+    this._platforms.push(new Platform(descr));
 },
 
 generateCharacter : function(descr) {
     this._characters.push(new Character(descr));
+},
+
+init: function() {
+    this._generatePlatform();
+    //this._generateShip();
 },
 
 

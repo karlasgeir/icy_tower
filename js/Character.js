@@ -8,7 +8,6 @@ function Character(descr) {
 
     // Common inherited setup logic from Entity
     this._scale = 1;
-
     this.setup(descr);
 
     this.rememberResets();
@@ -28,7 +27,7 @@ function Character(descr) {
     this.activeSprite = this.activeSprite || g_sprites.character.idle[0];
 
     // Set normal drawing scale, and warp state off
-        this._isWarping = false;
+    this._isWarping = false;
 };
 
 Character.prototype = new Entity();
@@ -271,7 +270,7 @@ Character.prototype.wallBounce = function (velX, velY) {
 }
 
 Character.prototype.getRadius = function () {
-    return (this.sprite.width / 2) * 0.9;
+    return this.scale*(this.sprite.width / 2) * 0.9;
 };
 
 
@@ -290,7 +289,6 @@ Character.prototype.render = function (ctx) {
     var origScale = this.sprite.scale;
     this.sprite.scale = this._scale;
     this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation);
-    this.sprite.scale = origScale;
 };
 
 Character.prototype.checkForRotation = function(velX,velY) {

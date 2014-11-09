@@ -1,53 +1,44 @@
 // ===============
-// Floors STUFF
+// Platform STUFF
 // ===============
 "use strict";
 /* jshint browser: true, devel: true, globalstrict: true */
 // A generic contructor which accepts an arbitrary descriptor object
-function Floors(descr) {
-       for (var property in descr) {
+
+
+function Platform(descr) {
+
+	for (var property in descr) {
         this[property] = descr[property];
     }
-   
+};
 
+var g_platform = new Platform({
+    cx : 150,
+    cy : 150,
+    platWidth : 50,
+    platHeight : 10
+});
 
+Platform.prototype = new Entity();
 
+Platform.prototype.render = function (ctx) {
+	//Placeholder 
+	ctx.fillStyle="#FF0000";
+	ctx.fillRect(g_platform.cx, g_platform.cy, g_platform.platWidth, g_platform.platHeight);
+};
 
+Platform.prototype.collides = function(){
 
-Floors.prototype.collides = function(){
+}; 
 
-
-
- } 
-
-
-
-
-
-
-Floors.prototype.update = function (du) {    
+Platform.prototype.update = function (du) {    
 
 };
 
-
-
-
-
-Floors.prototype.reset = function () {
+Platform.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
-    
     this.halt();
 };
 
 
-
-Floors.prototype.render = function (ctx) {
- //Keyra ut array
-};
-
-
-
-
-
-    
-}
