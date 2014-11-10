@@ -8,26 +8,27 @@
 
 function Platform(descr) {
 	this.setup(descr);
+    this.sprite = g_sprites.testplat;
+    this.platHeight = this.sprite.height;
+    this.platWidth = this.sprite.width;
+    this.halfWidth = this.platHeight/2;
+    this.halfHeight = this.platWidth/2;
 };
 
 Platform.prototype = new Entity();
-
 Platform.prototype.cx = 50;
 Platform.prototype.cy = 550;
 Platform.prototype.padding = 0;
-Platform.prototype.platHeight = 10;
-Platform.prototype.platWidth = 150;
-Platform.prototype.verticalSpeed = 0.25;
-Platform.prototype.halfWidth = Platform.prototype.platWidth/2;
-Platform.prototype.halfHeight = Platform.prototype.platHeight/2;
 
+
+Platform.prototype.getBaseWidth = function(){
+    return this.platWidth;
+}
 
 Platform.prototype.render = function (ctx) {
-
-	ctx.fillStyle="#0000FF";
-    var w = this.platWidth;
-    var h = this.platHeight;
-	g_sprites.testplat.drawAt(ctx, this.cx-w/2, this.cy-h/2, 0, 0);
+	//ctx.fillStyle="#0000FF";
+    console.log(this.halfWidth);
+	this.sprite.drawCentredAt(ctx, this.cx, this.cy, 0);
 };
 
 Platform.prototype.collidesWith = function(prevX, prevY, 
