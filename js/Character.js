@@ -19,6 +19,7 @@ function Character(descr) {
     this.jumpHeight = 0;
     this._animTicker = 0;
     this.rotationJump = false;
+    this.currPlatform = false;
 
     this.setup(descr);
     
@@ -86,21 +87,43 @@ Character.prototype.update = function (du) {
 
         // TODO: Handle collisions
         if(this._jumping && this.velY > 0){
-            var isHit = this.isColliding();
-            if (isHit) {
-                this.cy = isHit.getPos().posY - isHit.getSize().height/2 - this.activeSprite.height/2;
-                g_useGravity = false;
-                this._jumping = false;
-                this.velY = 0;
-            }   
+            this.handleCollision();
         }
         else{
-            g_useGravity = true;
-            this._jumping = true;
+            this.checkPlatform();
         }
         spatialManager.register(this);
     }
 };
+
+Character.prototype.checkPlatform = function(){
+    if(this.currPlatform){
+    var pos = this.currPlatform.getPos();
+    var size = this.currPlatform.getSize();
+    if(this.cx - this.activeSprite.width/2 < pos.posX+size.width/2
+        && this.cx + this.activeSprite.width/2 > pos.posX - size.width/2){
+        g_useGravity = false;
+        this._jumping = false;
+        this.velY = 0;
+    }
+    else{
+        this.currPlatform = false;
+        g_useGravity = true;
+        this._jumping = true;
+    }
+}
+}
+
+Character.prototype.handleCollision = function(){
+    var isHit = this.isColliding();
+    if (isHit) {
+        this.cy = isHit.getPos().posY - isHit.getSize().height/2 - this.activeSprite.height/2;
+        g_useGravity = false;
+        this._jumping = false;
+        this.velY = 0;
+        this.currPlatform = isHit;
+    }   
+}
 
 
 // Function that rotates the character
@@ -115,7 +138,7 @@ Character.prototype.computeSubStep = function (du) {
 
     this.wallBounce(this.velX, this.velY);
     this.sharpTurns();
-    
+
     
     
     var prevX = this.cx;
@@ -123,12 +146,6 @@ Character.prototype.computeSubStep = function (du) {
 
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
-
-
-    if (this.velY === 0) {
-        this._jumping = false;
-        this._rotationJump = false;
-    }
 
     this.speed = this.computeSpeed();
 

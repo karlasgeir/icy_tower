@@ -28,7 +28,6 @@ Platform.prototype.render = function (ctx) {
     var w = this.platWidth;
     var h = this.platHeight;
 	ctx.fillRect(this.cx-w/2, this.cy-h/2, w, h);
-    console.log(this.halfHeight);
 };
 
 Platform.prototype.collidesWith = function(prevX, prevY, 

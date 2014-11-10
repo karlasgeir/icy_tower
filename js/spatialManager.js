@@ -70,6 +70,7 @@ findEntityInRange: function(posX, posY, width,height, gameHeight) {
         var pos=e.getPos();
         var size = e.getSize();
         if(util.isBetween(gameHeight,e.getGameHeight()-2,e.getGameHeight()+2)){
+            console.log("HEIGT CORRECT");
             if(posX - width/2 < pos.posX+size.width/2
                 && posX + width/2 > pos.posX - size.width/2){
                 return e;
