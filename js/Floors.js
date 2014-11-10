@@ -17,13 +17,13 @@ Platform.prototype.cy = 550;
 Platform.prototype.platHeight = 10;
 Platform.prototype.platWidth = 150;
 Platform.prototype.numberOfPlatforms = 0;
-Platform.prototype.verticalSpeed = 0.25;
+Platform.prototype.verticalSpeed = 5.25;
 
 
 Platform.prototype.render = function (ctx) {
 
 	ctx.fillStyle="#0000FF";
-	ctx.fillRect(this.cx, this.cy, this.platWidth, this.platHeight);
+	ctx.fillRect(this.cx, this.cy, this.platWidth, this.platHeight);;
 };
 
 Platform.prototype.collidesWith = function(prevX, prevY, 
@@ -54,6 +54,7 @@ Platform.prototype.update = function (du) {
     if (this.cy>600) {
     	this.kill();
     }
+    
     this.cy +=this.verticalSpeed*du;
 
     spatialManager.register(this);    

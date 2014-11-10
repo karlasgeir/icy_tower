@@ -34,14 +34,14 @@ _entities : [],
 getNewSpatialID : function() {
 
     // TODO: YOUR STUFF HERE!
-    return this._nextSpatialID++;
+    this._nextSpatialID +=1;
+    return this._nextSpatialID-1;
     
 
 },
 
 register: function(entity) {
     var spatialID = entity.getSpatialID();
-    var pos = entity.getPos();
 
     
     // TODO: YOUR STUFF HERE!
@@ -53,12 +53,11 @@ unregister: function(entity) {
     var spatialID = entity.getSpatialID();
 
     // TODO: YOUR STUFF HERE!
-    for (var c = 0; c < this._entities.length; c++) {
-        var e = this._entities[c];
-        if (e instanceof Entity) {
-            if (e.getSpatialID() == entity.getSpatialID()) {
-                delete this._entities[c];
-                break;
+    for(var i in this._entities){
+        if(this._entities.hasOwnProperty(i)){
+            var e = this._entities[i];
+            if(e.getSpatialID() === spatialID){
+                this._entities.splice(i,1);
             }
         }
     }
@@ -66,17 +65,13 @@ unregister: function(entity) {
 },
 
 findEntityInRange: function(posX, posY, radius) {
-    for (var c = 0; c < this._entities.length; c++) {
-        var e = this._entities[c];
-        if (e) {
-
-            var entPos = e.getPos();
-            var dist = util.distSq(entPos.posX, entPos.posY, posX, posY);
-            var rad = util.square(e.getRadius() + radius);
-
-            if (dist < rad) {
-                return e;
-            }
+    for (var entity in this._entities) {
+        var e = this._entities[entity];
+        var pos=e.getPos();
+        var distance = Math.sqrt(util.distSq(posX,posY,pos.posX,pos.posY));
+        var limit  = radius + e.getRadius();
+        if(distance < limit){
+            return e;
         }
     }
     return false;

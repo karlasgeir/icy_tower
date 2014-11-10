@@ -28,7 +28,7 @@ var entityManager = {
 _characters: [],
 _platforms: [],
 _bShowPlatforms: true,
-base_cy: 600,
+base_cy: 0,
 base_cx: 0,
 
 // "PRIVATE" METHODS
@@ -53,17 +53,19 @@ KILL_ME_NOW : -1,
 
 _generateInitialPlatforms : function() {
     
-    var initPlatforms = 12;
+    var numOfPlatforms = 12;
     Platform.prototype.numberOfPlatforms = 12;
 
-    for (var i = 0; i < initPlatforms; i++) {
-        this.base_cy -=50;
+    for (var i = 0; i<numOfPlatforms; i++) {
         this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + 0;
         this.generatePlatform({
             cx: this.base_cx,
             cy: this.base_cy
         });
-    } 
+        this.base_cy +=50;
+    }
+    this.base_cy = 0;
+
 },
 
 deferredSetup : function () {
@@ -111,35 +113,33 @@ update: function(du) {
                 // prevent a confusing gap from appearing in the array
                 Platform.prototype.numberOfPlatforms +=1;
                 var count = Platform.prototype.numberOfPlatforms;
+                this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + 0;
 
-                if (count>0 && count<100) {
-                    this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + 0;
+                if (count>0 && count <=100) {
                     this.generatePlatform({
                         cx: this.base_cx,
                         cy: this.base_cy
                     });
                 }
 
-                if (count>=100 && count <200) {
-                    this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + 0;
-                    this.base_cy -= 75; 
+                if (count>100) {
                     this.generatePlatform({
                         cx: this.base_cx,
                         cy: this.base_cy,
+
                         //Virkar ekki, þarf að gefa hinum þennan nýja hraða líka
                         //verticalSpeed: 0.5
                     });
                 }
-                //console.log(Platform.prototype.verticalSpeed);
                 aCategory.splice(i,1);
+                //console.log(Platform.prototype.verticalSpeed);
             }
             else {
                 ++i;
             }
         }
     }
-    console.log(Platform.prototype.numberOfPlatforms);
-
+    console.log(this.base_cy);
     //console.log(entityManager._platforms);
 },
 

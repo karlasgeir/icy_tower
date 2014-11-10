@@ -110,11 +110,6 @@ Character.prototype.computeSubStep = function (du) {
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
 
-    if (Platform.prototype.collidesWith(prevX, prevY, nextX, nextY, this.activeSprite.height, this.activeSprite.width))
-    {   
-        console.log('yo');
-    }
-
     if (this.velY === 0) {
         this._jumping = false;
         this._rotationJump = false;
@@ -138,7 +133,6 @@ Character.prototype.computeSubStep = function (du) {
         this.chooseSprite(this.velX,this.velY,nextX,nextY);
         this._animTicker = 0;
     }
-
     this.wrapPosition();
 };
 
