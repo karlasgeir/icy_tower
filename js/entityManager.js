@@ -57,7 +57,7 @@ _generateInitialPlatforms : function() {
     Platform.prototype.numberOfPlatforms = 12;
 
     for (var i = 0; i<numOfPlatforms; i++) {
-        this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + 0;
+        this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + Platform.prototype.halfWidth;
         this.generatePlatform({
             cx: this.base_cx,
             cy: this.base_cy
@@ -111,8 +111,8 @@ update: function(du) {
             if (status === this.KILL_ME_NOW) {
                 NUMBER_OF_PLATFORMS +=1;
                 var count = NUMBER_OF_PLATFORMS;
-                console.log(count);
-                this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + 0;
+                //console.log(count);
+                this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + Platform.prototype.halfWidth;
 
                 if (count>0 && count <=100) {
                     this.generatePlatform({

@@ -18,6 +18,8 @@ Platform.prototype.padding = 0;
 Platform.prototype.platHeight = 10;
 Platform.prototype.platWidth = 150;
 Platform.prototype.verticalSpeed = 0.25;
+Platform.prototype.halfWidth = Platform.prototype.platWidth/2;
+Platform.prototype.halfHeight = Platform.prototype.platHeight/2;
 
 
 Platform.prototype.render = function (ctx) {
@@ -25,7 +27,12 @@ Platform.prototype.render = function (ctx) {
 	ctx.fillStyle="#0000FF";
     var w = this.platWidth;
     var h = this.platHeight;
+<<<<<<< HEAD
 	g_sprites.testplat.drawAt(ctx, this.cx-w/2, this.cy-h/2, 0, 0);;
+=======
+	ctx.fillRect(this.cx-w/2, this.cy-h/2, w, h);
+    console.log(this.halfHeight);
+>>>>>>> 92f84cc9512150ec020d269bc426350ce27fb6e8
 };
 
 Platform.prototype.collidesWith = function(prevX, prevY, 
