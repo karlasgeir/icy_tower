@@ -169,7 +169,6 @@ Character.prototype.moveScreen = function(){
         g_MOVE_SCREEN = 0;
     }
 }
-
 var NOMINAL_SPEED = 0.5;
 var NOMINAL_SLOW = 0.45;
 var MAX_SPEED = 12;

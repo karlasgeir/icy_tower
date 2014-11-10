@@ -42,7 +42,7 @@ Platform.prototype.update = function (du) {
     	this.kill();
     }
     
-    this.cy +=this.verticalSpeed*du;
+    //this.cy +=this.verticalSpeed*du;
 
     spatialManager.register(this);    
 
