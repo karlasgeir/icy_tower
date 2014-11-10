@@ -135,10 +135,13 @@ update: function(du) {
             }
             else {
                 var pos = cat.getPos();
-                cat.setPos(pos.posX,pos.posY+g_MOVE_SCREEN);
+                if(g_GAME_HEIGHT <0) g_GAME_HEIGHT = 0;
+                cat.setPos(pos.posX,pos.posY+g_MOVE_SCREEN*du);
                 ++i;
             }
         }
+        //Hækkum game height
+        g_GAME_HEIGHT += g_MOVE_SCREEN*du;
     }
     //console.log(this.base_cy);
     //console.log(entityManager._platforms);

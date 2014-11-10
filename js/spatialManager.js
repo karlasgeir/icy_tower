@@ -64,20 +64,18 @@ unregister: function(entity) {
 
 },
 
-findEntityInRange: function(posX, posY, width,height) {
+findEntityInRange: function(posX, posY, width,height, gameHeight) {
     for (var entity in this._entities) {
-        var leftSide = posX - width;
-        var rightSide = posX + width;
-        var bottom = posY - width;
-        var top = posY + width;
         var e = this._entities[entity];
         var pos=e.getPos();
         var size = e.getSize();
-        if(posX < pos.posX+size.width
-            && posX + width > pos.posX
-            && posY < pos.posY + size.height
-            && posY+height > pos.posY){
-            return e;
+        if(gameHeight >= e.getGameHeight()){
+            if(posX < pos.posX+size.width
+                && posX + width > pos.posX
+                && posY < pos.posY + size.height
+                && posY+height > pos.posY){
+                return e;
+            }
         }
     }
     return false;
@@ -101,8 +99,9 @@ render: function(ctx) {
             util.strokeCenteredBox(ctx,pos.posX-size.width/2,pos.posY-size.height/2,size.width,size.height,this.rotation);
         }
         else if(e instanceof Platform){
-            util.strokeCenteredBox(ctx, pos.posX, pos.posY, size.width,size.height,0);
+            util.strokeCenteredBox(ctx, pos.posX-size.width/2, pos.posY-size.height/2, size.width,size.height,0);
         }
+        
         
     }
     ctx.strokeStyle = oldStyle;

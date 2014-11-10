@@ -23,7 +23,9 @@ Platform.prototype.verticalSpeed = 0.25;
 Platform.prototype.render = function (ctx) {
 
 	ctx.fillStyle="#0000FF";
-	ctx.fillRect(this.cx, this.cy, this.platWidth, this.platHeight);;
+    var w = this.platWidth;
+    var h = this.platHeight;
+	ctx.fillRect(this.cx-w/2, this.cy-h/2, w, h);;
 };
 
 Platform.prototype.collidesWith = function(prevX, prevY, 
@@ -37,6 +39,7 @@ Platform.prototype.update = function (du) {
 	if (this._isDeadNow) {
         return entityManager.KILL_ME_NOW;
     }
+    this.gameHeight = g_canvas.height - this.cy + this.platHeight/2 + g_GAME_HEIGHT;
 
     if (this.cy>600) {
     	this.kill();

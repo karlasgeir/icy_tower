@@ -81,12 +81,24 @@ Character.prototype.update = function (du) {
         }
         else this.rotation = 0;
 
+        console.log(this.velY);
+        //Update game height
+        this.gameHeight = g_canvas.height - this.cy - this.activeSprite.height/2 + g_GAME_HEIGHT;
+
         // TODO: Handle collisions
-        if(this.isColliding() && this.isColliding().getSpatialID() !== this.getSpatialID()){
+        if(this._jumping && this.velY > 0){
+            var isHit = this.isColliding();
+            if (isHit) {
+                g_useGravity = false;
+                this._jumping = false;
+                this.velY = 0;
+            }   
         }
         else{
-            spatialManager.register(this);
+            g_useGravity = true;
+            this._jumping = true;
         }
+        spatialManager.register(this);
     }
 };
 
@@ -103,20 +115,8 @@ Character.prototype.computeSubStep = function (du) {
 
     this.wallBounce(this.velX, this.velY);
     this.sharpTurns();
- 
-    if(this._jumping && this.velY > 0){
-        var isHit = this.findHitEntity();
-        if (isHit) {
-            g_useGravity = false;
-            this._jumping = false;
-            this.velY = 0;
-        }
-       
-    }
-    else{
-            g_useGravity = true;
-            this._jumping = true;
-    }
+    
+    
     
     var prevX = this.cx;
     var prevY = this.cy;
@@ -155,24 +155,36 @@ Character.prototype.computeSubStep = function (du) {
 
 
 /*
-This function moves the screen
+This function moves the screen when the
+character is getting close to the bottom or the top
+of the canvas
 */
-var NOMINAL_SCREEN_MOVE_RATE = 5;
-var SCREEN_TOP_LIMIT = 500;
+var NOMINAL_SCREEN_MOVE_RATE = 8;
+var SCREEN_TOP_LIMIT = 400;
+var SCREEN_BOTTOM_LIMIT = 570;
 Character.prototype.moveScreen = function(){
-    console.log(this.cy + this.activeSprite.height);
-    if(this.cy + this.activeSprite.height <  SCREEN_TOP_LIMIT){
-        console.log("MOVE");
-        g_MOVE_SCREEN = 5;
+    //If player is closer to the top then the limit allows
+    if(this.cy + this.activeSprite.height/2 <  SCREEN_TOP_LIMIT){
+        //Move the screen up
+        g_MOVE_SCREEN = NOMINAL_SCREEN_MOVE_RATE;
     }
+    //If the player is closer to the bottom then the limit allows
+    //And not at the bottom
+    else if(this.cy + this.activeSprite.height/2 > SCREEN_BOTTOM_LIMIT && g_GAME_HEIGHT > 0){
+        //Move the screen down
+        g_MOVE_SCREEN = - NOMINAL_SCREEN_MOVE_RATE;
+    }
+    //Else we don't move the screen
     else{
         g_MOVE_SCREEN = 0;
     }
+    
 }
+
+
 var NOMINAL_SPEED = 0.5;
 var NOMINAL_SLOW = 0.45;
 var MAX_SPEED = 12;
-
 Character.prototype.computeSpeed = function(){
 
     if (this._jumping) {
@@ -277,10 +289,6 @@ Character.prototype.computeThrustMag = function () {
     }
     return 0;
 };
-
-Character.prototype.checkForPlatform = function () {
-    //TODO: implement this
-}
 
 Character.prototype.wallBounce = function (velX, velY) {
     //TODO: implement this

@@ -79,6 +79,10 @@ Entity.prototype.getSpatialID = function () {
     return this._spatialID;
 };
 
+Entity.prototype.getGameHeight = function(){
+    return this.gameHeight;
+}
+
 Entity.prototype.kill = function () {
     this._isDeadNow = true;
 };
@@ -87,7 +91,7 @@ Entity.prototype.findHitEntity = function () {
     var pos = this.getPos();
     var size = this.getSize();
     return spatialManager.findEntityInRange(
-        pos.posX, pos.posY, size.width,size.height
+        pos.posX, pos.posY, size.width,size.height, this.gameHeight
     );
 };
 
