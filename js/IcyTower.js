@@ -128,7 +128,8 @@ function requestPreloads() {
 
     var requiredImages = {
         character   : "res/spritesheet.png",
-        character_rev  : "res/spritesheet-rev.png"
+        character_rev  : "res/spritesheet-rev.png",
+	testplat : "res/testplatt.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -137,6 +138,8 @@ function requestPreloads() {
 var g_sprites = {};
 
 function preloadDone() {
+
+    g_sprites.testplat = new Sprite(g_images.testplat,g_canvas.width,g_canvas.height,0,0);
 
     //Loading all the sprite
     g_sprites.character = {
