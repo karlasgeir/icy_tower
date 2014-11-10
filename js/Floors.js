@@ -19,7 +19,7 @@ Platform.prototype = new Entity();
 Platform.prototype.cx = 50;
 Platform.prototype.cy = 550;
 Platform.prototype.padding = 0;
-Platform.prototype.verticalSpeed = 2,5;
+Platform.prototype.verticalSpeed = 5.25;
 
 
 

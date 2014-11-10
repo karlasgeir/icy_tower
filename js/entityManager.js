@@ -53,7 +53,7 @@ KILL_ME_NOW : -1,
 
 _generateInitialPlatforms : function() {
     
-    var numOfPlatforms = 12;
+    var numOfPlatforms = 8;
 
     //Bottom main platform
     Platform.prototype.numberOfPlatforms = numOfPlatforms;
@@ -103,6 +103,7 @@ togglePlatforms: function() {
 
 update: function(du) {
 
+    var platWidth = g_sprites.testplat.width;
     for (var c = 0; c < this._categories.length; ++c) {
 
         var aCategory = this._categories[c];
@@ -115,8 +116,7 @@ update: function(du) {
                 NUMBER_OF_PLATFORMS +=1;
                 var count = NUMBER_OF_PLATFORMS;
                 //console.log(count);
-                this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + Platform.prototype.halfWidth;
-
+                this.base_cx = Math.floor(Math.random()*(g_canvas.width-platWidth)) + platWidth/2;
                 if (count>0 && count <=100) {
                     this.generatePlatform({
                         cx: this.base_cx,
