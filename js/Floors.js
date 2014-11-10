@@ -27,7 +27,7 @@ Platform.prototype.render = function (ctx) {
 	ctx.fillStyle="#0000FF";
     var w = this.platWidth;
     var h = this.platHeight;
-	ctx.fillRect(this.cx-w/2, this.cy-h/2, w, h);
+	g_sprites.testplat.drawAt(ctx, this.cx-w/2, this.cy-h/2, 0, 0);
 };
 
 Platform.prototype.collidesWith = function(prevX, prevY, 

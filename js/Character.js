@@ -440,3 +440,9 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
 
     
 }
+
+
+
+
+//Comment til að prufa git
+//Bara testa þetta og vinandi kemur þetta inn
