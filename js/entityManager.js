@@ -54,8 +54,8 @@ KILL_ME_NOW : -1,
 _generateInitialPlatforms : function() {
     
     var numOfPlatforms = 12;
-    Platform.prototype.numberOfPlatforms = 12;
 
+    //Bottom main platform
     for (var i = 0; i<numOfPlatforms; i++) {
         this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + Platform.prototype.halfWidth;
         this.generatePlatform({

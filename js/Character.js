@@ -10,6 +10,7 @@ function Character(descr) {
     this._scale = 1;
     this.rememberResets();
     this._jumping = false;
+    this._falling = false;
     this._goingLeft = false;
     this._goingRight = false;
     this._running = false;
@@ -84,7 +85,6 @@ Character.prototype.update = function (du) {
         
         //Update game height
         this.gameHeight = g_canvas.height - this.cy - this.activeSprite.height/2 + g_GAME_HEIGHT;
-
         // TODO: Handle collisions
         if(this._jumping && this.velY > 0){
             this.handleCollision();
@@ -110,8 +110,8 @@ Character.prototype.checkPlatform = function(){
         this.currPlatform = false;
         g_useGravity = true;
         this._jumping = true;
+        }
     }
-}
 }
 
 Character.prototype.handleCollision = function(){
@@ -123,6 +123,16 @@ Character.prototype.handleCollision = function(){
         this.velY = 0;
         this.currPlatform = isHit;
     }   
+}
+
+Character.prototype.rememberJump = function(velY) {
+    if (velY>0) {
+        return this._falling = true, this._jumping = false, this.currPlatform = false;
+    }
+    if (velY<0) {
+        return this._falling = false, this._jumping = true, this.currPlatform = false;
+    }
+    else return 0;
 }
 
 
@@ -138,8 +148,6 @@ Character.prototype.computeSubStep = function (du) {
 
     this.wallBounce(this.velX, this.velY);
     this.sharpTurns();
-
-    
     
     var prevX = this.cx;
     var prevY = this.cy;
@@ -147,6 +155,22 @@ Character.prototype.computeSubStep = function (du) {
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
 
+    /*this.rememberJump();
+
+    console.log(this.velY);
+    console.log(this._jumping);
+    console.log(this._falling);
+    console.log(this.currPlatform);
+
+   console.log(this.velY)
+    
+    if (this.velY === 0) {
+        //this.currPlatform = true;
+        this._jumping = false;
+        this._roationJump = false;
+    }
+    */
+    
     this.speed = this.computeSpeed();
 
     var accelX = this.speed;
