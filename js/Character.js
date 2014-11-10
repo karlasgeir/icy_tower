@@ -80,8 +80,7 @@ Character.prototype.update = function (du) {
             this.computeRotation(du);
         }
         else this.rotation = 0;
-
-        console.log(this.velY);
+        
         //Update game height
         this.gameHeight = g_canvas.height - this.cy - this.activeSprite.height/2 + g_GAME_HEIGHT;
 
@@ -162,7 +161,7 @@ of the canvas
 var NOMINAL_SCREEN_MOVE_RATE = 8;
 var SCREEN_TOP_LIMIT = 400;
 var SCREEN_BOTTOM_LIMIT = 570;
-Character.prototype.moveScreen = function(){
+Character.prototype.moveScreen = function(du){
     //If player is closer to the top then the limit allows
     if(this.cy + this.activeSprite.height/2 <  SCREEN_TOP_LIMIT){
         //Move the screen up
@@ -281,7 +280,6 @@ Character.prototype.computeThrustMag = function () {
     //Needs more work
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
         this._jumping = true;
-        console.log(NOMINAL_THRUST*speedInfluence);
         if (speedInfluence <0.8) {
             return this.velY = NOMINAL_THRUST;
         }
