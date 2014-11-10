@@ -54,22 +54,22 @@ KILL_ME_NOW : -1,
 _generateInitialPlatforms : function() {
     
     var numOfPlatforms = 12;
-    Platform.prototype.numberOfPlatforms = 12;
-
+    Platform.prototype.numberOfPlatforms = numOfPlatforms;
+    var platformWidth = g_sprites.testplat.width;
     for (var i = 0; i<numOfPlatforms; i++) {
-        this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + Platform.prototype.halfWidth;
+        this.base_cx = Math.floor(Math.random()*(g_canvas.width-platformWidth)) + platformWidth/2;
         this.generatePlatform({
             cx: this.base_cx,
             cy: this.base_cy
         });
-        this.base_cy +=50;
+        this.base_cy +=80;
     }
     this.base_cy = 0;
 
 },
 
 deferredSetup : function () {
-    this._categories = [this._characters, this._platforms];
+    this._categories = [this._platforms,this._characters];
 },
 
 generatePlatform : function(descr) {

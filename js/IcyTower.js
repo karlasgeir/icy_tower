@@ -139,9 +139,10 @@ var g_sprites = {};
 
 function preloadDone() {
 
-    g_sprites.testplat = new Sprite(g_images.testplat,g_canvas.width,g_canvas.height,0,0);
-
+   
     //Loading all the sprite
+     g_sprites.testplat = new Sprite(g_images.testplat,g_images.testplat.width,g_images.testplat.height,0,0);
+     
     g_sprites.character = {
         idle:{
             0: new Sprite(g_images.character,30,52,50,162),
