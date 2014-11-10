@@ -16,6 +16,8 @@ Platform.prototype.cx = 50;
 Platform.prototype.cy = 550;
 Platform.prototype.platHeight = 10;
 Platform.prototype.platWidth = 150;
+Platform.prototype.numberOfPlatforms = 0;
+Platform.prototype.verticalSpeed = 0.25;
 
 
 Platform.prototype.render = function (ctx) {
@@ -52,7 +54,7 @@ Platform.prototype.update = function (du) {
     if (this.cy>600) {
     	this.kill();
     }
-    this.cy +=0.15*du;
+    this.cy +=this.verticalSpeed*du;
 
     spatialManager.register(this);    
 

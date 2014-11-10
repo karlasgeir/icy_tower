@@ -22,7 +22,6 @@ with suitable 'data' and 'methods'.
 //
 /*jslint nomen: true, white: true, plusplus: true*/
 
-
 var entityManager = {
 
 // "PRIVATE" DATA
@@ -52,24 +51,19 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 
-_generatePlatform : function() {
-
-    //Pseudo code for +certain numerofPlatforms
-    //if numofplatforms=<100 use this:
+_generateInitialPlatforms : function() {
     
     var initPlatforms = 12;
+    Platform.prototype.numberOfPlatforms = 12;
 
     for (var i = 0; i < initPlatforms; i++) {
         this.base_cy -=50;
         this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + 0;
-
         this.generatePlatform({
             cx: this.base_cx,
             cy: this.base_cy
         });
-    }
-
-    //if num of platforms>100 use this: 
+    } 
 },
 
 deferredSetup : function () {
@@ -85,7 +79,7 @@ generateCharacter : function(descr) {
 },
 
 init: function() {
-    this._generatePlatform();
+    this._generateInitialPlatforms();
     //this._generateShip();
 },
 
@@ -115,12 +109,28 @@ update: function(du) {
             if (status === this.KILL_ME_NOW) {
                 // remove the dead guy, and shuffle the others down to
                 // prevent a confusing gap from appearing in the array
-                this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + 0;
-                this.generatePlatform({
-                    cx: this.base_cx,
-                    cy: this.base_cy
-                });
+                Platform.prototype.numberOfPlatforms +=1;
+                var count = Platform.prototype.numberOfPlatforms;
 
+                if (count>0 && count<100) {
+                    this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + 0;
+                    this.generatePlatform({
+                        cx: this.base_cx,
+                        cy: this.base_cy
+                    });
+                }
+
+                if (count>=100 && count <200) {
+                    this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + 0;
+                    this.base_cy -= 75; 
+                    this.generatePlatform({
+                        cx: this.base_cx,
+                        cy: this.base_cy,
+                        //Virkar ekki, þarf að gefa hinum þennan nýja hraða líka
+                        //verticalSpeed: 0.5
+                    });
+                }
+                //console.log(Platform.prototype.verticalSpeed);
                 aCategory.splice(i,1);
             }
             else {
@@ -128,15 +138,9 @@ update: function(du) {
             }
         }
     }
+    console.log(Platform.prototype.numberOfPlatforms);
 
     //console.log(entityManager._platforms);
-    
-    //Some function to generate new platform when the time is right
-    /*
-        if ( something ) this._generatePlatform();
-    */
-
-
 },
 
 render: function(ctx) {
