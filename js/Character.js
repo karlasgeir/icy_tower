@@ -88,6 +88,7 @@ Character.prototype.update = function (du) {
         if(this._jumping && this.velY > 0){
             var isHit = this.isColliding();
             if (isHit) {
+                this.cy = isHit.getPos().posY - isHit.getSize().height/2 - this.activeSprite.height/2;
                 g_useGravity = false;
                 this._jumping = false;
                 this.velY = 0;

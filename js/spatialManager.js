@@ -69,17 +69,14 @@ findEntityInRange: function(posX, posY, width,height, gameHeight) {
         var e = this._entities[entity];
         var pos=e.getPos();
         var size = e.getSize();
-        if(gameHeight >= e.getGameHeight()){
-            if(posX < pos.posX+size.width
-                && posX + width > pos.posX
-                && posY < pos.posY + size.height
-                && posY+height > pos.posY){
+        if(util.isBetween(gameHeight,e.getGameHeight()-2,e.getGameHeight()+2)){
+            if(posX - width/2 < pos.posX+size.width/2
+                && posX + width/2 > pos.posX - size.width/2){
                 return e;
             }
         }
     }
     return false;
-
 },
 
 render: function(ctx) {
