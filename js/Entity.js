@@ -59,6 +59,19 @@ Entity.prototype.getRadius = function () {
     return 0;
 };
 
+Entity.prototype.getSize = function(){
+    if(this instanceof Character){
+        return{width: this.activeSprite.width, height: this.activeSprite.height};
+    }
+    else if(this instanceof Platform){
+        return {width: this.platWidth, height:this.platHeight};
+    }
+};
+
+Entity.prototype.getRotation = function(){
+    return this.rotation;
+};
+
 Entity.prototype.getSpatialID = function () {
     return this._spatialID;
 };

@@ -109,10 +109,9 @@ update: function(du) {
 
             var status = aCategory[i].update(du);
             if (status === this.KILL_ME_NOW) {
-                // remove the dead guy, and shuffle the others down to
-                // prevent a confusing gap from appearing in the array
-                Platform.prototype.numberOfPlatforms +=1;
-                var count = Platform.prototype.numberOfPlatforms;
+                NUMBER_OF_PLATFORMS +=1;
+                var count = NUMBER_OF_PLATFORMS;
+                console.log(count);
                 this.base_cx = Math.floor(Math.random()*(g_canvas.width-Platform.prototype.platWidth)) + 0;
 
                 if (count>0 && count <=100) {
@@ -139,7 +138,7 @@ update: function(du) {
             }
         }
     }
-    console.log(this.base_cy);
+    //console.log(this.base_cy);
     //console.log(entityManager._platforms);
 },
 

@@ -8,8 +8,6 @@ function Character(descr) {
 
     // Common inherited setup logic from Entity
     this._scale = 1;
-    this.setup(descr);
-
     this.rememberResets();
     this._jumping = false;
     this._goingLeft = false;
@@ -21,6 +19,8 @@ function Character(descr) {
     this.jumpHeight = 0;
     this._animTicker = 0;
     this.rotationJump = false;
+
+    this.setup(descr);
     
     // Default sprite, if not otherwise specified
     this.sprite = this.sprite || g_sprites.character;

@@ -17,7 +17,6 @@ Platform.prototype.cy = 550;
 Platform.prototype.padding = 0;
 Platform.prototype.platHeight = 10;
 Platform.prototype.platWidth = 150;
-Platform.prototype.numberOfPlatforms = 0;
 Platform.prototype.verticalSpeed = 0.25;
 
 

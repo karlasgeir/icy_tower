@@ -103,6 +103,22 @@ fillBox: function (ctx, x, y, w, h, style) {
     ctx.fillStyle = style;
     ctx.fillRect(x, y, w, h);
     ctx.fillStyle = oldStyle;
+},
+
+strokeCenteredBox: function(ctx,x,y,w,h,rotation,scale){
+    if(rotation === undefined) rotation = 0;
+    
+    ctx.save();
+    
+    ctx.translate(x,y);
+    ctx.rotate(rotation);
+    ctx.translate(-x,-y)
+    ctx.scale(this.scale, this.scale);
+    ctx.beginPath();
+    ctx.rect(x,y,w,h);
+    ctx.stroke();
+    ctx.restore();
+    
 }
 
 };

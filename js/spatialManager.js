@@ -88,9 +88,16 @@ render: function(ctx) {
     for (var ID in this._entities) {
         var e = this._entities[ID];
         var pos = e.getPos();
-
+        var size = e.getSize();
         ctx.fillText(e.getSpatialID(),pos.posX,pos.posY);
-        util.strokeCircle(ctx, pos.posX, pos.posY, e.getRadius());
+        
+        if(e instanceof Character){
+            util.strokeCenteredBox(ctx,pos.posX-size.width/2,pos.posY-size.height/2,size.width,size.height,this.rotation);
+        }
+        else if(e instanceof Platform){
+            util.strokeCenteredBox(ctx, pos.posX, pos.posY, size.width,size.height,0);
+        }
+        
     }
     ctx.strokeStyle = oldStyle;
     ctx.restore();
