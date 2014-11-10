@@ -106,8 +106,8 @@ update: function(du) {
         var i = 0;
 
         while (i < aCategory.length) {
-
-            var status = aCategory[i].update(du);
+            var cat = aCategory[i];
+            var status = cat.update(du);
             if (status === this.KILL_ME_NOW) {
                 NUMBER_OF_PLATFORMS +=1;
                 var count = NUMBER_OF_PLATFORMS;
@@ -134,6 +134,8 @@ update: function(du) {
                 //console.log(Platform.prototype.verticalSpeed);
             }
             else {
+                var pos = cat.getPos();
+                cat.setPos(pos.posX,pos.posY+g_MOVE_SCREEN);
                 ++i;
             }
         }

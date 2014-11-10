@@ -24,3 +24,7 @@ var SECS_TO_NOMINALS = 1000 / NOMINAL_UPDATE_INTERVAL;
 
 //Other globals
 var NUMBER_OF_PLATFORMS = 12;
+
+var g_GAME_HEIGHT = 0;
+
+var g_MOVE_SCREEN = 0;

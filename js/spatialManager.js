@@ -64,13 +64,19 @@ unregister: function(entity) {
 
 },
 
-findEntityInRange: function(posX, posY, radius) {
+findEntityInRange: function(posX, posY, width,height) {
     for (var entity in this._entities) {
+        var leftSide = posX - width;
+        var rightSide = posX + width;
+        var bottom = posY - width;
+        var top = posY + width;
         var e = this._entities[entity];
         var pos=e.getPos();
-        var distance = Math.sqrt(util.distSq(posX,posY,pos.posX,pos.posY));
-        var limit  = radius + e.getRadius();
-        if(distance < limit){
+        var size = e.getSize();
+        if(posX < pos.posX+size.width
+            && posX + width > pos.posX
+            && posY < pos.posY + size.height
+            && posY+height > pos.posY){
             return e;
         }
     }

@@ -103,18 +103,27 @@ Character.prototype.computeSubStep = function (du) {
 
     this.wallBounce(this.velX, this.velY);
     this.sharpTurns();
-    /*
-    var isHit = this.findHitEntity();
-    if (isHit) {
-        console.log('yo');
-        this.velY = 0;
+ 
+    if(this._jumping && this.velY > 0){
+        var isHit = this.findHitEntity();
+        if (isHit) {
+            g_useGravity = false;
+            this._jumping = false;
+            this.velY = 0;
+        }
+       
     }
-    */
+    else{
+            g_useGravity = true;
+            this._jumping = true;
+    }
+    
     var prevX = this.cx;
     var prevY = this.cy;
 
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
+
 
     if (this.velY === 0) {
         this._jumping = false;
@@ -129,7 +138,8 @@ Character.prototype.computeSubStep = function (du) {
     var accelY = -this.computeThrustMag();
     accelY += this.computeGravity();
     this.velY = this.velY + (accelY*du)/2;
-
+    //To use below
+    var oldcy = this.cy;
     this.cy += this.velY*du;
 
     if(this._animTicker < Math.abs(20-Math.abs(this.velX))){
@@ -138,8 +148,27 @@ Character.prototype.computeSubStep = function (du) {
         this.chooseSprite(this.velX,this.velY,nextX,nextY);
         this._animTicker = 0;
     }
+    this.moveScreen();
     this.wrapPosition();
 };
+
+
+
+/*
+This function moves the screen
+*/
+var NOMINAL_SCREEN_MOVE_RATE = 5;
+var SCREEN_TOP_LIMIT = 500;
+Character.prototype.moveScreen = function(){
+    console.log(this.cy + this.activeSprite.height);
+    if(this.cy + this.activeSprite.height <  SCREEN_TOP_LIMIT){
+        console.log("MOVE");
+        g_MOVE_SCREEN = 5;
+    }
+    else{
+        g_MOVE_SCREEN = 0;
+    }
+}
 
 var NOMINAL_SPEED = 0.5;
 var NOMINAL_SLOW = 0.45;
@@ -218,6 +247,7 @@ Character.prototype.applyAccelX = function(accelX, du){
 
 }
 
+
 var NOMINAL_GRAVITY = 1;
 
 Character.prototype.computeGravity = function () {
@@ -240,9 +270,8 @@ Character.prototype.computeThrustMag = function () {
     //Needs more work
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
         this._jumping = true;
-        var speed = Math.abs(this.velX);
-
-        if (speed===0 || speed <8) {
+        console.log(NOMINAL_THRUST*speedInfluence);
+        if (speedInfluence <0.8) {
             return this.velY = NOMINAL_THRUST;
         }
         else return this.velY = NOMINAL_THRUST*speedInfluence;
