@@ -125,7 +125,7 @@ update: function(du) {
                 if (count>100) {
                     this.generatePlatform({
                         cx: this.base_cx,
-                        cy: this.base_cy,
+                        cy: this.base_cy
 
                         //Virkar ekki, þarf að gefa hinum þennan nýja hraða líka
                         //verticalSpeed: 0.5

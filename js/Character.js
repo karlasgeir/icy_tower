@@ -103,7 +103,13 @@ Character.prototype.computeSubStep = function (du) {
 
     this.wallBounce(this.velX, this.velY);
     this.sharpTurns();
-
+    /*
+    var isHit = this.findHitEntity();
+    if (isHit) {
+        console.log('yo');
+        this.velY = 0;
+    }
+    */
     var prevX = this.cx;
     var prevY = this.cy;
 
@@ -118,7 +124,6 @@ Character.prototype.computeSubStep = function (du) {
     this.speed = this.computeSpeed();
 
     var accelX = this.speed;
-
     this.applyAccelX(accelX, du);
 
     var accelY = -this.computeThrustMag();

@@ -14,10 +14,11 @@ Platform.prototype = new Entity();
 
 Platform.prototype.cx = 50;
 Platform.prototype.cy = 550;
+Platform.prototype.padding = 0;
 Platform.prototype.platHeight = 10;
 Platform.prototype.platWidth = 150;
 Platform.prototype.numberOfPlatforms = 0;
-Platform.prototype.verticalSpeed = 5.25;
+Platform.prototype.verticalSpeed = 0.25;
 
 
 Platform.prototype.render = function (ctx) {
@@ -27,20 +28,7 @@ Platform.prototype.render = function (ctx) {
 };
 
 Platform.prototype.collidesWith = function(prevX, prevY, 
-                                          nextX, nextY, height, width) {
-
-	var halfWidth = Platform.prototype.platWidth/2;
-	var platformEdge = this.cy;
-
-	if ((nextY - height < platformEdge && prevY - height >= platformEdge) ||
-        (nextY + height > platformEdge && prevY + height <= platformEdge)) {
-        // Check X coords
-        if (nextX + width >= this.cx - halfWidth &&
-            nextX - width <= this.cx + halfWidth) {
-            return true;
-        }
-    }
-    return false;
+                                          nextX, nextY) {
 };
 
 Platform.prototype.update = function (du) {
