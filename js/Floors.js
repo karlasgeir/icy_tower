@@ -19,6 +19,8 @@ Platform.prototype = new Entity();
 Platform.prototype.cx = 50;
 Platform.prototype.cy = 550;
 Platform.prototype.padding = 0;
+Platform.prototype.verticalSpeed = 2,5;
+
 
 
 Platform.prototype.getBaseWidth = function(){
@@ -31,9 +33,6 @@ Platform.prototype.render = function (ctx) {
 	this.sprite.drawCentredAt(ctx, this.cx, this.cy, 0);
 };
 
-Platform.prototype.collidesWith = function(prevX, prevY, 
-                                          nextX, nextY) {
-};
 
 Platform.prototype.update = function (du) {
 
@@ -48,7 +47,7 @@ Platform.prototype.update = function (du) {
     	this.kill();
     }
     
-    //this.cy +=this.verticalSpeed*du;
+    this.cy +=this.verticalSpeed*du;
 
     spatialManager.register(this);    
 
