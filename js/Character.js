@@ -117,7 +117,7 @@ Character.prototype.checkPlatform = function(){
     }
 }
 
-Character.prototype.handleCollision = function(){
+Character.prototype.handleCollision = function(du){
     var isHit = this.isColliding();
     if (isHit) {
         this.cy = isHit.getPos().posY - isHit.getSize().height/2 - this.activeSprite.height/2;
@@ -182,8 +182,9 @@ Character.prototype.computeSubStep = function (du) {
     var finalv = this.velY + accelY*du;
     this.velY = (this.velY + finalv)/2;
     this.cy += this.velY*du;
+
     if(this.currPlatform){
-        console.log(accelY,finalv,this.velY,this.cy);
+         this.cy +=Platform.prototype.verticalSpeed*du;
     } 
 
     var NOMINAL_ANIM_FRAME_RATE = 20;
@@ -233,6 +234,7 @@ Character.prototype.moveScreen = function(du){
 var NOMINAL_SPEED = 0.5;
 var NOMINAL_SLOW = 0.45;
 var MAX_SPEED = 12;
+
 Character.prototype.computeSpeed = function(){
 
     if (this._jumping) {
