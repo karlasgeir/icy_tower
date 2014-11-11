@@ -27,10 +27,6 @@ Wall.prototype.halfHeight = Wall.prototype.platHeight/2;
 
 
 
-
-
-
-
 Wall.prototype.getBaseWidth = function(){
     return this.wallWidth;
 }
@@ -57,12 +53,10 @@ Wall.prototype.update = function (du) {
 	if (this._isDeadNow) {
         return entityManager.KILL_ME_NOW;
     }
-    this.gameHeight = g_canvas.height - this.cy + this.platHeight/2 + g_GAME_HEIGHT;
-
     
-
-        
-   
+    //this.gameHeight = g_canvas.height - this.cy + this.platHeight/2 + g_GAME_HEIGHT;
+    this.cy +=Platform.prototype.verticalSpeed*du;
+    
     spatialManager.register(this);    
 
 };
