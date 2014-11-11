@@ -116,13 +116,14 @@ function processDiagnostics() {
 
 function renderSimulation(ctx) {
 
+    g_background.render(ctx);
+
     if (!gameOver) {
         entityManager.render(ctx);
         g_notification.render(ctx);
     }
 
     if (gameOver) {
-        g_background.render(ctx);
         g_menu.render(ctx); 
     }
 
@@ -142,7 +143,8 @@ function requestPreloads() {
         character   : "res/spritesheet.png",
         character_rev  : "res/spritesheet-rev.png",
 	    testplat : "res/testplatt.png",
-        backgroundMenu : "res/backgroundPlaceholder.jpg"
+        backgroundMenu : "res/backgroundPlaceholder.jpg",
+        gameBackground : "res/background.png"
 
     };
 
@@ -159,6 +161,9 @@ function preloadDone() {
 
      g_sprites.backgroundMenu = new Sprite(
         g_images.backgroundMenu,g_images.backgroundMenu.width,g_images.backgroundMenu.height,0,0);
+
+     g_sprites.gameBackground = new Sprite(
+        g_images.gameBackground,g_images.gameBackground.width,g_images.gameBackground.height,0,0);
      
     g_sprites.character = {
         idle:{
