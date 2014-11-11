@@ -185,9 +185,16 @@ Character.prototype.computeSubStep = function (du) {
 
     var accelY = -this.computeThrustMag();
     accelY += this.computeGravity();
+    if(this.currPlatform){
+        console.log("VELY",this.velY);
+    } 
+    
     var finalv = this.velY + accelY*du;
     this.velY = (this.velY + finalv)/2;
     this.cy += this.velY*du;
+    if(this.currPlatform){
+        console.log(accelY,finalv,this.velY,this.cy);
+    } 
 
     var NOMINAL_ANIM_FRAME_RATE = 20;
     if(this._animTicker < Math.abs(NOMINAL_ANIM_FRAME_RATE-Math.abs(this.velX))){
@@ -328,11 +335,12 @@ Character.prototype.computeThrustMag = function () {
 
     //Needs more work
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
+        this.velY = 0;
         this._jumping = true;
         if (speedInfluence <0.8) {
-            return this.velY = NOMINAL_THRUST;
+            return NOMINAL_THRUST;
         }
-        else return this.velY = NOMINAL_THRUST*speedInfluence;
+        else return NOMINAL_THRUST*speedInfluence;
     }
     return 0;
 };
