@@ -21,6 +21,7 @@ function Character(descr) {
     this._animTicker = 0;
     this.rotationJump = false;
     this.currPlatform = false;
+    this.isBouncing = false;
 
     this.setup(descr);
     
@@ -155,9 +156,14 @@ Character.prototype.computeSubStep = function (du) {
         this._jumping = false;
         this._falling = false;
         this._roationJump = false;
+        this.isBouncing = false;
     }
     if (this.velY > 0) {
         this._falling = true;
+    }
+
+    if (this.currPlatform) {
+        this.isBouncing = false;
     }
     /*
     console.log(this.velY);
@@ -227,20 +233,12 @@ Character.prototype.moveScreen = function(du){
 }
 
 
-var NOMINAL_SPEED = 0.5;
-var NOMINAL_SLOW = 1.5;
-var MAX_SPEED = 12;
+var NOMINAL_SPEED = 1;
+var NOMINAL_SLOW = 2;
+var MAX_SPEED = 16;
 
 Character.prototype.computeSpeed = function(){
-
-    if (this._jumping) {
-        MAX_SPEED = 16;
-        NOMINAL_SPEED = 1;
-    }
-    if (!this._jumping) {
-        NOMINAL_SPEED = 0.5;
-        MAX_SPEED = 12;
-    }
+    
    // console.log(this._jumping);
 
     if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT]) {
@@ -253,7 +251,6 @@ Character.prototype.computeSpeed = function(){
             if(this.velX + NOMINAL_SLOW <0) this.velX=0;
             else this.velX -= NOMINAL_SLOW;
         }
-
     }
     if(keys[this.KEY_RIGHT]) {
 
@@ -345,15 +342,16 @@ Character.prototype.computeThrustMag = function () {
 Character.prototype.wallBounce = function (velX, velY) {
     //TODO: implement this
     this.checkForRotation(velX, velY);
-    
+    if (this.isBouncing) {return;}
     if(this.cx+this.activeSprite.width/2 >= g_canvas.width ||
         (this.cx-this.activeSprite.width/2 <= 0)) { 
 
         this._goingRight = !this._goingRight;
         this._goingLeft = !this._goingLeft;
+        this.isBouncing = !this.isBouncing;
         
         if (this._rotationJump) {
-            return this.velX *=-1.5, this.velY *= 1.25;
+            return this.velX *=-1.25, this.velY *= 1.25;
         } else {
             return this.velX *=-1;
 
