@@ -103,7 +103,7 @@ Character.prototype.checkPlatform = function(){
     var gameHeight = this.currPlatform.getGameHeight();
     if(this.cx - this.activeSprite.width/2 < pos.posX+size.width/2
         && this.cx + this.activeSprite.width/2 > pos.posX - size.width/2
-        && util.isBetween(this.getGameHeight(),gameHeight-2,gameHeight+2)){
+        && util.isBetween(this.getGameHeight(),gameHeight-3,gameHeight+5)){
         g_useGravity = false;
         this._jumping = false;
         this.velY = 0;
@@ -160,7 +160,7 @@ Character.prototype.computeSubStep = function (du) {
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
 
-    this.rememberJump();
+    //this.rememberJump();
     /*
     console.log(this.velY);
     console.log(this._jumping);
@@ -169,11 +169,13 @@ Character.prototype.computeSubStep = function (du) {
     */
 
     //console.log(this.velY)
+    /*
     if (this.velY === 0) {
             //this.currPlatform = true;
         this._jumping = false;
         this._roationJump = false;
     }
+    */
     console.log(this._jumping);
     
     
