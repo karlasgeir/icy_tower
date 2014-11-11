@@ -69,6 +69,9 @@ Entity.prototype.getSize = function(){
     else if(this instanceof Platform){
         return {width: this.platWidth, height:this.platHeight};
     }
+    else if(this instanceof Wall){
+        return {width: this.wallWidth, height:this.wallHeight};
+    }
 };
 
 Entity.prototype.getRotation = function(){

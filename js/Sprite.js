@@ -56,3 +56,32 @@ Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation) {
     ctx.restore();
 };  
 
+Sprite.prototype.drawWrappedCentredAt = function (ctx, cx, cy, rotation) {
+
+  if (rotation === undefined) rotation = 0;
+
+    var centerX = cx % g_canvas.width ;
+    var centerY = cy % g_canvas.height ;
+     
+    this.drawCentredAt(ctx,centerX, centerY,rotation);
+   
+    if(centerX - this.width < 0){  
+        this.drawCentredAt(ctx,centerX+g_canvas.width, centerY,rotation);
+    }
+    else if(centerX+this.width > g_canvas.width){    
+        this.drawCentredAt(ctx,centerX-g_canvas.width, centerY,rotation);
+    }
+    else if(centerY - this.height < 0){
+        this.drawCentredAt(ctx,centerX, centerY+g_canvas.height,rotation);
+    }
+    else if(centerY+this.height > g_canvas.height){    
+        this.drawCentredAt(ctx,centerX, centerY-g_canvas.height,rotation);
+    } 
+    
+      this.drawCentredAt(ctx,centerX+g_canvas.width, centerY-g_canvas.height,rotation);
+    
+        this.drawCentredAt(ctx,centerX+g_canvas.width, centerY+g_canvas.height,rotation);
+        this.drawCentredAt(ctx,centerX-g_canvas.width, centerY-g_canvas.height,rotation);
+        this.drawCentredAt(ctx,centerX-g_canvas.width, centerY+g_canvas.height,rotation);
+};
+

@@ -27,6 +27,7 @@ var entityManager = {
 // "PRIVATE" DATA
 _characters: [],
 _platforms: [],
+_Walls: [],
 _bShowPlatforms: true,
 base_cy: 0,
 base_cx: 0,
@@ -76,9 +77,45 @@ _generateInitialPlatforms : function() {
     this.base_cy = 0;
 
 },
+_generateWalls : function() {
+    
+
+    var numOfWalls = 6;
+   // Platform.prototype.numberOfPlatforms = 12;
+
+    var numOfWalls = 6;
+
+    //Bottom main platform
+    Wall.prototype.numberOfWalls = numOfWalls;
+    var wallWidth = g_sprites.wallsprite.width;
+
+
+    for (var i = 0; i<numOfWalls; i++) {
+        
+        this.base_cx = 0;
+        this.generateWalls({
+            cx: this.base_cx,
+            cy: this.base_cy
+        });
+        this.base_cy +=80;
+    }
+    this.base_cy = 0;
+    for (var i = 0; i<numOfWalls; i++) {
+        
+        this.base_cx = Math.floor(g_canvas.width-wallWidth) + wallWidth;
+        this.generateWalls({
+            cx: this.base_cx,
+            cy: this.base_cy
+        });
+        this.base_cy +=80;
+    }
+    this.base_cy = 0;
+     
+    
+},
 
 deferredSetup : function () {
-    this._categories = [this._platforms,this._characters];
+    this._categories = [this._platforms,this._characters,this._Walls];
 },
 
 generatePlatform : function(descr) {
@@ -88,24 +125,30 @@ generatePlatform : function(descr) {
 generateCharacter : function(descr) {
     this._characters.push(new Character(descr));
 },
+generateWalls : function(descr) {
+    this._Walls.push(new Wall(descr));
+},
 
 init: function() {
     this._generateInitialPlatforms();
     //this._generateShip();
+    this._generateWalls();
 },
 
 
 resetCharacters: function() {
     this._forEachOf(this._characters, Character.prototype.reset);
 },
-
-resetPlatforms: function() {
-    this._forEachOf(this._platforms, Platform.prototype.reset);
+resetWalls: function() {
+    this._forEachOf(this._Walls, Wall.prototype.reset);
 },
 
 haltCharacters: function() {
     this._forEachOf(this._characters, Character.prototype.halt);
 },	
+haltWalls: function() {
+    this._forEachOf(this._Walls, Wall.prototype.halt);
+},
 
 togglePlatforms: function() {
     this._bShowPlatforms = !this._bShowPlatforms;
