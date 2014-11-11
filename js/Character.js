@@ -21,6 +21,7 @@ function Character(descr) {
     this._animTicker = 0;
     this.rotationJump = false;
     this.currPlatform = false;
+    this.firstHeightIncrease = false;
 
     this.setup(descr);
     
@@ -127,17 +128,11 @@ Character.prototype.handleCollision = function(){
     }   
 }
 
-Character.prototype.rememberJump = function(velY) {
-    if (velY>0) {
-        return this._falling = true, this._jumping = false, this.currPlatform = false;
+Character.prototype.gameOver = function () {
+    if (this.firstHeightIncrease && g_GAME_HEIGHT === 0) {
+
+        return console.log('Game over');
     }
-    if (velY<0) {
-        return this._falling = false, this._jumping = true, this.currPlatform = false;
-    }
-    if (velY === 0) {
-        return this._falling = false, this._jumping=false;
-    }
-    else return 0;
 }
 
 
@@ -153,31 +148,26 @@ Character.prototype.computeSubStep = function (du) {
 
     this.wallBounce(this.velX, this.velY);
     this.sharpTurns();
-    
+    console.log(g_GAME_HEIGHT);
     var prevX = this.cx;
     var prevY = this.cy;
 
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
-
-    //this.rememberJump();
-    /*
-    console.log(this.velY);
-    console.log(this._jumping);
-    console.log(this._falling);
-    console.log(this.currPlatform);
-    */
-
-    //console.log(this.velY)
     
     if (this.velY === 0 && g_GAME_HEIGHT === 0) {
         this._jumping = false;
+        this._falling = false;
         this._roationJump = false;
     }
-    
-    
-    
-    
+    if (this.velY > 0) {
+        this._falling = true;
+    }
+    /*
+    console.log(this.velY);
+    console.log(this._falling);
+    console.log(this._jumping);
+    */
     this.speed = this.computeSpeed();
 
     var accelX = this.speed;
@@ -203,8 +193,10 @@ Character.prototype.computeSubStep = function (du) {
         this.chooseSprite(this.velX,this.velY,nextX,nextY);
         this._animTicker = 0;
     }
+
     this.moveScreen();
     this.wrapPosition();
+    this.gameOver();
 };
 
 
@@ -221,6 +213,7 @@ Character.prototype.moveScreen = function(du){
     //If player is closer to the top then the limit allows
     if(this.cy + this.activeSprite.height/2 <  SCREEN_TOP_LIMIT){
         //Move the screen up
+        this.firstHeightIncrease = true;
         g_MOVE_SCREEN = NOMINAL_SCREEN_MOVE_RATE;
     }
     //If the player is closer to the bottom then the limit allows
@@ -434,7 +427,6 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     else this._wall = false;
 
     //If jumping
-    console.log(this._jumping);
     if(this._jumping){
         //If we are not moving in x direction we jump straight up
         if(velX === 0){
