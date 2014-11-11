@@ -132,6 +132,9 @@ Character.prototype.rememberJump = function(velY) {
     if (velY<0) {
         return this._falling = false, this._jumping = true, this.currPlatform = false;
     }
+    if (velY === 0) {
+        return this._falling = false, this._jumping=false;
+    }
     else return 0;
 }
 
@@ -155,21 +158,22 @@ Character.prototype.computeSubStep = function (du) {
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
 
-    /*this.rememberJump();
-
+    this.rememberJump();
+    /*
     console.log(this.velY);
     console.log(this._jumping);
     console.log(this._falling);
     console.log(this.currPlatform);
+    */
 
-   console.log(this.velY)
-    
+    //console.log(this.velY)
     if (this.velY === 0) {
-        //this.currPlatform = true;
+            //this.currPlatform = true;
         this._jumping = false;
         this._roationJump = false;
     }
-    */
+    console.log(this._jumping);
+    
     
     this.speed = this.computeSpeed();
 
@@ -304,7 +308,7 @@ var NOMINAL_GRAVITY = 1;
 
 Character.prototype.computeGravity = function () {
 
-    if(this.cy+this.activeSprite.height/2 < g_canvas.height && this._jumping){
+    if(this.cy+this.activeSprite.height/2 < g_canvas.height){
         return g_useGravity ? NOMINAL_GRAVITY : 0;
     }
     else{

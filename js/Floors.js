@@ -19,7 +19,7 @@ Platform.prototype = new Entity();
 Platform.prototype.cx = 50;
 Platform.prototype.cy = 550;
 Platform.prototype.padding = 0;
-Platform.prototype.verticalSpeed = 5.25;
+Platform.prototype.verticalSpeed = 1;
 
 
 
@@ -29,7 +29,6 @@ Platform.prototype.getBaseWidth = function(){
 
 Platform.prototype.render = function (ctx) {
 	//ctx.fillStyle="#0000FF";
-    console.log(this.halfWidth);
 	this.sprite.drawCentredAt(ctx, this.cx, this.cy, 0);
 };
 
@@ -47,7 +46,7 @@ Platform.prototype.update = function (du) {
     	this.kill();
     }
     
-    this.cy +=this.verticalSpeed*du;
+    //this.cy +=this.verticalSpeed*du;
 
     spatialManager.register(this);    
 
