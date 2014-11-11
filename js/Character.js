@@ -143,7 +143,7 @@ Character.prototype.computeRotation = function(du){
 Character.prototype.computeSubStep = function (du) {
 
     this.wallBounce(this.velX, this.velY);
-    this.sharpTurns();
+    //this.sharpTurns();
    // console.log(g_GAME_HEIGHT);
     var prevX = this.cx;
     var prevY = this.cy;
@@ -228,14 +228,18 @@ Character.prototype.moveScreen = function(du){
 
 
 var NOMINAL_SPEED = 0.5;
-var NOMINAL_SLOW = 0.45;
+var NOMINAL_SLOW = 1.5;
 var MAX_SPEED = 12;
 
 Character.prototype.computeSpeed = function(){
 
     if (this._jumping) {
         MAX_SPEED = 16;
-        NOMINAL_SPEED = 0.75;
+        NOMINAL_SPEED = 1;
+    }
+    if (!this._jumping) {
+        NOMINAL_SPEED = 0.5;
+        MAX_SPEED = 12;
     }
    // console.log(this._jumping);
 
@@ -472,8 +476,3 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     
 }
 
-
-
-
-//Comment til að prufa git
-//Bara testa þetta og vinandi kemur þetta inn

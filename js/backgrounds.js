@@ -33,10 +33,6 @@ g_background.render = function(ctx) {
 g_background.update = function(du) { 
 
     if (gameOver) {
-        this.cx -=0.25;
+        this.cx -=0.25*du;
     }
 }
-
-//(ctx, this.cx, this.cy,this.rotation);
-
-//image, width, height, x,y
