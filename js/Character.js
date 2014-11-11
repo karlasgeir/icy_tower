@@ -239,7 +239,9 @@ Character.prototype.computeSpeed = function(){
 
     if (this._jumping) {
         MAX_SPEED = 16;
+        NOMINAL_SPEED = 0.75;
     }
+    console.log(this._jumping);
 
     if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT]) {
         if (this.velX===0) {return;}
@@ -351,7 +353,7 @@ Character.prototype.wallBounce = function (velX, velY) {
         this._goingLeft = !this._goingLeft;
         
         if (this._rotationJump) {
-            return this.velX *=-1.5, this.velY *= 1.05;
+            return this.velX *=-1.5, this.velY *= 1.25;
         } else {
             return this.velX *=-1;
 
