@@ -1,10 +1,11 @@
 
 
 var g_menu = {
-	cx: 150,
+	cx: 160,
 	cy: 220,
 	width: 300,
-	height: 50
+	height: 50,
+	gameStarted: false
 }
 
 var g_notification = {
@@ -28,7 +29,7 @@ g_menu.render = function(ctx) {
 		ctx.fillStyle="black";
 		ctx.font="bold 30px Arial";
 		ctx.fillStyle = "white";
-		ctx.fillText("I C Y  -  T O W E R",this.cx+15,this.cy+38);
+		ctx.fillText("I C Y  -  T O W E R",this.cx+20,this.cy+38);
 		ctx.font="bold 20px Arial";
 		ctx.fillText("S T A R T",this.cx+95,this.cy+100);
 	}
@@ -44,6 +45,8 @@ g_notification.render = function(ctx) {
 		ctx.fillStyle = "white";
 		ctx.font="bold 40px Arial";
 		ctx.fillText("G O",this.cx+35,300);
+
+		g_menu.gameStarted = true;
 	}
 }
 

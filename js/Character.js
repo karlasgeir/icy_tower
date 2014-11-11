@@ -63,7 +63,6 @@ Character.prototype.jumpSound = new Audio(
 */
 
 
-    
 Character.prototype.update = function (du) {    
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
     spatialManager.unregister(this);
@@ -75,6 +74,7 @@ Character.prototype.update = function (du) {
         for (var i = 0; i < steps; ++i) {
             this.computeSubStep(dStep);
         }
+
 
         //Check whether there should be rotation
         if(this._rotationJump && this._jumping){

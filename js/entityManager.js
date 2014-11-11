@@ -51,12 +51,18 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 
+killPlatforms: function () {
+    var c = 0;
+    while (c < this._platforms.length) {
+        this._platforms.splice(c, 1);
+    }
+},
+
 _generateInitialPlatforms : function() {
     
     var numOfPlatforms = 10;
 
     //Bottom main platform
-    Platform.prototype.numberOfPlatforms = numOfPlatforms;
     var platformWidth = g_sprites.testplat.width;
 
     for (var i = 0; i<numOfPlatforms; i++) {
@@ -94,7 +100,7 @@ resetCharacters: function() {
 },
 
 resetPlatforms: function() {
-    this._forEachOf(this._platforms, this._resetPlatforms);
+    this._forEachOf(this._platforms, Platform.prototype.reset);
 },
 
 haltCharacters: function() {
@@ -129,7 +135,6 @@ update: function(du) {
                         cy: this.base_cy
                     });
                 }
-
                 if (count>100) {
                     this.generatePlatform({
                         cx: this.base_cx,
@@ -175,7 +180,6 @@ render: function(ctx) {
 
             aCategory[i].render(ctx);
             //debug.text(".", debugX + i * 10, debugY);
-
         }
         debugY += 10;
     }

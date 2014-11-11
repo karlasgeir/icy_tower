@@ -36,8 +36,6 @@ getNewSpatialID : function() {
     // TODO: YOUR STUFF HERE!
     this._nextSpatialID +=1;
     return this._nextSpatialID-1;
-    
-
 },
 
 register: function(entity) {

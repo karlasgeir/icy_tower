@@ -1,11 +1,6 @@
 // =========
 // IcyTower
 // =========
-/*
-We need:
-Character.js
-Platform.js
-*/
 
 "use strict";
 
@@ -23,9 +18,9 @@ var gameOver = true;
 */
 
 
-// ====================
-// CREATE INITIAL SHIPS
-// ====================
+// =====================
+// CREATE THE DEMON DUDE
+// =====================
 function createInitialCharacter() {
     entityManager.generateCharacter({
         cx :200,

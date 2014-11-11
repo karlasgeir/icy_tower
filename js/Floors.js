@@ -44,18 +44,17 @@ Platform.prototype.update = function (du) {
     if (this.cy>800) {
     	this.kill();
     }
-    if (gameOver) {
-
-    }
-    
     this.cy +=this.verticalSpeed*du;
+    //console.log(entityManager._platforms);
 
     spatialManager.register(this);    
 
 };
 
 Platform.prototype.reset = function (ctx) {
-    
+    if (gameOver && g_menu.gameStarted) {
+        entityManager.killPlatforms();
+    }
 }
 
 
