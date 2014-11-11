@@ -19,7 +19,7 @@ Platform.prototype = new Entity();
 Platform.prototype.cx = 50;
 Platform.prototype.cy = 550;
 Platform.prototype.padding = 0;
-Platform.prototype.verticalSpeed = 1;
+Platform.prototype.verticalSpeed = 0.5;
 
 
 
@@ -46,7 +46,7 @@ Platform.prototype.update = function (du) {
     	this.kill();
     }
     
-    //this.cy +=this.verticalSpeed*du;
+    this.cy +=this.verticalSpeed*du;
 
     spatialManager.register(this);    
 

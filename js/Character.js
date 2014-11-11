@@ -100,8 +100,10 @@ Character.prototype.checkPlatform = function(){
     if(this.currPlatform){
     var pos = this.currPlatform.getPos();
     var size = this.currPlatform.getSize();
+    var gameHeight = this.currPlatform.getGameHeight();
     if(this.cx - this.activeSprite.width/2 < pos.posX+size.width/2
-        && this.cx + this.activeSprite.width/2 > pos.posX - size.width/2){
+        && this.cx + this.activeSprite.width/2 > pos.posX - size.width/2
+        && util.isBetween(this.getGameHeight(),gameHeight-2,gameHeight+2)){
         g_useGravity = false;
         this._jumping = false;
         this.velY = 0;
@@ -182,12 +184,12 @@ Character.prototype.computeSubStep = function (du) {
 
     var accelY = -this.computeThrustMag();
     accelY += this.computeGravity();
-    this.velY = this.velY + (accelY*du)/2;
-    //To use below
-    var oldcy = this.cy;
+    var finalv = this.velY + accelY*du;
+    this.velY = (this.velY + finalv)/2;
     this.cy += this.velY*du;
 
-    if(this._animTicker < Math.abs(20-Math.abs(this.velX))){
+    var NOMINAL_ANIM_FRAME_RATE = 20;
+    if(this._animTicker < Math.abs(NOMINAL_ANIM_FRAME_RATE-Math.abs(this.velX))){
         this._animTicker +=1*du;
     }else{
         this.chooseSprite(this.velX,this.velY,nextX,nextY);
