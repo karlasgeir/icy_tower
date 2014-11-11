@@ -142,7 +142,7 @@ function requestPreloads() {
         character   : "res/spritesheet.png",
         character_rev  : "res/spritesheet-rev.png",
 	    testplat : "res/testplatt.png",
-        backgroundMenu : "res/background.png"
+        backgroundMenu : "res/backgroundPlaceholder.jpg"
 
     };
 

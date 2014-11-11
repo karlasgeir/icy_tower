@@ -4,7 +4,7 @@ var g_background =  {
 
     cx : 0,
     cy : 0,
-    width: 1000,
+    width: 600,
     height: 600
 }
 
