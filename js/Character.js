@@ -21,7 +21,6 @@ function Character(descr) {
     this._animTicker = 0;
     this.rotationJump = false;
     this.currPlatform = false;
-    this.firstHeightIncrease = false;
 
     this.setup(descr);
     
@@ -29,8 +28,6 @@ function Character(descr) {
     this.sprite = this.sprite || g_sprites.character;
     this.activeSprite = this.activeSprite || g_sprites.character.idle[0];
 
-    // Set normal drawing scale, and warp state off
-    this._isWarping = false;
 };
 
 Character.prototype = new Entity();
@@ -130,14 +127,10 @@ Character.prototype.handleCollision = function(du){
 
 Character.prototype.gameOver = function () {
         var fallLength = 600;
-        console.log(g_GAME_TOP_HEIGHT)
         if ( g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT ) {
-            main.gameOver();
-
-           // return console.log('Game over');
+            gameOver = true;
     }
 }
-
 
 // Function that rotates the character
 var NOMINAL_ROTATION_RATE = 30;
@@ -372,7 +365,6 @@ Character.prototype.getRadius = function () {
 
 Character.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
-    
     this.halt();
 };
 
