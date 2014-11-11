@@ -42,7 +42,7 @@ Platform.prototype.update = function (du) {
     }
     this.gameHeight = g_canvas.height - this.cy + this.platHeight/2 + g_GAME_HEIGHT;
 
-    if (this.cy>600) {
+    if (this.cy>800) {
     	this.kill();
     }
     

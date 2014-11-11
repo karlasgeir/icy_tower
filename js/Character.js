@@ -129,9 +129,12 @@ Character.prototype.handleCollision = function(du){
 }
 
 Character.prototype.gameOver = function () {
-    if (this.firstHeightIncrease && g_GAME_HEIGHT === 0) {
+        var fallLength = 600;
+        console.log(g_GAME_TOP_HEIGHT)
+        if ( g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT ) {
+            main.gameOver();
 
-        return console.log('Game over');
+           // return console.log('Game over');
     }
 }
 
@@ -148,7 +151,7 @@ Character.prototype.computeSubStep = function (du) {
 
     this.wallBounce(this.velX, this.velY);
     this.sharpTurns();
-    console.log(g_GAME_HEIGHT);
+   // console.log(g_GAME_HEIGHT);
     var prevX = this.cx;
     var prevY = this.cy;
 
@@ -176,7 +179,7 @@ Character.prototype.computeSubStep = function (du) {
     var accelY = -this.computeThrustMag();
     accelY += this.computeGravity();
     if(this.currPlatform){
-        console.log("VELY",this.velY);
+     //   console.log("VELY",this.velY);
     } 
     
     var finalv = this.velY + accelY*du;
@@ -241,7 +244,7 @@ Character.prototype.computeSpeed = function(){
         MAX_SPEED = 16;
         NOMINAL_SPEED = 0.75;
     }
-    console.log(this._jumping);
+   // console.log(this._jumping);
 
     if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT]) {
         if (this.velX===0) {return;}

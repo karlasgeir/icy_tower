@@ -53,7 +53,7 @@ KILL_ME_NOW : -1,
 
 _generateInitialPlatforms : function() {
     
-    var numOfPlatforms = 8;
+    var numOfPlatforms = 10;
 
     //Bottom main platform
     Platform.prototype.numberOfPlatforms = numOfPlatforms;
@@ -145,6 +145,9 @@ update: function(du) {
         }
         //Hækkum game height
         g_GAME_HEIGHT += g_MOVE_SCREEN*du;
+        if (g_GAME_HEIGHT> g_GAME_TOP_HEIGHT){ 
+            g_GAME_TOP_HEIGHT = g_GAME_HEIGHT;
+        }
     }
     //console.log(this.base_cy);
     //console.log(entityManager._platforms);
