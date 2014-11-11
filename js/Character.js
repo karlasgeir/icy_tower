@@ -35,8 +35,8 @@ Character.prototype = new Entity();
 
 Character.prototype.rememberResets = function () {
     // Remember my reset positions
-    this.reset_cx = this.cx;
-    this.reset_cy = this.cy;
+    this.reset_cx = g_canvas.width/2;
+    this.reset_cy = g_canvas.height;
 };
 
 Character.prototype.KEY_UP = 'W'.charCodeAt(0);
@@ -130,6 +130,8 @@ Character.prototype.gameOver = function () {
         var fallLength = 600;
         if ( g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT ) {
             gameOver = true;
+            g_GAME_HEIGHT  = 0;
+            this.reset();
             g_background.cy = 0;
     }
 }

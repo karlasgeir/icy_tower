@@ -16,7 +16,6 @@ backgroundPic = function() {
 	}
     if (!gameOver) {
         currentSprite = g_sprites.gameBackground;
-        console.log('yo');
     }
     
     return currentSprite; 
@@ -35,7 +34,6 @@ g_background.render = function(ctx) {
             this.cx = 0;
         }
     }
-
     if (!gameOver) {
         sprite.drawAt(ctx, this.cx, this.cy, 0);
         sprite.drawAt(ctx, this.cx, Math.abs(this.cy)-this.height, 0);
