@@ -219,14 +219,12 @@ Character.prototype.moveScreen = function(du){
         //Move the screen up
         this.firstHeightIncrease = true;
         g_MOVE_SCREEN = NOMINAL_SCREEN_MOVE_RATE;
-        g_background.cy += NOMINAL_SCREEN_MOVE_RATE;
     }
     //If the player is closer to the bottom then the limit allows
     //And not at the bottom
     else if(this.cy + this.activeSprite.height/2 > SCREEN_BOTTOM_LIMIT && g_GAME_HEIGHT > 0){
         //Move the screen down
         g_MOVE_SCREEN = - NOMINAL_SCREEN_MOVE_RATE;
-        g_background.cy -= NOMINAL_SCREEN_MOVE_RATE;
     }
     //Else we don't move the screen
     else{
