@@ -155,7 +155,7 @@ Character.prototype.computeSubStep = function (du) {
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
     
-    if (this.velY === 0 && g_GAME_HEIGHT === 0) {
+    if (this.velY === 0 && (g_GAME_HEIGHT === 0 || !this.currPlatform)) {
         this._jumping = false;
         this._falling = false;
         this._roationJump = false;
@@ -208,7 +208,7 @@ character is getting close to the bottom or the top
 of the canvas
 */
 var NOMINAL_SCREEN_MOVE_RATE = 8;
-var SCREEN_TOP_LIMIT = 400;
+var SCREEN_TOP_LIMIT = 200;
 var SCREEN_BOTTOM_LIMIT = 570;
 Character.prototype.moveScreen = function(du){
     //If player is closer to the top then the limit allows
