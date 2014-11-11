@@ -67,7 +67,8 @@ _generateInitialPlatforms : function() {
     var platformWidth = g_sprites.testplat.width;
 
     for (var i = 0; i<numOfPlatforms; i++) {
-        this.base_cx = Math.floor(Math.random()*(g_canvas.width-platformWidth)) + platformWidth/2;
+        this.base_cx = util.randRange(g_left_side + platformWidth/2,g_right_side - platformWidth/2);
+        //this.base_cx = Math.floor(Math.random()*(g_canvas.width-platformWidth)) + platformWidth/2;
         this.generatePlatform({
             cx: this.base_cx,
             cy: this.base_cy
@@ -171,7 +172,7 @@ update: function(du) {
                 NUMBER_OF_PLATFORMS +=1;
                 var count = NUMBER_OF_PLATFORMS;
                 //console.log(count);
-                this.base_cx = Math.floor(Math.random()*(g_canvas.width-platWidth)) + platWidth/2;
+                this.base_cx = util.randRange(g_left_side + platWidth/2,g_right_side - platWidth/2);
                 if (count>0 && count <=100) {
                     this.generatePlatform({
                         cx: this.base_cx,
