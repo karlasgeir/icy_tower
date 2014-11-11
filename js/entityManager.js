@@ -93,6 +93,10 @@ resetCharacters: function() {
     this._forEachOf(this._characters, Character.prototype.reset);
 },
 
+resetPlatforms: function() {
+    this._forEachOf(this._platforms, this._resetPlatforms);
+},
+
 haltCharacters: function() {
     this._forEachOf(this._characters, Character.prototype.halt);
 },	
@@ -103,6 +107,7 @@ togglePlatforms: function() {
 
 update: function(du) {
 
+
     var platWidth = g_sprites.testplat.width;
     for (var c = 0; c < this._categories.length; ++c) {
 
@@ -112,6 +117,7 @@ update: function(du) {
         while (i < aCategory.length) {
             var cat = aCategory[i];
             var status = cat.update(du);
+
             if (status === this.KILL_ME_NOW) {
                 NUMBER_OF_PLATFORMS +=1;
                 var count = NUMBER_OF_PLATFORMS;

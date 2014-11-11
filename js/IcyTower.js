@@ -64,6 +64,7 @@ function updateSimulation(du) {
 
     entityManager.update(du);
     g_notification.update(du);
+    g_background.update(du);
 }
 
 // GAME-SPECIFIC DIAGNOSTICS
@@ -121,6 +122,7 @@ function renderSimulation(ctx) {
     }
 
     if (gameOver) {
+        g_background.render(ctx);
         g_menu.render(ctx); 
     }
 
@@ -139,7 +141,9 @@ function requestPreloads() {
     var requiredImages = {
         character   : "res/spritesheet.png",
         character_rev  : "res/spritesheet-rev.png",
-	testplat : "res/testplatt.png"
+	    testplat : "res/testplatt.png",
+        backgroundMenu : "res/background.png"
+
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -152,6 +156,9 @@ function preloadDone() {
    
     //Loading all the sprite
      g_sprites.testplat = new Sprite(g_images.testplat,g_images.testplat.width,g_images.testplat.height,0,0);
+
+     g_sprites.backgroundMenu = new Sprite(
+        g_images.backgroundMenu,g_images.backgroundMenu.width,g_images.backgroundMenu.height,0,0);
      
     g_sprites.character = {
         idle:{

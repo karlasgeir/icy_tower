@@ -28,7 +28,6 @@ Platform.prototype.getBaseWidth = function(){
 }
 
 Platform.prototype.render = function (ctx) {
-	//ctx.fillStyle="#0000FF";
 	this.sprite.drawCentredAt(ctx, this.cx, this.cy, 0);
 };
 
@@ -45,6 +44,9 @@ Platform.prototype.update = function (du) {
     if (this.cy>800) {
     	this.kill();
     }
+    if (gameOver) {
+
+    }
     
     this.cy +=this.verticalSpeed*du;
 
@@ -52,9 +54,8 @@ Platform.prototype.update = function (du) {
 
 };
 
-Platform.prototype.reset = function () {
-    this.setPos(this.reset_cx, this.reset_cy);
-    this.halt();
-};
+Platform.prototype.reset = function (ctx) {
+    
+}
 
 
