@@ -47,17 +47,15 @@ Platform.prototype.update = function (du) {
     if (gameOver) {
 
     }
-
-    if (g_GAME_HEIGHT !== 0) {
-        this.cy +=this.verticalSpeed*du;
-    }
+    
+    this.cy +=this.verticalSpeed*du;
 
     spatialManager.register(this);    
 
 };
 
 Platform.prototype.reset = function (ctx) {
-
+    
 }
 
 
