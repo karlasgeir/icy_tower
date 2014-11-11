@@ -29,3 +29,6 @@ var g_GAME_HEIGHT = 0;
 var g_GAME_TOP_HEIGHT =0;
 
 var g_MOVE_SCREEN = 0;
+
+var g_left_side = 0
+var g_right_side = g_canvas.width;

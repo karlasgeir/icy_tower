@@ -344,8 +344,8 @@ Character.prototype.wallBounce = function (velX, velY) {
     //TODO: implement this
     this.checkForRotation(velX, velY);
     if (this.isBouncing) {return;}
-    if(this.cx+this.activeSprite.width/2 >= g_canvas.width ||
-        (this.cx-this.activeSprite.width/2 <= 0)) { 
+    if(this.cx+this.activeSprite.width/2 >= g_right_side ||
+        (this.cx-this.activeSprite.width/2 <= g_left_side)) { 
 
         this._goingRight = !this._goingRight;
         this._goingLeft = !this._goingLeft;

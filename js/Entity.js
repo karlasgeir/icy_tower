@@ -104,6 +104,6 @@ Entity.prototype.isColliding = function () {
 };
 
 Entity.prototype.wrapPosition = function () {
-    this.cx = util.clampRange(this.cx, this.activeSprite.width/2, g_canvas.width-this.activeSprite.width/2);
+    this.cx = util.clampRange(this.cx, g_left_side + this.activeSprite.width/2, g_right_side-this.activeSprite.width/2);
     this.cy = util.clampRange(this.cy, this.activeSprite.height/2, g_canvas.height-this.activeSprite.height/2);
 };
