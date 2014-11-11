@@ -169,14 +169,13 @@ Character.prototype.computeSubStep = function (du) {
     */
 
     //console.log(this.velY)
-    /*
-    if (this.velY === 0) {
-            //this.currPlatform = true;
+    
+    if (this.velY === 0 && g_GAME_HEIGHT === 0) {
         this._jumping = false;
         this._roationJump = false;
     }
-    */
-    console.log(this._jumping);
+    
+    
     
     
     this.speed = this.computeSpeed();
@@ -427,6 +426,7 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     else this._wall = false;
 
     //If jumping
+    console.log(this._jumping);
     if(this._jumping){
         //If we are not moving in x direction we jump straight up
         if(velX === 0){
