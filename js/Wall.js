@@ -22,7 +22,7 @@ Wall.prototype.cy = 0;
 Wall.prototype.padding = 0;
 Wall.prototype.wallHeight = 0;
 Wall.prototype.wallWidth = 0;
-Wall.prototype.verticalSpeed = Platform.prototype.verticalSpeed;
+Wall.prototype.verticalSpeed =0;
 
 
 
@@ -40,22 +40,28 @@ Wall.prototype.render = function (ctx) {
 	this.sprite.drawWrappedCentredAt(ctx, this.cx, this.cy, 0);
 };
 
+var NOMINAL_MOVE_RATE = Platform.prototype.verticalSpeed;
+var FASTER_MOVE_RATE = 8;
 
 Wall.prototype.update = function (du) {
 
-    
 	if (this._isDeadNow) {
         return entityManager.KILL_ME_NOW;
     }
 
-
-    this.cy +=this.verticalSpeed*du;
+    if (screenIsMoving) {
+        this.verticalSpeed = FASTER_MOVE_RATE;
+        this.cy +=this.verticalSpeed*du;
+    }
+    if (!screenIsMoving) {
+        this.verticalSpeed = NOMINAL_MOVE_RATE;
+        this.cy +=this.verticalSpeed*du;
+    }
     
     if (this.cy>g_canvas.height) {
         this.cy = 0;
     }
-
-
+    console.log(screenIsMoving);
 };
 
 Wall.prototype.reset = function () {

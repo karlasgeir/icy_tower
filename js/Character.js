@@ -208,6 +208,8 @@ of the canvas
 var NOMINAL_SCREEN_MOVE_RATE = 8;
 var SCREEN_TOP_LIMIT = 200;
 var NOMINAL_SCREEN_BOTTOM_LIMIT = 570;
+var screenIsMoving = false;
+
 Character.prototype.moveScreen = function(du){
     var SCREEN_BOTTOM_LIMIT = NOMINAL_SCREEN_BOTTOM_LIMIT;
     //If player is closer to the top then the limit allows
@@ -221,16 +223,19 @@ Character.prototype.moveScreen = function(du){
     if(this.cy + this.activeSprite.height/2 <  SCREEN_TOP_LIMIT){
         //Move the screen up
         g_MOVE_SCREEN = NOMINAL_SCREEN_MOVE_RATE;
+        screenIsMoving = true;
     }
     //If the player is closer to the bottom then the limit allows
     //And not at the bottom
     else if(this.cy + this.activeSprite.height/2 > SCREEN_BOTTOM_LIMIT && g_GAME_HEIGHT > 0){
         //Move the screen down
         g_MOVE_SCREEN = - NOMINAL_SCREEN_MOVE_RATE;
+        screenIsMoving = true;
     }
     //Else we don't move the screen
     else{
         g_MOVE_SCREEN = 0;
+        screenIsMoving = false;
     }
 }
 
@@ -238,6 +243,7 @@ Character.prototype.gameOver = function () {
         var fallLength = 600;
         if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.activeSprite.height/2 > g_canvas.height) {
             gameOver = true;
+            screenIsMoving = false;
             g_GAME_HEIGHT  = 0;
             NUMBER_OF_PLATFORMS = 10;
             this.reset();
