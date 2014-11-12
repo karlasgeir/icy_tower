@@ -209,12 +209,13 @@ var NOMINAL_SCREEN_MOVE_RATE = 8;
 var SCREEN_TOP_LIMIT = 200;
 var NOMINAL_SCREEN_BOTTOM_LIMIT = 570;
 Character.prototype.moveScreen = function(du){
-    var SCREEN_BOTTOM_LIMIT = NOMINAL_SCREEN_BOTTOM_LIMIT
+    var SCREEN_BOTTOM_LIMIT = NOMINAL_SCREEN_BOTTOM_LIMIT;
     //If player is closer to the top then the limit allows
     if (this.currPlatform) {
-        SCREEN_BOTTOM_LIMIT = 700
+        SCREEN_BOTTOM_LIMIT = 700;
         //SCREEN_BOTTOM_LIMIT = NOMINAL_SCREEN_BOTTOM_LIMIT + this.activeSprite.height;
     }
+    else SCREEN_BOTTOM_LIMIT = NOMINAL_SCREEN_BOTTOM_LIMIT;
 
 
     if(this.cy + this.activeSprite.height/2 <  SCREEN_TOP_LIMIT){
