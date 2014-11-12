@@ -22,7 +22,7 @@ Wall.prototype.cy = 0;
 Wall.prototype.padding = 0;
 Wall.prototype.wallHeight = 0;
 Wall.prototype.wallWidth = 0;
-Wall.prototype.verticalSpeed = 0.5;
+Wall.prototype.verticalSpeed = 0.25;
 
 
 
@@ -37,7 +37,6 @@ Wall.prototype.render = function (ctx) {
     var h = this.wallHeight;
     
 	//g_sprites.wallsprite.drawAt(ctx, 0, 0, 0);
-    console.log(this.halfHeight);
 	this.sprite.drawWrappedCentredAt(ctx, this.cx, this.cy, 0);
 };
 

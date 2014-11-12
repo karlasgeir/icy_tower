@@ -132,7 +132,7 @@ togglePlatforms: function() {
 },
 
 update: function(du) {
-    console.log(this._Walls);
+
     var platWidth = g_sprites.testplat.width;
     for (var c = 0; c < this._categories.length; ++c) {
 
@@ -146,7 +146,6 @@ update: function(du) {
             if (status === this.KILL_ME_NOW) {
                 NUMBER_OF_PLATFORMS +=1;
                 var count = NUMBER_OF_PLATFORMS;
-                //console.log(count);
                 this.base_cx = util.randRange(g_left_side + platWidth/2,g_right_side - platWidth/2);
                 if (count>0 && count <=100) {
                     this.generatePlatform({
@@ -164,7 +163,6 @@ update: function(du) {
                     });
                 }
                 aCategory.splice(i,1);
-                //console.log(Platform.prototype.verticalSpeed);
             }
             else {
                 var pos = cat.getPos();
@@ -179,8 +177,6 @@ update: function(du) {
             g_GAME_TOP_HEIGHT = g_GAME_HEIGHT;
         }
     }
-    //console.log(this.base_cy);
-    //console.log(entityManager._platforms);
 },
 
 render: function(ctx) {

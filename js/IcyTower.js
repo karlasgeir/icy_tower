@@ -140,7 +140,7 @@ function requestPreloads() {
 	    testplat : "res/testplatt.png",
         backgroundMenu : "res/backgroundPlaceholder.jpg",
         gameBackground : "res/snowbackground_003.png",
-	   wallsprite : "res/wallsprite.png"
+        wallsprite : "res/wallsprite.png"
 
     };
 

@@ -67,8 +67,8 @@ Character.prototype.update = function (du) {
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
     spatialManager.unregister(this);
 
- 
-        
+        if(this._isDeadNow){return entityManager.KILL_ME_NOW;}
+
         // Perform movement substeps
         var steps = this.numSubSteps;
         var dStep = du / steps;
@@ -124,16 +124,6 @@ Character.prototype.handleCollision = function(du){
         this.velY = 0;
         this.currPlatform = isHit;
     }   
-}
-
-Character.prototype.gameOver = function () {
-        var fallLength = 600;
-        if ( g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT ) {
-            gameOver = true;
-            g_GAME_HEIGHT  = 0;
-            this.reset();
-            g_background.cy = 0;
-    }
 }
 
 // Function that rotates the character
@@ -217,9 +207,15 @@ var SCREEN_TOP_LIMIT = 200;
 var SCREEN_BOTTOM_LIMIT = 570;
 Character.prototype.moveScreen = function(du){
     //If player is closer to the top then the limit allows
+    if (this.currPlatform) {
+        SCREEN_BOTTOM_LIMIT = 610;
+    }
+    else {
+        SCREEN_BOTTOM_LIMIT = 570;
+    }
+
     if(this.cy + this.activeSprite.height/2 <  SCREEN_TOP_LIMIT){
         //Move the screen up
-        this.firstHeightIncrease = true;
         g_MOVE_SCREEN = NOMINAL_SCREEN_MOVE_RATE;
     }
     //If the player is closer to the bottom then the limit allows
@@ -232,9 +228,17 @@ Character.prototype.moveScreen = function(du){
     else{
         g_MOVE_SCREEN = 0;
     }
-    
 }
 
+Character.prototype.gameOver = function () {
+        var fallLength = 600;
+        if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT ) {
+            gameOver = true;
+            g_GAME_HEIGHT  = 0;
+            this.reset();
+            g_background.cy = 0;
+    }
+}
 
 var NOMINAL_SPEED = 1;
 var NOMINAL_SLOW = 2;
