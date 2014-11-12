@@ -46,10 +46,11 @@ g_background.render = function(ctx) {
 
 g_background.update = function(du) { 
 
-    if (gameOver) {
+    if (gameOver && g_MENU_SCREEN) {
         this.cx -=0.25*du;
     }
-    if (!gameOver) {
+
+    if (!gameOver && !g_MENU_SCREEN) {
         this.cy +=this.speed*du;
     }
 }

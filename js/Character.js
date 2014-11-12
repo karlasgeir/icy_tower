@@ -216,7 +216,7 @@ Character.prototype.moveScreen = function(du){
     if (g_MENU_SCREEN) {
         screenIsMoving = false;
     }
-
+    
     if (this.currPlatform) {
         SCREEN_BOTTOM_LIMIT = 700;
         //SCREEN_BOTTOM_LIMIT = NOMINAL_SCREEN_BOTTOM_LIMIT + this.activeSprite.height;
