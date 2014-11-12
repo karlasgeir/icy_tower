@@ -20,8 +20,9 @@ var g_notification = {
 
 g_menu.render = function(ctx) {
 
-	ctx.beginPath();
 	if (gameOver) {
+		ctx.save();
+		ctx.beginPath();
 		g_notification.cx = -180; 
 		ctx.fillStyle = "white";
 		ctx.fillRect(this.cx, this.cy,this.width, this.height);
@@ -31,20 +32,24 @@ g_menu.render = function(ctx) {
 		ctx.fillText("I C Y  -  T O W E R",this.cx+20,this.cy+38);
 		ctx.font="bold 20px Arial";
 		ctx.fillText("S T A R T",this.cx+95,this.cy+100);
+		ctx.closePath();
+		ctx.restore();
 	}
-	ctx.closePath();
 }
 
 g_notification.render = function(ctx) {
 
 	if (!gameOver) {
-
+		ctx.save();
+		ctx.beginPath();
 		ctx.fillStyle = "blue";
 		ctx.fillRect(this.cx, this.cy,this.width, this.height);
 		ctx.fillStyle = "white";
 		ctx.font="bold 40px Arial";
 		ctx.fillText("G O",this.cx+35,300);
 		g_menu.gameStarted = true;
+		ctx.closePath();
+		ctx.restore();
 	}
 }
 
