@@ -46,6 +46,11 @@ Platform.prototype.update = function (du) {
     if (this.cy>800) {
     	this.kill();
     }
+
+    if (this.cy>600 && entityManager._platforms.length<10) {
+        entityManager.makeNewPlatform();
+    }
+
     this.reset(ctx);
     this.cy +=this.verticalSpeed*du;
 

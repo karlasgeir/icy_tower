@@ -68,6 +68,7 @@ _generateInitialPlatforms : function() {
         });
         this.base_cy +=80;
     }
+    console.log(this._platforms);
     this.base_cy = 0;
 },
 
@@ -131,9 +132,28 @@ togglePlatforms: function() {
     this._bShowPlatforms = !this._bShowPlatforms;
 },
 
+makeNewPlatform: function() {
+    var platWidth = g_sprites.testplat.width;
+    NUMBER_OF_PLATFORMS +=1;
+    var count = NUMBER_OF_PLATFORMS;
+    this.base_cx = util.randRange(g_left_side + platWidth/2,g_right_side - platWidth/2);
+    if (count>0) {
+        this.base_cy = -20;
+        this.generatePlatform({
+            cx: this.base_cx,
+            cy: this.base_cy
+        });
+    }
+        this.base_cy = 0;
+    /*
+    if(coun>=100 count count<200) {
+    
+    }
+    */
+},
+
 update: function(du) {
 
-    var platWidth = g_sprites.testplat.width;
     for (var c = 0; c < this._categories.length; ++c) {
 
         var aCategory = this._categories[c];
@@ -144,24 +164,6 @@ update: function(du) {
             var status = cat.update(du);
 
             if (status === this.KILL_ME_NOW) {
-                NUMBER_OF_PLATFORMS +=1;
-                var count = NUMBER_OF_PLATFORMS;
-                this.base_cx = util.randRange(g_left_side + platWidth/2,g_right_side - platWidth/2);
-                if (count>0 && count <=100) {
-                    this.generatePlatform({
-                        cx: this.base_cx,
-                        cy: this.base_cy
-                    });
-                }
-                if (count>100) {
-                    this.generatePlatform({
-                        cx: this.base_cx,
-                        cy: this.base_cy
-
-                        //Virkar ekki, þarf að gefa hinum þennan nýja hraða líka
-                        //verticalSpeed: 0.5
-                    });
-                }
                 aCategory.splice(i,1);
             }
             else {
