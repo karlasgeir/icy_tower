@@ -3,7 +3,7 @@ var g_mDown=false, g_mX=0, g_mY=0;
 
 function handleMousedown(evt) {
 
-    if (gameOver) {
+    if (gameOver && g_MENU_SCREEN) {
         g_mX = event.pageX - g_canvas.offsetLeft;
         g_mY = event.pageY - g_canvas.offsetTop;
         g_mDown=true;
@@ -15,9 +15,21 @@ function handleMousedown(evt) {
             if (g_menu.gameStarted) {
                 entityManager._generateInitialPlatforms();
             }
+            g_MENU_SCREEN=!g_MENU_SCREEN;
             gameOver = !gameOver;
         }
     }
+
+
+    if (gameOver && !g_MENU_SCREEN) {
+        g_mX = event.pageX - g_canvas.offsetLeft;
+        g_mY = event.pageY - g_canvas.offsetTop;
+        g_mDown=true;
+        if ((g_mX>=190 && g_mX<=410) && (g_mY>=370 && g_mY<=420)) {    
+            g_MENU_SCREEN=!g_MENU_SCREEN;          
+        }
+    }
+
     else {return;}
 }
 

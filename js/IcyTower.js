@@ -113,13 +113,16 @@ function renderSimulation(ctx) {
 
     g_background.render(ctx);
 
-    if (!gameOver) {
+    if (!gameOver && !g_MENU_SCREEN) {
         entityManager.render(ctx);
         g_notification.render(ctx);
     }
 
-    if (gameOver) {
+    if (gameOver && g_MENU_SCREEN) {
         g_menu.render(ctx); 
+    }
+    if (gameOver && !g_MENU_SCREEN){
+        g_gameover.render(ctx);
     }
 
     if (g_renderSpatialDebug) spatialManager.render(ctx);

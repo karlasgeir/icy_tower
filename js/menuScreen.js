@@ -18,6 +18,15 @@ var g_notification = {
 }
 
 
+var g_gameover = {
+	cx: 140,
+	cy: 220,
+	width: 360,
+	height: 50,
+	gameStarted:false
+}
+
+
 g_menu.render = function(ctx) {
 
 	if (gameOver) {
@@ -62,5 +71,24 @@ g_notification.update = function (du) {
 	}
 	this.cx +=this.speed*du;
 }
+
+
+g_gameover.render = function(ctx) {
+
+	ctx.beginPath();
+	if (gameOver && !g_MENU_SCREEN ) {
+		ctx.fillStyle="#152775";
+		ctx.fillRect(this.cx+50, this.cy+150,this.width-140, this.height);
+		
+		ctx.fillStyle="black";
+		ctx.font="bold 50px SNOWCARD GOTHIC";
+		ctx.fillStyle = "red";
+		ctx.fillText("G A M E   O V E R",this.cx-40,this.cy);
+		ctx.font="bold 20px Arial";
+		ctx.fillText("Y O U   S C O R E D : "+ g_GAME_SCORE,this.cx+40,this.cy+62);
+		ctx.fillText("M A I N   M E N U",this.cx+80,this.cy+180);
+	}
+	ctx.closePath();
+} 
 
 
