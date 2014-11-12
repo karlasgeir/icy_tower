@@ -99,20 +99,20 @@ Character.prototype.update = function (du) {
 
 Character.prototype.checkPlatform = function(){
     if(this.currPlatform){
-    var pos = this.currPlatform.getPos();
-    var size = this.currPlatform.getSize();
-    var gameHeight = this.currPlatform.getGameHeight();
-    if(this.cx - this.activeSprite.width/2 < pos.posX+size.width/2
-        && this.cx + this.activeSprite.width/2 > pos.posX - size.width/2
-        && util.isBetween(this.getGameHeight(),gameHeight-3,gameHeight+5)){
-        g_useGravity = false;
-        this._jumping = false;
-        this.velY = 0;
-    }
-    else{
-        this.currPlatform = false;
-        g_useGravity = true;
-        this._jumping = true;
+        var pos = this.currPlatform.getPos();
+        var size = this.currPlatform.getSize();
+        var gameHeight = this.currPlatform.getGameHeight();
+        if(this.cx - this.activeSprite.width/2 < pos.posX+size.width/2
+            && this.cx + this.activeSprite.width/2 > pos.posX - size.width/2
+            && util.isBetween(this.getGameHeight(),gameHeight-3,gameHeight+5)){
+            g_useGravity = false;
+            this._jumping = false;
+            this.velY = 0;
+        }
+        else{
+            this.currPlatform = false;
+            g_useGravity = true;
+            this._jumping = true;
         }
     }
 }
@@ -147,7 +147,8 @@ Character.prototype.computeSubStep = function (du) {
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
     
-    if (this.velY === 0 && (g_GAME_HEIGHT === 0 || !this.currPlatform)) {
+    if (
+        this.velY === 0 && (g_GAME_HEIGHT === 0 || !this.currPlatform)) {
         this._jumping = false;
         this._falling = false;
         this._roationJump = false;
@@ -206,15 +207,15 @@ of the canvas
 */
 var NOMINAL_SCREEN_MOVE_RATE = 8;
 var SCREEN_TOP_LIMIT = 200;
-var SCREEN_BOTTOM_LIMIT = 570;
+var NOMINAL_SCREEN_BOTTOM_LIMIT = 570;
 Character.prototype.moveScreen = function(du){
+    var SCREEN_BOTTOM_LIMIT = NOMINAL_SCREEN_BOTTOM_LIMIT
     //If player is closer to the top then the limit allows
     if (this.currPlatform) {
-        SCREEN_BOTTOM_LIMIT = 610;
+        SCREEN_BOTTOM_LIMIT = 700
+        //SCREEN_BOTTOM_LIMIT = NOMINAL_SCREEN_BOTTOM_LIMIT + this.activeSprite.height;
     }
-    else {
-        SCREEN_BOTTOM_LIMIT = 570;
-    }
+
 
     if(this.cy + this.activeSprite.height/2 <  SCREEN_TOP_LIMIT){
         //Move the screen up
@@ -234,7 +235,7 @@ Character.prototype.moveScreen = function(du){
 
 Character.prototype.gameOver = function () {
         var fallLength = 600;
-        if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT ) {
+        if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.activeSprite.height/2 > g_canvas.height) {
             gameOver = true;
             g_GAME_HEIGHT  = 0;
             this.reset();
