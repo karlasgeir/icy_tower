@@ -66,8 +66,12 @@ Character.prototype.jumpSound = new Audio(
 Character.prototype.update = function (du) {    
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
     spatialManager.unregister(this);
+
     if(this._isDeadNow){return entityManager.KILL_ME_NOW;}
     else{
+        if(gameOver){
+            return;
+        }
         // Perform movement substeps
         var steps = this.numSubSteps;
         var dStep = du / steps;

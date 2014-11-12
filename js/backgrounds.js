@@ -50,6 +50,6 @@ g_background.update = function(du) {
         this.cx -=0.25*du;
     }
     if (!gameOver) {
-        this.cy +=Platform.prototype.verticalSpeed*du;
+        this.cy +=Platform.prototype.verticalSpeed*0.5*du;
     }
 }

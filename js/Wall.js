@@ -22,7 +22,7 @@ Wall.prototype.cy = 0;
 Wall.prototype.padding = 0;
 Wall.prototype.wallHeight = 0;
 Wall.prototype.wallWidth = 0;
-Wall.prototype.verticalSpeed = 5.25;
+Wall.prototype.verticalSpeed = 0.5;
 
 
 
@@ -44,7 +44,6 @@ Wall.prototype.render = function (ctx) {
 
 Wall.prototype.update = function (du) {
 
-	spatialManager.unregister(this);
 
 	if (this._isDeadNow) {
         return entityManager.KILL_ME_NOW;
@@ -56,7 +55,6 @@ Wall.prototype.update = function (du) {
         this.cy = 0;
     }
 
-    spatialManager.register(this);    
 
 };
 
