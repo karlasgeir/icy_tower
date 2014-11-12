@@ -5,6 +5,7 @@ var g_background =  {
     cx : 0,
     cy : 0,
     width: 600,
+    speed : 0.25,
     height: 600
 }
 
@@ -17,7 +18,6 @@ backgroundPic = function() {
     if (!gameOver) {
         currentSprite = g_sprites.gameBackground;
     }
-    
     return currentSprite; 
 };
 
@@ -50,6 +50,6 @@ g_background.update = function(du) {
         this.cx -=0.25*du;
     }
     if (!gameOver) {
-        this.cy +=Platform.prototype.verticalSpeed*0.5*du;
+        this.cy +=this.speed*du;
     }
 }

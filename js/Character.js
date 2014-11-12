@@ -239,6 +239,7 @@ Character.prototype.gameOver = function () {
         if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.activeSprite.height/2 > g_canvas.height) {
             gameOver = true;
             g_GAME_HEIGHT  = 0;
+            NUMBER_OF_PLATFORMS = 10;
             this.reset();
             g_background.cy = 0;
     }

@@ -12,6 +12,10 @@ var util = {
 // RANGES
 // ======
 
+isOdd: function(num) {
+    return num % 2;
+},
+
 clampRange: function(value, lowBound, highBound) {
     if (value < lowBound) {
 	value = lowBound;

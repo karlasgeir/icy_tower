@@ -22,7 +22,7 @@ Wall.prototype.cy = 0;
 Wall.prototype.padding = 0;
 Wall.prototype.wallHeight = 0;
 Wall.prototype.wallWidth = 0;
-Wall.prototype.verticalSpeed = 0.25;
+Wall.prototype.verticalSpeed = Platform.prototype.verticalSpeed;
 
 
 
@@ -47,7 +47,8 @@ Wall.prototype.update = function (du) {
 	if (this._isDeadNow) {
         return entityManager.KILL_ME_NOW;
     }
-    
+
+
     this.cy +=this.verticalSpeed*du;
     
     if (this.cy>g_canvas.height) {

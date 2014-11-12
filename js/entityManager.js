@@ -55,12 +55,18 @@ KILL_ME_NOW : -1,
 _generateInitialPlatforms : function() {
     
     var NUMBER_OF_PLATFORMS = 10;
-
     //Bottom main platform
     var platformWidth = g_sprites.testplat.width;
 
     for (var i = 0; i<NUMBER_OF_PLATFORMS; i++) {
-        this.base_cx = util.randRange(g_left_side + platformWidth/2,g_right_side - platformWidth/2);
+        if (util.isOdd(i)) {
+            this.base_cx = util.randRange(g_left_side + platformWidth/2,g_canvas.width/2 - platformWidth/2);
+        }
+        else {
+            this.base_cx = util.randRange(g_canvas.width/2 + platformWidth/2,g_right_side - platformWidth/2);
+        }
+
+
         //this.base_cx = Math.floor(Math.random()*(g_canvas.width-platformWidth)) + platformWidth/2;
         this.generatePlatform({
             cx: this.base_cx,
@@ -68,7 +74,6 @@ _generateInitialPlatforms : function() {
         });
         this.base_cy +=80;
     }
-    console.log(this._platforms);
     this.base_cy = 0;
 },
 
@@ -78,12 +83,9 @@ _generateWalls : function() {
   
     this.generateWalls({
         cx: 0,
-        cy: wallHeight/2
+        cy: 0
     });
-    this.generateWalls({
-        cx: 0,
-        cy: g_canvas.height
-    });  
+    
 },
 
 deferredSetup : function () {
@@ -137,7 +139,14 @@ makeNewPlatform: function() {
     var platWidth = g_sprites.testplat.width;
     NUMBER_OF_PLATFORMS +=1;
     var count = NUMBER_OF_PLATFORMS;
-    this.base_cx = util.randRange(g_left_side + platWidth/2,g_right_side - platWidth/2);
+    console.log(count);
+    if (util.isOdd(count)) {
+        this.base_cx = util.randRange(g_left_side + platWidth/2,g_canvas.width/2 - platWidth/2);
+    }
+    else {
+        this.base_cx = util.randRange(g_canvas.width/2 + platWidth/2,g_right_side - platWidth/2);
+    }
+
     if (count>0) {
         this.base_cy = -20;
         this.generatePlatform({
