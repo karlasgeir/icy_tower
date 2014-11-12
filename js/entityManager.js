@@ -80,39 +80,16 @@ _generateInitialPlatforms : function() {
 },
 _generateWalls : function() {
     
-
-    var numOfWalls = 6;
-   // Platform.prototype.numberOfPlatforms = 12;
-
-    var numOfWalls = 6;
-
-    //Bottom main platform
-    Wall.prototype.numberOfWalls = numOfWalls;
-    var wallWidth = g_sprites.wallsprite.width;
-
-
-    for (var i = 0; i<numOfWalls; i++) {
-        
-        this.base_cx = 0;
-        this.generateWalls({
-            cx: this.base_cx,
-            cy: this.base_cy
-        });
-        this.base_cy +=80;
-    }
-    this.base_cy = 0;
-    for (var i = 0; i<numOfWalls; i++) {
-        
-        this.base_cx = Math.floor(g_canvas.width-wallWidth) + wallWidth;
-        this.generateWalls({
-            cx: this.base_cx,
-            cy: this.base_cy
-        });
-        this.base_cy +=80;
-    }
-    this.base_cy = 0;
-     
-    
+    var wallHeight = g_sprites.wallsprite.height;
+  
+    this.generateWalls({
+        cx:0,
+        cy: wallHeight/2
+    });
+    this.generateWalls({
+        cx:0,
+        cy: g_canvas.height
+    });  
 },
 
 deferredSetup : function () {
@@ -140,6 +117,7 @@ init: function() {
 resetCharacters: function() {
     this._forEachOf(this._characters, Character.prototype.reset);
 },
+
 resetWalls: function() {
     this._forEachOf(this._Walls, Wall.prototype.reset);
 },
@@ -156,8 +134,7 @@ togglePlatforms: function() {
 },
 
 update: function(du) {
-
-
+    console.log(this._Walls);
     var platWidth = g_sprites.testplat.width;
     for (var c = 0; c < this._categories.length; ++c) {
 

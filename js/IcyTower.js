@@ -158,6 +158,7 @@ function preloadDone() {
      g_sprites.wallsprite = new Sprite(g_images.wallsprite,g_images.wallsprite.width,g_images.wallsprite.height,0,0);
      g_left_side = g_sprites.wallsprite.width/2;
      g_right_side = g_canvas.width - g_sprites.wallsprite.width/2;
+     
      g_sprites.backgroundMenu = new Sprite(
         g_images.backgroundMenu,g_images.backgroundMenu.width,g_images.backgroundMenu.height,0,0);
 

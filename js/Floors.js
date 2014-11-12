@@ -19,7 +19,7 @@ Platform.prototype = new Entity();
 Platform.prototype.cx = 50;
 Platform.prototype.cy = 550;
 Platform.prototype.padding = 0;
-Platform.prototype.verticalSpeed = 0.25;
+Platform.prototype.verticalSpeed = 0.5;
 
 
 
@@ -44,6 +44,7 @@ Platform.prototype.update = function (du) {
     if (this.cy>800) {
     	this.kill();
     }
+    
     this.reset(ctx);
     this.cy +=this.verticalSpeed*du;
     //console.log(entityManager._platforms);

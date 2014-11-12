@@ -17,13 +17,12 @@ function Wall(descr) {
 };
 
 Wall.prototype = new Entity();
-Wall.prototype.cx = 10;
-Wall.prototype.cy = 10;
+Wall.prototype.cx = 0;
+Wall.prototype.cy = 0;
 Wall.prototype.padding = 0;
-Wall.prototype.wallHeight = 10;
-Wall.prototype.wallWidth = 150;
-Wall.prototype.halfWidth = Wall.prototype.platWidth/2;
-Wall.prototype.halfHeight = Wall.prototype.platHeight/2;
+Wall.prototype.wallHeight = 0;
+Wall.prototype.wallWidth = 0;
+Wall.prototype.verticalSpeed = 5.25;
 
 
 
@@ -33,14 +32,11 @@ Wall.prototype.getBaseWidth = function(){
 
 
 Wall.prototype.render = function (ctx) {
-	//ctx.fillStyle="#0000FF";
-	
-	//ctx.fillStyle="#0000FF";
+
     var w = this.wallWidth;
-    var h = this.wallHeight
+    var h = this.wallHeight;
     
-	g_sprites.wallsprite.drawAt(ctx, this.cx-w/2, this.cy-h/2, 0, 0);
-	//ctx.fillRect(this.cx-w/2, this.cy-h/2, w, h);
+	//g_sprites.wallsprite.drawAt(ctx, 0, 0, 0);
     console.log(this.halfHeight);
 	this.sprite.drawWrappedCentredAt(ctx, this.cx, this.cy, 0);
 };
@@ -54,9 +50,12 @@ Wall.prototype.update = function (du) {
         return entityManager.KILL_ME_NOW;
     }
     
-    //this.gameHeight = g_canvas.height - this.cy + this.platHeight/2 + g_GAME_HEIGHT;
-    this.cy +=Platform.prototype.verticalSpeed*du;
+    this.cy +=this.verticalSpeed*du;
     
+    if (this.cy>g_canvas.height) {
+        this.cy = 0;
+    }
+
     spatialManager.register(this);    
 
 };
