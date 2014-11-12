@@ -67,8 +67,7 @@ Character.prototype.update = function (du) {
     // TODO: YOUR STUFF HERE! --- Unregister and check for death
     spatialManager.unregister(this);
 
-    if(this._isDeadNow){return entityManager.KILL_ME_NOW;}
-    else{
+ 
         if(gameOver){
             return;
         }
@@ -96,7 +95,6 @@ Character.prototype.update = function (du) {
             this.checkPlatform();
         }
         spatialManager.register(this);
-    }
 };
 
 Character.prototype.checkPlatform = function(){

@@ -36,12 +36,13 @@ Platform.prototype.update = function (du) {
 
 	spatialManager.unregister(this);
 
-    if(gameOver){
-        return;
-    }
+
 
 	if (this._isDeadNow) {
         return entityManager.KILL_ME_NOW;
+    }
+    if(gameOver){
+        return;
     }
     this.gameHeight = g_canvas.height - this.cy + this.platHeight/2 + g_GAME_HEIGHT;
 

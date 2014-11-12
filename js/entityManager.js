@@ -53,20 +53,17 @@ KILL_ME_NOW : -1,
 //
 
 killPlatforms: function () {
-    var c = 0;
-    while (c < this._platforms.length) {
-        this._platforms.splice(c, 1);
-    }
+    this._platforms = [];
 },
 
 _generateInitialPlatforms : function() {
     
-    var numOfPlatforms = 10;
+    var NUMBER_OF_PLATFORMS = 10;
 
     //Bottom main platform
     var platformWidth = g_sprites.testplat.width;
 
-    for (var i = 0; i<numOfPlatforms; i++) {
+    for (var i = 0; i<NUMBER_OF_PLATFORMS; i++) {
         this.base_cx = util.randRange(g_left_side + platformWidth/2,g_right_side - platformWidth/2);
         //this.base_cx = Math.floor(Math.random()*(g_canvas.width-platformWidth)) + platformWidth/2;
         this.generatePlatform({
