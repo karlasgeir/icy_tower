@@ -52,15 +52,14 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 
-
 _generateInitialPlatforms : function() {
     
-    var numOfPlatforms = 10;
+    var NUMBER_OF_PLATFORMS = 10;
 
     //Bottom main platform
     var platformWidth = g_sprites.testplat.width;
 
-    for (var i = 0; i<numOfPlatforms; i++) {
+    for (var i = 0; i<NUMBER_OF_PLATFORMS; i++) {
         this.base_cx = util.randRange(g_left_side + platformWidth/2,g_right_side - platformWidth/2);
         //this.base_cx = Math.floor(Math.random()*(g_canvas.width-platformWidth)) + platformWidth/2;
         this.generatePlatform({
