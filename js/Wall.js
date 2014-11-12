@@ -44,7 +44,7 @@ Wall.prototype.render = function (ctx) {
 
 Wall.prototype.update = function (du) {
 
-
+    
 	if (this._isDeadNow) {
         return entityManager.KILL_ME_NOW;
     }

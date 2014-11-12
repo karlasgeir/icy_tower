@@ -52,12 +52,6 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 
-killPlatforms: function () {
-    var c = 0;
-    while (c < this._platforms.length) {
-        this._platforms.splice(c, 1);
-    }
-},
 
 _generateInitialPlatforms : function() {
     
@@ -76,18 +70,18 @@ _generateInitialPlatforms : function() {
         this.base_cy +=80;
     }
     this.base_cy = 0;
-
 },
+
 _generateWalls : function() {
     
     var wallHeight = g_sprites.wallsprite.height;
   
     this.generateWalls({
-        cx:0,
+        cx: 0,
         cy: wallHeight/2
     });
     this.generateWalls({
-        cx:0,
+        cx: 0,
         cy: g_canvas.height
     });  
 },
@@ -113,7 +107,12 @@ init: function() {
     this._generateWalls();
 },
 
-
+killPlatforms: function () {
+    var c = 0;
+    while (c < this._platforms.length) {
+        this._platforms.splice(c, 1);
+    }
+},
 resetCharacters: function() {
     this._forEachOf(this._characters, Character.prototype.reset);
 },

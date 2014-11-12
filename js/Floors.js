@@ -19,7 +19,7 @@ Platform.prototype = new Entity();
 Platform.prototype.cx = 50;
 Platform.prototype.cy = 550;
 Platform.prototype.padding = 0;
-Platform.prototype.verticalSpeed = 0.5;
+Platform.prototype.verticalSpeed = 0.25;
 
 
 
@@ -36,10 +36,6 @@ Platform.prototype.update = function (du) {
 
 	spatialManager.unregister(this);
 
-    if(gameOver){
-        return;
-    }
-
 	if (this._isDeadNow) {
         return entityManager.KILL_ME_NOW;
     }
@@ -48,10 +44,9 @@ Platform.prototype.update = function (du) {
     if (this.cy>800) {
     	this.kill();
     }
-    
     this.reset(ctx);
     this.cy +=this.verticalSpeed*du;
-    //console.log(entityManager._platforms);
+    console.log(entityManager._platforms);
 
     spatialManager.register(this);    
 
@@ -60,6 +55,9 @@ Platform.prototype.update = function (du) {
 Platform.prototype.reset = function (ctx) {
     if (gameOver && g_menu.gameStarted) {
         entityManager.killPlatforms();
+    }
+    if (!gameOver) {
+        return;
     }
 }
 
