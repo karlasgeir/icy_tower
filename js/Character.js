@@ -213,6 +213,10 @@ var screenIsMoving = false;
 Character.prototype.moveScreen = function(du){
     var SCREEN_BOTTOM_LIMIT = NOMINAL_SCREEN_BOTTOM_LIMIT;
     //If player is closer to the top then the limit allows
+    if (g_MENU_SCREEN) {
+        screenIsMoving = false;
+    }
+
     if (this.currPlatform) {
         SCREEN_BOTTOM_LIMIT = 700;
         //SCREEN_BOTTOM_LIMIT = NOMINAL_SCREEN_BOTTOM_LIMIT + this.activeSprite.height;
@@ -243,7 +247,6 @@ Character.prototype.gameOver = function () {
         var fallLength = 600;
         if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.activeSprite.height/2 > g_canvas.height) {
             gameOver = true;
-            screenIsMoving = false;
             g_GAME_HEIGHT  = 0;
             NUMBER_OF_PLATFORMS = 10;
             this.reset();
