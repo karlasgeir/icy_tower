@@ -75,8 +75,10 @@ g_notification.update = function (du) {
 
 g_gameover.render = function(ctx) {
 
-	ctx.beginPath();
+	
 	if (gameOver && !g_MENU_SCREEN ) {
+		ctx.save();
+		ctx.beginPath();
 		ctx.fillStyle="#152775";
 		ctx.fillRect(this.cx+50, this.cy+150,this.width-140, this.height);
 		
@@ -87,8 +89,10 @@ g_gameover.render = function(ctx) {
 		ctx.font="bold 20px Arial";
 		ctx.fillText("Y O U   S C O R E D : "+ g_GAME_SCORE,this.cx+40,this.cy+62);
 		ctx.fillText("M A I N   M E N U",this.cx+80,this.cy+180);
+		ctx.closePath();
+		ctx.restore();
 	}
-	ctx.closePath();
+	
 } 
 
 
