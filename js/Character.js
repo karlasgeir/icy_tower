@@ -92,7 +92,9 @@ Character.prototype.update = function (du) {
         else{
             this.checkPlatform();
         }
-        spatialManager.register(this);
+        if(!gameOver){
+            spatialManager.register(this);
+        }
 };
 
 Character.prototype.checkPlatform = function(){

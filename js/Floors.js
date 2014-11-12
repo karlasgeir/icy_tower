@@ -54,7 +54,11 @@ Platform.prototype.update = function (du) {
     this.reset(ctx);
     this.cy +=this.verticalSpeed*du;
 
-    spatialManager.register(this);    
+    if(gameOver){
+       return; 
+    }   
+
+    spatialManager.register(this);
 
 };
 

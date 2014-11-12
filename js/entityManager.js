@@ -110,6 +110,7 @@ init: function() {
 killPlatforms: function () {
     var c = 0;
     while (c < this._platforms.length) {
+        spatialManager.unregister(this._platforms[c]);
         this._platforms.splice(c, 1);
     }
 },
