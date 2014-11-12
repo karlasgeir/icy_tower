@@ -139,8 +139,8 @@ function requestPreloads() {
         character_rev  : "res/spritesheet-rev.png",
 	    testplat : "res/testplatt.png",
         backgroundMenu : "res/backgroundPlaceholder.jpg",
-        gameBackground : "res/background.png",
-	wallsprite : "res/wallsprite.png"
+        gameBackground : "res/snowbackground_003.png",
+	   wallsprite : "res/wallsprite.png"
 
     };
 
