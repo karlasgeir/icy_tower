@@ -4,7 +4,7 @@ var g_background =  {
 
     cx : 0,
     cy : 0,
-    width: 600,
+    width: 800,
     speed : 0.25,
     height: 600
 }
@@ -46,11 +46,11 @@ g_background.render = function(ctx) {
 
 g_background.update = function(du) { 
 
-    if (gameOver && g_MENU_SCREEN) {
+    if (gameOver && g_MENU_SCREEN && backgroundPic() === g_sprites.backgroundMenu) {
         this.cx -=0.25*du;
     }
 
-    if (!gameOver && !g_MENU_SCREEN) {
+    if (!gameOver && !g_MENU_SCREEN && backgroundPic() === g_sprites.gameBackground) {
         this.cy +=this.speed*du;
     }
 }
