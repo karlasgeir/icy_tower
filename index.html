@@ -3,16 +3,41 @@
   <head>
     <meta charset="UTF-8">
     <title>IcyTower!</title>
+     <link rel="stylesheet" href="css/index.css">
   </head>
   <body>
-
-	<canvas id="myCanvas" width="600" height="600"
-		style="border: 1px solid black;">
-	Sorry, but your browser does not support the HTML5 canvas tag.
-	</canvas>
-
-    <div id="output"></div>
-
+    <main>
+        <h1>ICY-TOWER</h1>
+        <h2>Group C4</h2>
+    	<canvas id="myCanvas" width="600" height="600"
+    		style="border: 1px solid black;">
+    	Sorry, but your browser does not support the HTML5 canvas tag.
+    	</canvas>
+        <div id="instructions">
+            <h2>Instructions</h2>
+            <div>
+                <h3 id="contlheading">Controls</h3>
+                <ul id="controls">
+                    <li>Use 'A' and 'D' to control the Devil</li>
+                    <li>Use SPACE to jump</li>
+                    <li>Pause with 'P'</li>
+                    <li>Quick restart game by pressing 'R' (Not implemented yet)</li>
+                </ul>
+            </div>
+            <div>
+                <h3 id="developheading">Developmental</h3>
+                <ul id="developmental">
+                    <li>When paused, use 'O' to do steps</li>
+                    <li>Press 'T' to get timer</li>
+                    <li>Press 'C' to toogle clearing the canvas during rendering</li>
+                    <li>Press 'B' to toogle a box for testing purpose</li>
+                    <li>Press 'U' to clear a part of the canvas for testing purpose</li>
+                    <li>Press 'F' to toogle flip-flip box, that shows a frame counter and if the frame is even or odd</li>
+                </ul>
+            </div>
+        </div>
+        <div id="output"></div>
+    </main>
     <script src="js/globals.js"></script>
     <script src="js/consts.js"></script>
     <script src="js/util.js"></script>
@@ -38,6 +63,8 @@
     <script src="js/main.js"></script>
 
     <script src="js/IcyTower.js"></script>
+
+    <script src="index.js"></script>
 
   </body>
 </html>
