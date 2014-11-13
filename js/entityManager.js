@@ -54,18 +54,18 @@ KILL_ME_NOW : -1,
 
 _generateInitialPlatforms : function() {
     
-    var NUMBER_OF_PLATFORMS = 10;
+    var NUMBER_OF_PLATFORMS = 8;
     //Bottom main platform
     var platformWidth = g_sprites.testplat.width;
 
     for (var i = 0; i<NUMBER_OF_PLATFORMS; i++) {
+        /*
         if (util.isOdd(i)) {
             this.base_cx = util.randRange(g_left_side + platformWidth/2,g_canvas.width/2 - platformWidth/2);
         }
-        else {
-            this.base_cx = util.randRange(g_canvas.width/2 + platformWidth/2,g_right_side - platformWidth/2);
-        }
-
+        */
+        this.base_cx = util.randRange(g_left_side + platformWidth/2,g_right_side - platformWidth/2);
+        
 
         //this.base_cx = Math.floor(Math.random()*(g_canvas.width-platformWidth)) + platformWidth/2;
         this.generatePlatform({
@@ -136,16 +136,17 @@ togglePlatforms: function() {
 },
 
 makeNewPlatform: function() {
+
     var platWidth = g_sprites.testplat.width;
     NUMBER_OF_PLATFORMS +=1;
+
     var count = NUMBER_OF_PLATFORMS;
-    console.log(count);
+    /*
     if (util.isOdd(count)) {
         this.base_cx = util.randRange(g_left_side + platWidth/2,g_canvas.width/2 - platWidth/2);
     }
-    else {
-        this.base_cx = util.randRange(g_canvas.width/2 + platWidth/2,g_right_side - platWidth/2);
-    }
+    */
+    this.base_cx = util.randRange(g_left_side + platWidth/2,g_right_side - platWidth/2);
 
     if (count>0) {
         this.base_cy = -20;
@@ -154,7 +155,7 @@ makeNewPlatform: function() {
             cy: this.base_cy
         });
     }
-        this.base_cy = 0;
+    this.base_cy = 0;
     /*
     if(coun>=100 count count<200) {
     
@@ -172,13 +173,15 @@ update: function(du) {
         while (i < aCategory.length) {
             var cat = aCategory[i];
             var status = cat.update(du);
+            var pos = cat.getPos();
 
             if (status === this.KILL_ME_NOW) {
                 aCategory.splice(i,1);
             }
             else {
-                var pos = cat.getPos();
-                if(g_GAME_HEIGHT <0) g_GAME_HEIGHT = 0;
+                if(g_GAME_HEIGHT <0) {
+                    g_GAME_HEIGHT = 0;
+                }
                 cat.setPos(pos.posX,pos.posY+g_MOVE_SCREEN*du);
                 ++i;
             }

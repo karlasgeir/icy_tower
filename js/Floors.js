@@ -42,11 +42,13 @@ Platform.prototype.update = function (du) {
 
     this.gameHeight = g_canvas.height - this.cy + this.platHeight/2 + g_GAME_HEIGHT;
 
-    if (this.cy>800) {
+    var platHeight = g_sprites.testplat.height;
+
+    if (this.cy>g_canvas.height+platHeight) {
     	this.kill();
     }
 
-    if (this.cy>600 && entityManager._platforms.length<10) {
+    if (entityManager._platforms.length<8) {
         entityManager.makeNewPlatform();
     }
 

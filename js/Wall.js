@@ -61,7 +61,6 @@ Wall.prototype.update = function (du) {
     if (this.cy>g_canvas.height) {
         this.cy = 0;
     }
-    console.log(screenIsMoving);
 };
 
 Wall.prototype.reset = function () {

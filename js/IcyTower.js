@@ -17,7 +17,6 @@ var gameOver = true;
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 */
 
-
 // =====================
 // CREATE THE DEMON DUDE
 // =====================
@@ -56,10 +55,10 @@ function gatherInputs() {
 function updateSimulation(du) {
     
     processDiagnostics();
-
+    
     entityManager.update(du);
-    g_notification.update(du);
     g_background.update(du);
+    g_notification.update(du);
 }
 
 // GAME-SPECIFIC DIAGNOSTICS
@@ -140,10 +139,10 @@ function requestPreloads() {
     var requiredImages = {
         character   : "res/spritesheet.png",
         character_rev  : "res/spritesheet-rev.png",
-	    testplat : "res/testplatt.png",
+	    testplat : "res/platform.png",
         backgroundMenu : "res/backgrounds/backgroundPlaceholder.jpg",
-        gameBackground : "res/backgrounds/background_test.png",
-        wallsprite : "res/wallsprite.png"
+        gameBackground : "res/backgrounds/gameBackground.png",
+        wallsprite : "res/wallsprite_1.png"
 
     };
 
