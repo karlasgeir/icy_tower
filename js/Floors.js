@@ -30,7 +30,6 @@ Platform.prototype.platPosition = function() {
 
     var leftSide = g_sprites.wallsprite.width/2;
     var rightSide = g_canvas.width - leftSide;
-    console.log(this.scale*this.platWidth/2);
 
     this.cx = util.randRange(leftSide  + this.scale*this.platWidth/2,rightSide - this.scale*this.platWidth/2);
 };
@@ -59,15 +58,13 @@ Platform.prototype.update = function (du) {
 
     if (this.cy>g_canvas.height+this.platHeight) {
     	this.kill();
+        this.cy = -20;
+        entityManager.makeNewPlatform(this.cy);
+        console.log(entityManager._platforms[8]);
     }
-
-    if (entityManager._platforms.length<8) {
-        entityManager.makeNewPlatform();
-    }
-
     this.reset(ctx);
-  
-    this.cy +=this.verticalSpeed*du;
+
+    this.cy += this.verticalSpeed*du;
 
     if(gameOver){
        return; 

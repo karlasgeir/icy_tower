@@ -53,8 +53,6 @@ KILL_ME_NOW : -1,
 
 _generateInitialPlatforms : function() {
     
-    var NUMBER_OF_PLATFORMS = 8;
-
     for (var i = 0; i<NUMBER_OF_PLATFORMS; i++) {
         this.generatePlatform({
             scale: this.scale,
@@ -121,7 +119,7 @@ togglePlatforms: function() {
     this._bShowPlatforms = !this._bShowPlatforms;
 },
 
-makeNewPlatform: function() {
+makeNewPlatform: function(y) {
 
     var platHeight = g_sprites.testplat.height;
     NUMBER_OF_PLATFORMS +=1;
@@ -129,7 +127,7 @@ makeNewPlatform: function() {
     var count = NUMBER_OF_PLATFORMS;
     if (count>0) {
         this.generatePlatform({
-            cy: -platHeight/2
+            cy: y
         });
     }
 },

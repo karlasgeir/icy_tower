@@ -139,8 +139,6 @@ Character.prototype.computeRotation = function(du){
 Character.prototype.computeSubStep = function (du) {
 
     this.wallBounce(this.velX, this.velY);
-    //this.sharpTurns();
-   // console.log(g_GAME_HEIGHT);
     var prevX = this.cx;
     var prevY = this.cy;
 
@@ -160,11 +158,7 @@ Character.prototype.computeSubStep = function (du) {
     if (this.currPlatform) {
         this.isBouncing = false;
     }
-    /*
-    console.log(this.velY);
-    console.log(this._falling);
-    console.log(this._jumping);
-    */
+
     this.speed = this.computeSpeed();
 
     var accelX = this.speed;
@@ -172,9 +166,6 @@ Character.prototype.computeSubStep = function (du) {
 
     var accelY = -this.computeThrustMag();
     accelY += this.computeGravity();
-    if(this.currPlatform){
-     //   console.log("VELY",this.velY);
-    } 
     
     var finalv = this.velY + accelY*du;
     this.velY = (this.velY + finalv)/2;
@@ -183,7 +174,7 @@ Character.prototype.computeSubStep = function (du) {
     if(this.currPlatform){
          this.cy +=Platform.prototype.verticalSpeed*du;
     } 
-
+    
     var NOMINAL_ANIM_FRAME_RATE = 20;
     if(this._animTicker < Math.abs(NOMINAL_ANIM_FRAME_RATE-Math.abs(this.velX))){
         this._animTicker +=1*du;
@@ -247,7 +238,7 @@ Character.prototype.gameOver = function () {
             gameOver = true;
             g_GAME_HEIGHT  = 0;
             g_background.cx = 0;
-            NUMBER_OF_PLATFORMS = 10;
+            NUMBER_OF_PLATFORMS = 8;
             this.reset();
             g_background.cy = 0;
     }
