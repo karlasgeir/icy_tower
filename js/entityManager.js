@@ -30,7 +30,6 @@ _platforms: [],
 _Walls: [],
 _bShowPlatforms: true,
 base_cy: 0,
-base_cx: 0,
 
 // "PRIVATE" METHODS
 
@@ -55,21 +54,10 @@ KILL_ME_NOW : -1,
 _generateInitialPlatforms : function() {
     
     var NUMBER_OF_PLATFORMS = 8;
-    //Bottom main platform
-    var platformWidth = g_sprites.testplat.width;
 
     for (var i = 0; i<NUMBER_OF_PLATFORMS; i++) {
-        /*
-        if (util.isOdd(i)) {
-            this.base_cx = util.randRange(g_left_side + platformWidth/2,g_canvas.width/2 - platformWidth/2);
-        }
-        */
-        this.base_cx = util.randRange(g_left_side + platformWidth/2,g_right_side - platformWidth/2);
-        
-
-        //this.base_cx = Math.floor(Math.random()*(g_canvas.width-platformWidth)) + platformWidth/2;
         this.generatePlatform({
-            cx: this.base_cx,
+            scale: this.scale,
             cy: this.base_cy
         });
         this.base_cy +=80;
@@ -77,15 +65,12 @@ _generateInitialPlatforms : function() {
     this.base_cy = 0;
 },
 
-_generateWalls : function() {
-    
-    var wallHeight = g_sprites.wallsprite.height;
-  
+_generateWall : function() {
+      
     this.generateWalls({
         cx: 0,
         cy: 0
     });
-    
 },
 
 deferredSetup : function () {
@@ -106,7 +91,7 @@ generateWalls : function(descr) {
 init: function() {
     this._generateInitialPlatforms();
     //this._generateShip();
-    this._generateWalls();
+    this._generateWall();
 },
 
 killPlatforms: function () {
@@ -114,6 +99,7 @@ killPlatforms: function () {
     while (c < this._platforms.length) {
         spatialManager.unregister(this._platforms[c]);
         this._platforms.splice(c, 1);
+        ++c;
     }
 },
 resetCharacters: function() {
@@ -137,30 +123,15 @@ togglePlatforms: function() {
 
 makeNewPlatform: function() {
 
-    var platWidth = g_sprites.testplat.width;
+    var platHeight = g_sprites.testplat.height;
     NUMBER_OF_PLATFORMS +=1;
 
     var count = NUMBER_OF_PLATFORMS;
-    /*
-    if (util.isOdd(count)) {
-        this.base_cx = util.randRange(g_left_side + platWidth/2,g_canvas.width/2 - platWidth/2);
-    }
-    */
-    this.base_cx = util.randRange(g_left_side + platWidth/2,g_right_side - platWidth/2);
-
     if (count>0) {
-        this.base_cy = -20;
         this.generatePlatform({
-            cx: this.base_cx,
-            cy: this.base_cy
+            cy: -platHeight/2
         });
     }
-    this.base_cy = 0;
-    /*
-    if(coun>=100 count count<200) {
-    
-    }
-    */
 },
 
 update: function(du) {

@@ -67,7 +67,7 @@ Entity.prototype.getSize = function(){
         return{width: this.activeSprite.width, height: this.activeSprite.height};
     }
     else if(this instanceof Platform){
-        return {width: this.platWidth, height:this.platHeight};
+        return {width: this.platWidth*this.scale, height:this.platHeight};
     }
     else if(this instanceof Wall){
         return {width: this.wallWidth, height:this.wallHeight};

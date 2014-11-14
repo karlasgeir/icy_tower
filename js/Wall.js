@@ -30,7 +30,6 @@ Wall.prototype.getBaseWidth = function(){
     return this.wallWidth;
 }
 
-
 Wall.prototype.render = function (ctx) {
 
     var w = this.wallWidth;

@@ -45,7 +45,6 @@ g_notification.render = function(ctx) {
 
 g_notification.update = function (du) {
 
-	console.log(this.timeInMiddle);
 	if (gameOver || g_MENU_SCREEN) {
 		this.timeInMiddle = 600/NOMINAL_UPDATE_INTERVAL;
 		return;
