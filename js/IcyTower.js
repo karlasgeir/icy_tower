@@ -141,10 +141,14 @@ function requestPreloads() {
         character_rev  : "res/spritesheet-rev.png",
 	    testplat : "res/platforms/platform.png",
         backgroundMenu : "res/backgrounds/backgroundPlaceholder.jpg",
-        gameBackground : "res/backgrounds/gB5.png",
+        gameBackground : "res/backgrounds/gB7.png",
         logo : "res/backgrounds/logo.png",
         startGame : "res/backgrounds/start.png",
-        wallsprite : "res/walls/wall13.png"
+        mainMenu : "res/backgrounds/mainMenu.png",
+        gameOver : "res/backgrounds/gameOver.png",
+        score : "res/backgrounds/score.png",
+        go : "res/comboLogos/go.png",
+        wallsprite : "res/walls/bigger/wallBig2.png"
 
     };
 
@@ -171,6 +175,12 @@ function preloadDone() {
     
     g_sprites.logo = new Sprite(g_images.logo,g_images.logo.width,g_images.logo.height,0,0);
     g_sprites.startGame = new Sprite(g_images.startGame,g_images.startGame.width,g_images.startGame.height,0,0);
+
+    g_sprites.mainMenu = new Sprite(g_images.mainMenu,g_images.mainMenu.width,g_images.mainMenu.height,0,0);
+    g_sprites.score = new Sprite(g_images.score,g_images.score.width,g_images.score.height,0,0);
+    g_sprites.gameOver = new Sprite(g_images.gameOver,g_images.gameOver.width,g_images.gameOver.height,0,0);
+
+    g_sprites.go = new Sprite(g_images.go,g_images.go.width,g_images.go.height,0,0);
 
     g_sprites.character = {
         idle:{

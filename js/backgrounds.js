@@ -36,7 +36,7 @@ g_background.render = function(ctx) {
     }
     if (!gameOver) {
 
-        this.cx = 0; 
+        this.cx = g_canvas.width/2-sprite.width/2; 
         sprite.drawAt(ctx, this.cx, this.cy, 0);
         sprite.drawAt(ctx, this.cx, Math.abs(this.cy)-this.height, 0);
 

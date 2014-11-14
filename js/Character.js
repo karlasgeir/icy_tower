@@ -246,6 +246,7 @@ Character.prototype.gameOver = function () {
         if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.activeSprite.height/2 > g_canvas.height) {
             gameOver = true;
             g_GAME_HEIGHT  = 0;
+            g_background.cx = 0;
             NUMBER_OF_PLATFORMS = 10;
             this.reset();
             g_background.cy = 0;
@@ -253,7 +254,7 @@ Character.prototype.gameOver = function () {
 }
 
 var NOMINAL_SPEED = 0.5;
-var NOMINAL_SLOW = 1.5;
+var NOMINAL_SLOW = 2;
 var MAX_SPEED = 18;
 
 Character.prototype.computeSpeed = function(){

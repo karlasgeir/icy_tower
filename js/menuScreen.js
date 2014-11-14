@@ -1,28 +1,18 @@
 
+var g_notification = {
+
+	cx: g_canvas.width,
+	cy: g_canvas.height/2,
+	timeInMiddle: 600/NOMINAL_UPDATE_INTERVAL,
+	rotation: 0,
+	speed : 3
+}
 
 var g_menu = {
-	cx: 230,
-	cy: 270,
-	width: 300,
-	height: 50,
 	gameStarted: false
 }
 
-var g_notification = {
-
-	cx: -180,
-	cy: 260,
-	speed : 3,
-	width: 150,
-	height: 50
-}
-
-
 var g_gameover = {
-	cx: 140,
-	cy: 220,
-	width: 360,
-	height: 50,
 	gameStarted:false
 }
 
@@ -48,27 +38,34 @@ g_menu.render = function(ctx) {
 g_notification.render = function(ctx) {
 
 	if (!gameOver) {
-		ctx.save();
-		ctx.beginPath();
-		ctx.fillStyle = "blue";
-		ctx.fillRect(this.cx, this.cy,this.width, this.height);
-		ctx.fillStyle = "white";
-		ctx.font="bold 40px Arial";
-		ctx.fillText("G O",this.cx+35,300);
-		g_menu.gameStarted = true;
-		ctx.closePath();
-		ctx.restore();
+		g_sprites.go.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
 	}
 }
 
 
 g_notification.update = function (du) {
-	
-	//animated level notification
-	if (this.cx > 600) {
+
+	console.log(this.timeInMiddle);
+	if (gameOver || g_MENU_SCREEN) {
 		return;
 	}
-	this.cx +=this.speed*du;
+
+	if (this.cx < g_canvas.width/2) {
+		this.speed = 20;
+		this.cx +=this.speed*du;
+		this.rotation += 2;
+		return;
+	} 
+	
+	if (this.cx >= g_canvas.width/2 && this.timeInMiddle > 0) {
+		this.cx = g_canvas.width/2;
+		this.rotation = 0;
+		this.timeInMiddle -=du;
+	}
+	if (this.timeInMiddle <= 0 && this.cx<=g_canvas.width+g_sprites.go.width/2) {
+		this.speed = 50;
+		this.cx +=this.speed*du;
+	}
 }
 
 
@@ -77,20 +74,18 @@ g_gameover.render = function(ctx) {
 	
 	if (gameOver && !g_MENU_SCREEN ) {
 
-		ctx.save();
-		ctx.beginPath();
-		ctx.fillStyle="#152775";
-		ctx.fillRect(this.cx+50, this.cy+150,this.width-140, this.height);
-		
-		ctx.fillStyle="black";
-		ctx.font="bold 50px SNOWCARD GOTHIC";
-		ctx.fillStyle = "red";
-		ctx.fillText("G A M E   O V E R",this.cx-40,this.cy);
-		ctx.font="bold 20px Arial";
-		ctx.fillText("Y O U   S C O R E D : "+ g_GAME_SCORE,this.cx+40,this.cy+62);
-		ctx.fillText("M A I N   M E N U",this.cx+80,this.cy+180);
-		ctx.closePath();
-		ctx.restore();
+		var mainMenuPosX = g_canvas.width/2 - g_sprites.mainMenu.width/2;
+		var mainMenuPosY = g_canvas.height/2 - g_sprites.mainMenu.height/2;
+
+		var scorePosX = g_canvas.width/2 - g_sprites.score.width/2;
+		var scorePosY = mainMenuPosY + g_sprites.score.height;
+
+		var gameOverPosX = g_canvas.width/2 - g_sprites.gameOver.width/2;
+		var gameOverPosY = mainMenuPosY - g_sprites.gameOver.height;
+
+		g_sprites.gameOver.drawAt(ctx, gameOverPosX, gameOverPosY, 0);
+		g_sprites.mainMenu.drawAt(ctx, mainMenuPosX, mainMenuPosY,0);
+		g_sprites.score.drawAt(ctx, scorePosX, scorePosY, 0);	
 	}
 	
 } 
