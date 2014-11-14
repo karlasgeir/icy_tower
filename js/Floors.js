@@ -16,22 +16,23 @@ function Platform(descr) {
 
     this.scale  = this.scale  || 1;
 
-    this.platPosition();
     this.platScale();
+    this.platPosition();
 };
 
 Platform.prototype = new Entity();
 Platform.prototype.cx = 0;
 Platform.prototype.cy = 0;
 Platform.prototype.margin = 80;
-Platform.prototype.verticalSpeed = 10.5;
+Platform.prototype.verticalSpeed = 0.5;
 
 Platform.prototype.platPosition = function() {
 
     var leftSide = g_sprites.wallsprite.width/2;
     var rightSide = g_canvas.width - leftSide;
+    console.log(this.scale*this.platWidth/2);
 
-    this.cx = util.randRange(leftSide + this.scale*this.platWidth,rightSide - this.scale*this.platWidth);
+    this.cx = util.randRange(leftSide  + this.scale*this.platWidth/2,rightSide - this.scale*this.platWidth/2);
 };
 
 Platform.prototype.platScale = function () {
