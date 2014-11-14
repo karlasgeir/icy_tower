@@ -139,10 +139,12 @@ function requestPreloads() {
     var requiredImages = {
         character   : "res/spritesheet.png",
         character_rev  : "res/spritesheet-rev.png",
-	    testplat : "res/platform.png",
+	    testplat : "res/platforms/platform.png",
         backgroundMenu : "res/backgrounds/backgroundPlaceholder.jpg",
-        gameBackground : "res/backgrounds/gameBackground.png",
-        wallsprite : "res/wallsprite_1.png"
+        gameBackground : "res/backgrounds/gB5.png",
+        logo : "res/backgrounds/logo.png",
+        startGame : "res/backgrounds/start.png",
+        wallsprite : "res/walls/wall13.png"
 
     };
 
@@ -155,18 +157,21 @@ function preloadDone() {
 
    
     //Loading all the sprite
-     g_sprites.testplat = new Sprite(g_images.testplat,g_images.testplat.width,g_images.testplat.height,0,0);
+    g_sprites.testplat = new Sprite(g_images.testplat,g_images.testplat.width,g_images.testplat.height,0,0);
 
-     g_sprites.wallsprite = new Sprite(g_images.wallsprite,g_images.wallsprite.width,g_images.wallsprite.height,0,0);
-     g_left_side = g_sprites.wallsprite.width/2;
-     g_right_side = g_canvas.width - g_sprites.wallsprite.width/2;
+    g_sprites.wallsprite = new Sprite(g_images.wallsprite,g_images.wallsprite.width,g_images.wallsprite.height,0,0);
+    g_left_side = g_sprites.wallsprite.width/2;
+    g_right_side = g_canvas.width - g_sprites.wallsprite.width/2;
      
-     g_sprites.backgroundMenu = new Sprite(
+    g_sprites.backgroundMenu = new Sprite(
         g_images.backgroundMenu,g_images.backgroundMenu.width,g_images.backgroundMenu.height,0,0);
 
-     g_sprites.gameBackground = new Sprite(
+    g_sprites.gameBackground = new Sprite(
         g_images.gameBackground,g_images.gameBackground.width,g_images.gameBackground.height,0,0);
-     
+    
+    g_sprites.logo = new Sprite(g_images.logo,g_images.logo.width,g_images.logo.height,0,0);
+    g_sprites.startGame = new Sprite(g_images.startGame,g_images.startGame.width,g_images.startGame.height,0,0);
+
     g_sprites.character = {
         idle:{
             0: new Sprite(g_images.character,30,52,50,162),

@@ -1,8 +1,8 @@
 
 
 var g_menu = {
-	cx: 160,
-	cy: 220,
+	cx: 230,
+	cy: 270,
 	width: 300,
 	height: 50,
 	gameStarted: false
@@ -30,19 +30,18 @@ var g_gameover = {
 g_menu.render = function(ctx) {
 
 	if (gameOver) {
-		ctx.save();
-		ctx.beginPath();
+
 		g_notification.cx = -180; 
-		ctx.fillStyle = "white";
-		ctx.fillRect(this.cx, this.cy,this.width, this.height);
-		ctx.fillRect(this.cx+70, this.cy+65,this.width/2, this.height);
-		ctx.font="bold 30px Arial";
-		ctx.fillStyle = "black";
-		ctx.fillText("I C Y  -  T O W E R",this.cx+20,this.cy+38);
-		ctx.font="bold 20px Arial";
-		ctx.fillText("S T A R T",this.cx+95,this.cy+100);
-		ctx.closePath();
-		ctx.restore();
+
+		var startGamePosX = g_canvas.width/2 - g_sprites.startGame.width/2;
+		var startGamePosY = g_canvas.height/2 - g_sprites.startGame.height/2;
+
+		var logoPosX = g_canvas.width/2 - g_sprites.logo.width/2;
+		var logoPosY = startGamePosY - g_sprites.logo.height;
+
+		g_sprites.startGame.drawAt(ctx, startGamePosX, startGamePosY,0);
+		g_sprites.logo.drawAt(ctx, logoPosX, logoPosY, 0);
+
 	}
 }
 
@@ -77,6 +76,7 @@ g_gameover.render = function(ctx) {
 
 	
 	if (gameOver && !g_MENU_SCREEN ) {
+
 		ctx.save();
 		ctx.beginPath();
 		ctx.fillStyle="#152775";

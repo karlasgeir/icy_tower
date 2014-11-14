@@ -147,8 +147,7 @@ Character.prototype.computeSubStep = function (du) {
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
     
-    if (
-        this.velY === 0 && (g_GAME_HEIGHT === 0 || !this.currPlatform)) {
+    if (this.velY === 0 && (g_GAME_HEIGHT === 0 || !this.currPlatform)) {
         this._jumping = false;
         this._falling = false;
         this._roationJump = false;
@@ -192,7 +191,6 @@ Character.prototype.computeSubStep = function (du) {
         this.chooseSprite(this.velX,this.velY,nextX,nextY);
         this._animTicker = 0;
     }
-
     this.moveScreen();
     this.wrapPosition();
     this.gameOver();
@@ -254,14 +252,19 @@ Character.prototype.gameOver = function () {
     }
 }
 
-var NOMINAL_SPEED = 1;
-var NOMINAL_SLOW = 2;
-var MAX_SPEED = 16;
+var NOMINAL_SPEED = 0.5;
+var NOMINAL_SLOW = 1.5;
+var MAX_SPEED = 18;
 
 Character.prototype.computeSpeed = function(){
     
-   // console.log(this._jumping);
-
+    // console.log(this._jumping);
+    if (this._jumping) {
+        NOMINAL_SPEED = 1.25;
+    } else {
+        NOMINAL_SPEED = 1;
+    }
+   
     if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT]) {
         if (this.velX===0) {return;}
         if (this.velX<0) {
@@ -333,6 +336,14 @@ var NOMINAL_GRAVITY = 1;
 
 Character.prototype.computeGravity = function () {
 
+    if (this.velY>0) {
+        NOMINAL_GRAVITY = 1.50;
+    }
+
+    else {
+        NOMINAL_GRAVITY = 1;
+    }
+
     if(this.cy+this.activeSprite.height/2 < g_canvas.height){
         return g_useGravity ? NOMINAL_GRAVITY : 0;
     }
@@ -347,38 +358,40 @@ var NOMINAL_THRUST = 20;
 Character.prototype.computeThrustMag = function () {
 
     var speedInfluence = 0.1*Math.abs(this.velX);
-
     //Needs more work
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
         this.velY = 0;
         this._jumping = true;
-        if (speedInfluence <0.8) {
+        if (speedInfluence<1) {
             return NOMINAL_THRUST;
         }
         else return NOMINAL_THRUST*speedInfluence;
     }
     return 0;
+
 };
 
 Character.prototype.wallBounce = function (velX, velY) {
     //TODO: implement this
-    this.checkForRotation(velX, velY);
-    if (this.isBouncing) {return;}
+
+    if (this.isBouncing || this.velY === 0) {
+        return;
+    }       
+
     if(this.cx+this.activeSprite.width/2 >= g_right_side ||
         (this.cx-this.activeSprite.width/2 <= g_left_side)) { 
 
         this._goingRight = !this._goingRight;
         this._goingLeft = !this._goingLeft;
         this.isBouncing = !this.isBouncing;
-        
+
+
         if (this._rotationJump) {
             return this.velX *=-1.25, this.velY *= 1.25;
         } else {
-            return this.velX *=-1;
-
+            return this.velX *=-1, this.velY *=1;
         }
-
-    }
+    }     
 }
 
 Character.prototype.getRadius = function () {
