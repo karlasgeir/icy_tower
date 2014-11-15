@@ -10,11 +10,12 @@ function Character(descr) {
     this._jumping = false;      //True if character is jumping
     this._falling = false;      //True if character is falling
     this._goingLeft = false;    //True if character is going left
-    this._goingRight = false;   //True if character is going right
-    this._running = false;      //True if character is running
-    this._wall = false;         //True if character is at wall
-    this._animFrame = 0;        //Used to deside which sprite to use
-    this._animTicker = 0;       //Used to desie when to change sprite
+    this._goingRight = false;   //True if character is going right     
+    this._animation = {
+        Frame: 0,               //Used to deside which sprite to use
+        Ticker: 0,              //Used to desie when to change sprite
+        Reverse: false          //Used to know when to reverse through sprite array              
+    };
     this.rotationJump = false;  //True if the character is doing a rotation jump
     this.currPlatform = false;  //True if the character is on a platform
     this.isBouncing = false;    //True if the character i bouncing of a wall
@@ -32,18 +33,20 @@ function Character(descr) {
 Character.prototype = new Entity();
 
 Character.prototype.NOMINALS = {
-    ROTATION_RATE: 15,          //Rate of rotation in rotation jump
-    ANIM_FRAME_RATE: 15,        //Rate of sprite changes
-    SCREEN_MOVE_RATE: 8,        //Rate of screen movement 
-    SCREEN_TOP_LIMIT: 200,      //If the character goes above this position the screen moves up
-    SCREEN_BOTTOM_LIMIT: 570,   //If the character goes below this position the screen moves down
-    ACCELX: 0.2,                   //Nominal x-acceleration of the character
-    SLOW: 0.5,                    //Nominal slowdown acceleration of the character
-    MAX_ACCELX: 0.8,              //Maximum x-velocity of the character
-    MAX_VELX:14,
-    JUMP_VEL: 1.25,           //Nominal x-acceleration fraction when jumping
-    GRAVITY: 1,                  //Nominal acceleration do to gravity
-    ROTATION_JUMP_THRESHOLD: 10
+    ROTATION_RATE: 15,              //Rate of rotation in rotation jump
+    ANIM_FRAME_RATE: 12,            //Rate of sprite changes actually lower is faster
+    SCREEN_MOVE_RATE: 8,            //Rate of screen movement 
+    SCREEN_TOP_LIMIT: 200,          //If the character goes above this position the screen moves up
+    SCREEN_BOTTOM_LIMIT: 570,       //If the character goes below this position the screen moves down
+    ACCELX: 0.2,                    //Nominal x-acceleration of the character
+    SLOW: 0.5,                      //Nominal slowdown acceleration of the character
+    MAX_ACCELX: 0.8,                //Maximum x-acceleration of the character
+    MAX_VELX:14,                    //Maximum x-velocity of the character
+    JUMP_VEL: 1.25,                 //Nominal x-acceleration fraction when jumping
+    GRAVITY: 1.3,                   //Nominal acceleration do to gravity
+    ROTATION_JUMP_THRESHOLD: 10,     //the x velocity threshhold that determines
+                                    //if the jump should be rottional
+    THRUST: 30                      //The nominal jump thrust
 };
 
 
@@ -182,12 +185,10 @@ Character.prototype.computeRotation = function(du){
     //If character is jumping, and it should be rotational
     if(this._rotationJump && this._jumping){
         var speedInfluence = 0.1*Math.abs(this.velX);
-        console.log("speedInfluence", speedInfluence);
-        //var speedInfluence = 1;
-        //If he's moving right
+        //If he's moving right the rotation is to the right
         if (this._goingRight) this.rotation += speedInfluence*(Math.PI/this.NOMINALS.ROTATION_RATE)*du;
+        //If he's moving left the rotation is to the left
         else this.rotation -= speedInfluence*(Math.PI/this.NOMINALS.ROTATION_RATE)*du;
-        console.log("ROT",this.rotation);
     }
     else this.rotation = 0;
 };
@@ -201,101 +202,115 @@ Character.prototype.computeRotation = function(du){
 Character.prototype.computeSubStep = function (du) {
     //Performs the wallBounce
     this.wallBounce();
+    //Register the position before change
     var prevX = this.cx;
     var prevY = this.cy;
     
     //Check for special cases
     this.checkCases();
     
-    //Compute the speed and set the velocity
+    //Compute the x acceleration
     this.computeAccelX(du);
 
+    //Apply the x acceleration
     this.applyAccelX(du);
 
-    var accelY = -this.computeThrustMag();
-    accelY += this.computeGravity();
+    //Compute the y acceleration
+    this.accelY = -this.computeThrustMag();
+    this.accelY += this.computeGravity();
     
-    var finalv = this.velY + accelY*du;
-    this.velY = (this.velY + finalv)/2;
-    this.cy += this.velY*du;
-
-    if(this.currPlatform && g_GAME_HEIGHT > 0){
-        this.cy +=Platform.prototype.verticalSpeed*du;
-    }
-
+    //Apply the y acceleration
+    this.applyAccelY(du);
+    
+    //Used to deside which sprite to use
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
     
-    
-    if(this._animTicker < Math.abs(this.NOMINALS.ANIM_FRAME_RATE-Math.abs(this.velX))){
-        this._animTicker +=1*du;
-    }else{
-        this.chooseSprite(this.velX,this.velY,nextX,nextY);
-        this._animTicker = 0;
+    //Increment the animTicker
+    if(this._animation.Ticker < Math.abs(this.NOMINALS.ANIM_FRAME_RATE-Math.abs(this.velX))){
+        this._animation.Ticker +=du;
     }
+    //Change the sprite and reset animTicker
+    else{
+        this.chooseSprite(this.velX,this.velY,nextX,nextY);
+        this._animation.Ticker = 0;
+    }
+    //Check if screen needs to be moved
     this.moveScreen();
     this.wrapPosition();
+    //Check for game over
     this.gameOver();
 };
-var counter=0;;
 Character.prototype.computeAccelX = function(du){
+    //Reset the acceleration if jumping
+    //TODO: remove this if the other thing is workign
+    /*
     if(this._jumping){
         this.accelX = 0;
     }
-
-    //Developmental
-    if(counter > 100){
-        console.log("ACCEL",this.accelX);
-        console.log("VEL",this.velX);
-        console.log("POS",this.cx,this.cy);
-        counter = 0;
-    }
-    else counter +=1;
+    */
+    //Shorter notation
     var accelX = this.NOMINALS.ACCELX
-    
+    //If no directional key is pressed and not jumping
     if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT]) {
+
+        //If the character is stationary we do nothing
         if (this.velX===0 && this.accelX===0) {return;}
-        if (this.velX<0) {
+        //If the character is moving left
+        else if(this._jumping) accelX = 0;
+        else if (this.velX<0) {
+            //If the next velocity is going to change sign
             if(this.velX + (this.accelX + this.NOMINALS.SLOW)*du >0) {
+                //Character should be stationary
                 this.accelX=0;
                 this.velX=0;
             }
+            //We slow down the acceleration
             else this.accelX += this.NOMINALS.SLOW;
         }
-        if (this.velX>0) {
+        //If the character is moving right
+        else if (this.velX>0) {
+            //If the velocity is going to change sign
             if(this.velX + (this.accelX+this.NOMINALS.SLOW)*du <0){
+                //Character should be stationary
                 this.accelX=0;
                 this.velX=0;
             }
+            //We slow down the acceleration
             else this.accelX -= this.NOMINALS.SLOW;
         }
     }
+    //If right is pressed
     if(keys[this.KEY_RIGHT]) {
+        //If we are moving right
         if(this.velX > 0){
             this._goingRight = true;
             this._goingLeft =  false;
         }
-
-        if(this.accelX + accelX > this.NOMINALS.MAX_ACCELX) {
-            this.accelX = this.NOMINALS.MAX_ACCELX;
+        //If we are still moving left
+        else if(this.velX <0 && !this.isBouncing){
+            //Slow down the velocity quickly
+            this.velX*=0.5
         }
-        else {
-            this.accelX += accelX;
-        }
+        //add to teh acceleration
+        this.accelX += accelX;
     }
     else if(keys[this.KEY_LEFT]) {
+        //If we are moving left
         if(this.velX < 0){
             this._goingRight = false;
             this._goingLeft =  true;
         }
-
-        if(this.accelX - accelX < -this.NOMINALS.MAX_ACCELX) {
-            this.accelX = -this.NOMINALS.MAX_ACCELX;
+        //If we are still moving right 
+        else if(this.velX >0 && !this.isBouncing){
+            //Slow down the velocity quickly
+            this.velX*=0.5
         }
-        else {
-            this.accelX -= accelX;
-        }
-    } 
+        //add to the acceleration
+        this.accelX -= accelX;
+    }
+    //Make sure the acceleration is in the correct range
+    this.accelX = util.clampRange(this.accelX,-this.NOMINALS.MAX_ACCELX,this.NOMINALS.MAX_ACCELX);
 };
 
 
@@ -304,16 +319,18 @@ Character.prototype.computeAccelX = function(du){
     sets options accordingly
 */
 Character.prototype.checkCases = function(){
+    //If the character is landing 
     if (this.velY === 0 && (g_GAME_HEIGHT === 0 || !this.currPlatform)) {
         this._jumping = false;
         this._falling = false;
         this._roationJump = false;
         this.isBouncing = false;
     }
+    //If the character is falling
     if (this.velY > 0) {
         this._falling = true;
     }
-
+    //If the character is on a platform
     if (this.currPlatform) {
         this.isBouncing = false;
     }
@@ -327,19 +344,20 @@ of the canvas
 var screenIsMoving = false;
 Character.prototype.moveScreen = function(du){
     var SCREEN_BOTTOM_LIMIT = this.NOMINALS.SCREEN_BOTTOM_LIMIT;
-    //If player is closer to the top then the limit allows
+    //Screen should not move when the menu screen is up
     if (g_MENU_SCREEN) {
         screenIsMoving = false;
     }
-    
+    //If we are on a platform we need to be able to travel with it under the canvas
     if (this.currPlatform) {
         //TODO: Change from magic number
         SCREEN_BOTTOM_LIMIT = 700;
         //SCREEN_BOTTOM_LIMIT = this.NOMINALS.SCREEN_BOTTOM_LIMIT + this.activeSprite.height;
     }
+    //If we are not on a platform we use the nominal bottom limit
     else SCREEN_BOTTOM_LIMIT = this.NOMINALS.SCREEN_BOTTOM_LIMIT;
 
-
+    //If player is closer to the top then the limit allows
     if(this.cy + this.activeSprite.height/2 <  this.NOMINALS.SCREEN_TOP_LIMIT){
         //Move the screen up
         g_MOVE_SCREEN = this.NOMINALS.SCREEN_MOVE_RATE;
@@ -359,48 +377,55 @@ Character.prototype.moveScreen = function(du){
     }
 };
 
+/*
+    This function applys the y component of the
+    acceleration (using average velocity)
+*/
+Character.prototype.applyAccelY = function(du){
+    //Calculate final velocty
+    var finalv = this.velY + this.accelY*du;
+    //Calculate average velocity
+    this.velY = (this.velY + finalv)/2;
+    //Apply the velocity
+    this.cy += this.velY*du;
 
-
-
-
-
-Character.prototype.sharpTurns = function () {
-
-    if (this._jumping) {return;}
-    if (this.cx+this.activeSprite.width/2 >= g_canvas.width) {return;}
-    if (this.cx-this.activeSprite.width/2 <= 0) {return;}
-
-    if (this._goingRight && keys[this.KEY_LEFT]) {
-        this.velX = 0;
+    //If the character is on a platform it has the same y-velocity
+    //as the platform
+    if(this.currPlatform && g_GAME_HEIGHT > 0){
+        this.cy += Platform.prototype.verticalSpeed*du;
     }
-    if (this._goingLeft && keys[this.KEY_RIGHT]) {
-        this.velX = 0;
-    }
-};
+}
 
+/*
+    This function applys the x component of the
+    acceleration (using average velocity)
+*/
 Character.prototype.applyAccelX = function(du){
-
-    var initial_velX = this.velX;
-    var average_velX = 0;
-    var final_velX = initial_velX + this.accelX*du;
-
-    this.velX = (initial_velX + final_velX)/2;
-    if(this.velX > this.NOMINALS.MAX_VELX) this.velX=this.NOMINALS.MAX_VELX;
-    else if(this.velX < -this.NOMINALS.MAX_VELX) this.velX=-this.NOMINALS.MAX_VELX;
+    //Calculate the final velocity
+    var final_velX = this.velX + this.accelX*du;
+    //Calculate the average velocity
+    this.velX = (this.velX + final_velX)/2;
+    //Make sure the velocity is in the correct range
+    this.velX = util.clampRange(this.velX,-this.NOMINALS.MAX_VELX,this.NOMINALS.MAX_VELX);
+    //Apply the velocity
     this.cx += this.velX*du;
-
 };
 
-
-
-
+/*
+    This function calculates the gravity that
+    should be returned
+*/
 Character.prototype.computeGravity = function () {
     var gravity = this.NOMINALS.GRAVITY;
+    //If traveling up, increase the gravity
+    //TODO: remove this if the other thing worked
+    /*
     if (this.velY>0) {
-        gravity = 1.50;
+        gravity = 1.5*this.NOMINALS.GRAVITY;
     }
-
-    if(this.cy+this.activeSprite.height/2 < g_canvas.height){
+    */
+    //
+    if(this.cy+this.activeSprite.height/2 < g_canvas.height || g_GAME_HEIGHT !== 0){
         return g_useGravity ? gravity : 0;
     }
     else{
@@ -409,164 +434,208 @@ Character.prototype.computeGravity = function () {
     return 0;
 };
 
-var NOMINAL_THRUST = 20;
-
+/*
+    This computes the magnitude of the jump
+    acceleration
+*/
 Character.prototype.computeThrustMag = function () {
-
+    //influence from the x velocity
     var speedInfluence = 0.1*Math.abs(this.velX);
     //Needs more work
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
+        //Reset the y velocity
         this.velY = 0;
         this._jumping = true;
+        //We don't want x-velocity to decrease jump height
         if (speedInfluence<1) {
-            return NOMINAL_THRUST;
+            return this.NOMINALS.THRUST;
         }
-        else return NOMINAL_THRUST*speedInfluence;
+        //x-velocity can increase jump height
+        else return this.NOMINALS.THRUST*speedInfluence;
     }
     return 0;
 
 };
 
+/*
+    This function implements the wall bounce
+*/
 Character.prototype.wallBounce = function () {
-    /*
+
     if (this.isBouncing) {
         return;
     }
-    */
     if(this.cx+this.activeSprite.width/2 >= g_right_side ||
-        (this.cx-this.activeSprite.width/2 <= g_left_side)) { 
-        console.log("SHOUld bounce");
+        (this.cx-this.activeSprite.width/2 <= g_left_side)) {
         this._goingRight = !this._goingRight;
         this._goingLeft = !this._goingLeft;
-        this.isBouncing = !this.isBouncing;
+        this.isBouncing = true;
 
         //TODO: change from magic numbers
+        //revert the x velocity and leave the y velocity unchanged
         if (this._rotationJump) {
-            return this.velX *=-1.5, this.velY *= 1.5;
+            return this.velX *=-1.25, this.velY *= 1.25;
         } else {
-            return this.velX *=-1.25, this.velY *= 1;
+            return this.velX *=-1, this.velY *= 1;
         }
-    }     
+    }
+    else this.isBouncing = false;
 };
 
 Character.prototype.gameOver = function () {
         //TODO: change from magic number
         var fallLength = 600;
+        //If the player has the fallength or fallen below the canvas
         if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.activeSprite.height/2 > g_canvas.height) {
+            //GAME IS OVER
+            //TODO: this should all be implemented in a game over function somewhere else (not in character)
             gameOver = true;
             g_GAME_HEIGHT  = 0;
             g_background.cx = 0;
+            //TODO: all globals should be marked with g_ prefix
             NUMBER_OF_PLATFORMS = 8;
+            //TODO: we should be resetting everything in the entity manager instead
             this.reset();
             g_background.cy = 0;
     }
 };
 
+/*
+    Function to get the radius
+*/
 Character.prototype.getRadius = function () {
     return this.scale*(this.sprite.width / 2) * 0.9;
 };
 
-
+/*
+    Function to reset the character
+*/
 Character.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
     this.halt();
 };
 
+/*
+    Function to halt the character
+*/
 Character.prototype.halt = function () {
     this.velX = 0;
     this.velY = 0;
 };
-
+/*
+    Function that renders the correct sprite
+*/
 Character.prototype.render = function (ctx) {
+    //Remember the original scale
     var origScale = this.sprite.scale;
+    //Set scale
     this.sprite.scale = this._scale;
+    //Draw the sprite
     this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation);
+    //Reset the scale
+    this.sprite.scale = origScale;
 };
 
+/*
+    This function checks if the character should make a rotation jump
+*/
 Character.prototype.checkForRotation = function(velX,velY) {
+    //If the velocity is greater than the threshold and is jumping
     if((Math.abs(velX) > this.NOMINALS.ROTATION_JUMP_THRESHOLD) && this._jumping) {
+        //We perform rotation jump
         this._rotationJump = true;
     }
     else {
+        //We don't perform it
         this._rotationJump = false;
     }
 };
 
-
+/*
+    This function chosses which sprite to render
+*/
 Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
-    var prevLeft = this._goingLeft;
-    var prevJumping = this._jumping;
-    var prevWall = this._wall;
     var incrAnimFrame = false;
     var sprite_base = this.sprite;
     var transition = false;
-
+    //Check if the jump is rotational
     this.checkForRotation(velX,velY);
+    
 
     //Check if in transition
-    if(prevLeft && velX > 0 || prevJumping && velY === 0 || !prevLeft && velX < 0){
+    if(
+        this._goingLeft && velX > 0         //Transition from left to right
+        || this._jumping && velY === 0      //Transition from jump to ground
+        || !this._goingLeft && velX < 0     //Transition from right to left
+        || (this._goingLeft || this._goingRight) && velX === 0 //Transition from movement to stationary
+        ){
         transition = true;
-        this._animFrame = 0;
+        this._animation.Frame = 0;
     }
     //If there's speed in y direction we are jumping
     if(velY !== 0) this._jumping = true;
     else this._jumping = false;
     
-    //If there's negative speed in the x direction we are going to the left
-    if(velX < 0){
-        this._left = true;
+    //If we are going to the left
+    if(this._goingLeft){
         //Use left sprite
         sprite_base = this.sprite.rev;
     }
-    else this._left = false
-    
-    //Check if it is crashing with the wall
-    if(nextX < this.activeSprite.width/2+g_left_side || nextX > g_right_side - this.activeSprite.width/2){
-        this._wall = true;
-        if(!prevWall){
-            this._animFrame = 0;
-        }
-    }
-    else this._wall = false;
 
     //If jumping
     if(this._jumping){
-        //If we are not moving in x direction we jump straight up
-        if(velX === 0){
-            this.activeSprite = this.sprite.jump[3];
-        }
-        if(this._rotationJump){
-            this.activeSprite = this.sprite.rotate;
-        }
-        else if(this._wall){
-            this.activeSprite = sprite_base.edge[this._animFrame];
-            if(this._animFrame === 0){
-                this._animFrame +=1;
+        //If we are bouncing of the wall
+        if(this.isBouncing){
+            this.activeSprite = sprite_base.edge[this._animation.Frame];
+            if(this._animation.Frame === 0){
+                this._animation.Frame =1;
             }
+            else{
+                this._animation.Frame = 0;
+            }  
+        }
+        //If we are moving and should do a rotation jump
+        else if(this._rotationJump){
+            //We choose the rotation jum sprite
+            this.activeSprite = this.sprite.rotate;
+            this._animation.Frame = 0;
+        }
+        //If we are not moving in x direction we jump straight up
+        else if(velX === 0){
+            //We choose the jump straight sprite
+            this.activeSprite = this.sprite.jump[3];
+            this._animation.Frame = 0;
         }
         else{
-            this.activeSprite = sprite_base.jump[this._animFrame];
-            if(this._animFrame === 0){
-                this._animFrame = 1;
-            }
-            else if(this._animFrame === 1){
-                this._animFrame = 2;
-                prevJumping = true;
+            this.activeSprite = sprite_base.jump[this._animation.Frame];
+            if(this._animation.Frame === 0){
+                this._animation.Frame =1;
             }
         }
     }
     else{
-        if(velX == 0){
-            this.activeSprite = this.sprite.idle[0];
-        }
-        else{
-            this.activeSprite = sprite_base.walk[this._animFrame];
-            if(this._animFrame === 3){
-                this._animFrame -=1;
+        if(velX === 0){
+            this.activeSprite = this.sprite.idle[this._animation.Frame];
+            if(this._animation.Frame <=1){
+                this._animation.Frame +=1;
             }
             else{
-                this._animFrame += 1;
+                this._animation.Frame = 0;
             }
+        }
+        else{
+            this.activeSprite = sprite_base.walk[this._animation.Frame];
+            if(this._animation.Frame === 0 && this._animation.Reverse){
+                this._animation.Reverse = false;
+            }
+            else if(this._animation.Frame === 3 && !this._animation.Reverse){
+                this._animation.Reverse = true;
+            }
+            if(this._animation.Reverse) this._animation.Frame -=1;
+            else this._animation.Frame +=1;
+            
+            console.log(this._animation.Frame);
+
         }
 
     } 
