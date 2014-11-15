@@ -37,10 +37,10 @@ Character.prototype.NOMINALS = {
     SCREEN_MOVE_RATE: 8,        //Rate of screen movement 
     SCREEN_TOP_LIMIT: 200,      //If the character goes above this position the screen moves up
     SCREEN_BOTTOM_LIMIT: 570,   //If the character goes below this position the screen moves down
-    ACCELX: 0.2,                   //Nominal x-acceleration of the character
+    ACCELX: 0.1,                   //Nominal x-acceleration of the character
     SLOW: 0.4,                    //Nominal slowdown acceleration of the character
-    MAX_ACCELX: 1,              //Maximum x-velocity of the character
-    MAX_VELX:18,
+    MAX_ACCELX: 0.8,              //Maximum x-velocity of the character
+    MAX_VELX:14,
     JUMP_VEL: 1.25,           //Nominal x-acceleration fraction when jumping
     GRAVITY: 1,                  //Nominal acceleration do to gravity
 };
@@ -249,7 +249,7 @@ Character.prototype.computeAccelX = function(du){
     else counter +=1;
     var accelX = this.NOMINALS.ACCELX
     
-    if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT] && !this._jumping) {
+    if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT]) {
         if (this.velX===0 && this.accelX===0) {return;}
         if (this.velX<0) {
             if(this.velX + (this.accelX + this.NOMINALS.SLOW)*du >0) {
@@ -267,8 +267,10 @@ Character.prototype.computeAccelX = function(du){
         }
     }
     if(keys[this.KEY_RIGHT]) {
-        this._goingRight = true;
-        this._goingLeft =  false;
+        if(this.velX > 0){
+            this._goingRight = true;
+            this._goingLeft =  false;
+        }
 
         if(this.accelX + accelX > this.NOMINALS.MAX_ACCELX) {
             this.accelX = this.NOMINALS.MAX_ACCELX;
@@ -278,9 +280,10 @@ Character.prototype.computeAccelX = function(du){
         }
     }
     else if(keys[this.KEY_LEFT]) {
-
-        this._goingRight = false;
-        this._goingLeft =  true;
+        if(this.velX < 0){
+            this._goingRight = false;
+            this._goingLeft =  true;
+        }
 
         if(this.accelX - accelX < -this.NOMINALS.MAX_ACCELX) {
             this.accelX = -this.NOMINALS.MAX_ACCELX;
@@ -421,9 +424,11 @@ Character.prototype.computeThrustMag = function () {
 };
 
 Character.prototype.wallBounce = function () {
+    /*
     if (this.isBouncing) {
         return;
     }
+    */
     if(this.cx+this.activeSprite.width/2 >= g_right_side ||
         (this.cx-this.activeSprite.width/2 <= g_left_side)) { 
         console.log("SHOUld bounce");
