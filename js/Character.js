@@ -129,11 +129,14 @@ Character.prototype.handleCollision = function(du){
 };
 
 // Function that rotates the character
-var NOMINAL_ROTATION_RATE = 30;
+var NOMINAL_ROTATION_RATE = 0.2;
 Character.prototype.computeRotation = function(du){
+
+    var speedInfluence = 0.1*Math.abs(this.velX);
+
     if (this.velX>0){
-    this.rotation += du*(Math.PI/NOMINAL_ROTATION_RATE);}
-    else {this.rotation += du*-(Math.PI/NOMINAL_ROTATION_RATE);}
+    this.rotation += du*(speedInfluence*NOMINAL_ROTATION_RATE);}
+    else {this.rotation += du*-(NOMINAL_ROTATION_RATE);}
 };
 
 Character.prototype.computeSubStep = function (du) {
