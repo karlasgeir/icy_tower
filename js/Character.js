@@ -257,7 +257,6 @@ Character.prototype.computeAccelX = function(du){
         //If the character is stationary we do nothing
         if (this.velX===0 && this.accelX===0) {return;}
         //If the character is moving left
-        else if(this._jumping) accelX = 0;
         else if (this.velX<0) {
             //If the next velocity is going to change sign
             if(this.velX + (this.accelX + this.NOMINALS.SLOW)*du >0) {
@@ -561,11 +560,11 @@ Character.prototype.checkForRotation = function(velX,velY) {
     This function chosses which sprite to render
 */
 Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
-    var incrAnimFrame = false;
     var sprite_base = this.sprite;
     //Check if the jump is rotational
     this.checkForRotation(velX,velY);
     
+    console.log(this._animation.Frame);
 
     //Check if in transition
     if(
@@ -575,7 +574,6 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
         || (this._goingLeft || this._goingRight) && velX === 0 //Transition from movement to stationary
         ){
         this._animation.Frame = 0;
-        console.log("TRANSITION");
     }
     //If there's speed in y direction we are jumping
     if(velY !== 0) this._jumping = true;
@@ -619,9 +617,8 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
         }
     }
     else{
-        console.log("NOT JUMPING");
         if(velX === 0){
-            console.log("NOT MOVING",this._animation.Frame);
+            if(this._animation.Frame >2) this._animation.Frame = 0;
             this.activeSprite = this.sprite.idle[this._animation.Frame];
             if(this._animation.Frame === 0 && this._animation.Reverse){
                 this._animation.Reverse = false;
