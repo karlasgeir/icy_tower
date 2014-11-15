@@ -32,8 +32,8 @@ function Character(descr) {
 Character.prototype = new Entity();
 
 Character.prototype.NOMINALS = {
-    ROTATION_RATE: 0.2,          //Rate of rotation in rotation jump
-    ANIM_FRAME_RATE: 20,        //Rate of sprite changes
+    ROTATION_RATE: 0.1,          //Rate of rotation in rotation jump
+    ANIM_FRAME_RATE: 15,        //Rate of sprite changes
     SCREEN_MOVE_RATE: 8,        //Rate of screen movement 
     SCREEN_TOP_LIMIT: 200,      //If the character goes above this position the screen moves up
     SCREEN_BOTTOM_LIMIT: 570,   //If the character goes below this position the screen moves down
@@ -436,10 +436,11 @@ Character.prototype.wallBounce = function () {
         this._goingLeft = !this._goingLeft;
         this.isBouncing = !this.isBouncing;
 
+        //TODO: change from magic numbers
         if (this._rotationJump) {
-            return this.velX *=-1.25, this.velY *= 1.25;
+            return this.velX *=-1.5, this.velY *= 1.5;
         } else {
-            return this.velX *=-1, this.velY *=-1;
+            return this.velX *=-1.25, this.velY *= 1;
         }
     }     
 };
