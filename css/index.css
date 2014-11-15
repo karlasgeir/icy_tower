@@ -20,13 +20,13 @@ h1{
     font-size:5rem;
     font-family: 'Gloria Hallelujah', cursive;
     margin-bottom:0;
-    color:rgb(250, 72, 46);
+    color:rgb(54, 236, 189);
 }
 h2{
     font-size:32px;
     font-family: 'Roboto', sans-serif;
     margin-top:0;
-    color:rgb(9, 113, 104);
+    color:rgb(250, 72, 46);
 }
 h3{
     font-size:28px;
@@ -43,22 +43,21 @@ ul{
 }
 
 h4{
-    color:rgb(9, 113, 104);
+    color:rgb(54, 236, 189);
     font-family: 'Roboto', sans-serif;
 }
 
 #instructions{
     display:block;
-    margin:auto auto auto 650px;
-    width:700px;
+    margin:auto;
+    margin-top:4rem;
+    margin-bottom:4rem;
+    width:800px;
 }
 
-#instructions > h2{
-    color:rgb(250, 72, 46);
-}
 
 h3{
-    color:rgb(9, 113, 104);
+    color:rgb(54, 236, 189);
     cursor:pointer;
     text-align:left;
     -webkit-margin-before:0;
@@ -98,7 +97,6 @@ ul h4{
 
 #myCanvas{
     display:block;
-    float:left;
     margin:auto;
     border: 1px solid black;
     background-image:url(../res/background.jpg);

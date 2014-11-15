@@ -2,10 +2,16 @@
 // KEYBOARD HANDLING
 // =================
 
+
+
 var keys = [];
 
 function handleKeydown(evt) {
+    //Prevent scrolling of the webpage on space or arrow buttons
+    if([32, 37, 38, 39, 40].indexOf(evt.keyCode) > -1) evt.preventDefault();
     keys[evt.keyCode] = true;
+
+    
 }
 
 function handleKeyup(evt) {
@@ -28,5 +34,5 @@ function keyCode(keyChar) {
     return keyChar.charCodeAt(0);
 }
 
-window.addEventListener("keydown", handleKeydown);
+window.addEventListener("keydown", handleKeydown,false);
 window.addEventListener("keyup", handleKeyup);

@@ -33,7 +33,6 @@ _entities : [],
 
 getNewSpatialID : function() {
 
-    // TODO: YOUR STUFF HERE!
     this._nextSpatialID +=1;
     return this._nextSpatialID-1;
 },
@@ -42,7 +41,6 @@ register: function(entity) {
     var spatialID = entity.getSpatialID();
 
     
-    // TODO: YOUR STUFF HERE!
     this._entities.push(entity);
 
 },
@@ -50,7 +48,6 @@ register: function(entity) {
 unregister: function(entity) {
     var spatialID = entity.getSpatialID();
 
-    // TODO: YOUR STUFF HERE!
     for(var i in this._entities){
         if(this._entities.hasOwnProperty(i)){
             var e = this._entities[i];
