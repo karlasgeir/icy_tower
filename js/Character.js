@@ -334,6 +334,12 @@ Character.prototype.checkCases = function(){
     if (this.currPlatform) {
         this.isBouncing = false;
     }
+
+    //If character is stationary
+    if(this.velX===0){
+        this._goingLeft = false;
+        this._goingRight = false;
+    }
 }
 
 /*
@@ -557,7 +563,6 @@ Character.prototype.checkForRotation = function(velX,velY) {
 Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     var incrAnimFrame = false;
     var sprite_base = this.sprite;
-    var transition = false;
     //Check if the jump is rotational
     this.checkForRotation(velX,velY);
     
@@ -569,8 +574,8 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
         || !this._goingLeft && velX < 0     //Transition from right to left
         || (this._goingLeft || this._goingRight) && velX === 0 //Transition from movement to stationary
         ){
-        transition = true;
         this._animation.Frame = 0;
+        console.log("TRANSITION");
     }
     //If there's speed in y direction we are jumping
     if(velY !== 0) this._jumping = true;
@@ -614,14 +619,19 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
         }
     }
     else{
+        console.log("NOT JUMPING");
         if(velX === 0){
+            console.log("NOT MOVING",this._animation.Frame);
             this.activeSprite = this.sprite.idle[this._animation.Frame];
-            if(this._animation.Frame <=1){
-                this._animation.Frame +=1;
+            if(this._animation.Frame === 0 && this._animation.Reverse){
+                this._animation.Reverse = false;
             }
-            else{
-                this._animation.Frame = 0;
+            else if(this._animation.Frame === 2 && !this._animation.Reverse){
+                this._animation.Reverse = true;
             }
+            if(this._animation.Reverse) this._animation.Frame -=1;
+            else this._animation.Frame +=1;
+            
         }
         else{
             this.activeSprite = sprite_base.walk[this._animation.Frame];
@@ -634,7 +644,6 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
             if(this._animation.Reverse) this._animation.Frame -=1;
             else this._animation.Frame +=1;
             
-            console.log(this._animation.Frame);
 
         }
 
