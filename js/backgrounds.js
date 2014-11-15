@@ -55,7 +55,7 @@ g_background.update = function(du) {
         this.cx -=0.25*du;
     }
 
-    if (!gameOver && !g_MENU_SCREEN) {
+    if (!gameOver && !g_MENU_SCREEN && g_GAME_HEIGHT>0) {
         this.cy +=this.speed*du;
     }
 }

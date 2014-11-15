@@ -52,7 +52,7 @@ Wall.prototype.update = function (du) {
         this.verticalSpeed = FASTER_MOVE_RATE;
         this.cy +=this.verticalSpeed*du;
     }
-    if (!screenIsMoving) {
+    if (!screenIsMoving && g_GAME_HEIGHT>0) {
         this.verticalSpeed = NOMINAL_MOVE_RATE;
         this.cy +=this.verticalSpeed*du;
     }

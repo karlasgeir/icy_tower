@@ -85,7 +85,7 @@ Character.prototype.update = function (du) {
         
         //Update game height
         this.gameHeight = g_canvas.height - this.cy - this.activeSprite.height/2 + g_GAME_HEIGHT;
-        // TODO: Handle collisions
+
         if(this._jumping && this.velY > 0){
             this.handleCollision();
         }
@@ -115,7 +115,7 @@ Character.prototype.checkPlatform = function(){
             this._jumping = true;
         }
     }
-}
+};
 
 Character.prototype.handleCollision = function(du){
     var isHit = this.isColliding();
@@ -126,7 +126,7 @@ Character.prototype.handleCollision = function(du){
         this.velY = 0;
         this.currPlatform = isHit;
     }   
-}
+};
 
 // Function that rotates the character
 var NOMINAL_ROTATION_RATE = 30;
@@ -134,7 +134,7 @@ Character.prototype.computeRotation = function(du){
     if (this.velX>0){
     this.rotation += du*(Math.PI/NOMINAL_ROTATION_RATE);}
     else {this.rotation += du*-(Math.PI/NOMINAL_ROTATION_RATE);}
-}
+};
 
 Character.prototype.computeSubStep = function (du) {
 
@@ -171,8 +171,8 @@ Character.prototype.computeSubStep = function (du) {
     this.velY = (this.velY + finalv)/2;
     this.cy += this.velY*du;
 
-    if(this.currPlatform){
-         this.cy +=Platform.prototype.verticalSpeed*du;
+    if(this.currPlatform && g_GAME_HEIGHT > 0){
+        this.cy +=Platform.prototype.verticalSpeed*du;
     } 
     
     var NOMINAL_ANIM_FRAME_RATE = 20;
@@ -230,7 +230,7 @@ Character.prototype.moveScreen = function(du){
         g_MOVE_SCREEN = 0;
         screenIsMoving = false;
     }
-}
+};
 
 Character.prototype.gameOver = function () {
         var fallLength = 600;
@@ -242,7 +242,7 @@ Character.prototype.gameOver = function () {
             this.reset();
             g_background.cy = 0;
     }
-}
+};
 
 var NOMINAL_SPEED = 0.5;
 var NOMINAL_SLOW = 2;
@@ -293,7 +293,7 @@ Character.prototype.computeSpeed = function(){
         }
     } 
     else return 0;
-}
+};
 
 Character.prototype.sharpTurns = function () {
 
@@ -307,7 +307,7 @@ Character.prototype.sharpTurns = function () {
     if (this._goingLeft && keys[this.KEY_RIGHT]) {
         this.velX = 0;
     }
-}
+};
 
 Character.prototype.applyAccelX = function(accelX, du){
 
@@ -321,7 +321,7 @@ Character.prototype.applyAccelX = function(accelX, du){
 
     this.cx += average_velX*du;
 
-}
+};
 
 
 var NOMINAL_GRAVITY = 1;
@@ -384,7 +384,7 @@ Character.prototype.wallBounce = function (velX, velY) {
             return this.velX *=-1, this.velY *=1;
         }
     }     
-}
+};
 
 Character.prototype.getRadius = function () {
     return this.scale*(this.sprite.width / 2) * 0.9;
@@ -414,7 +414,7 @@ Character.prototype.checkForRotation = function(velX,velY) {
     else {
         this._rotationJump = false;
     }
-}
+};
 
 var ROTATION_JUMP_THRESHOLD = 8;
 Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
@@ -445,7 +445,7 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     else this._left = false
     
     //Check if it is crashing with the wall
-    if(nextX < this.activeSprite.width/2 || nextX > g_canvas.width - this.activeSprite.width/2){
+    if(nextX < this.activeSprite.width/2+g_left_side || nextX > g_right_side - this.activeSprite.width/2){
         this._wall = true;
         if(!prevWall){
             this._animFrame = 0;
@@ -473,7 +473,6 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
             if(this._animFrame === 0){
                 this._animFrame = 1;
             }
-            //TODO: check if it's landing
             else if(this._animFrame === 1){
                 this._animFrame = 2;
                 prevJumping = true;
@@ -494,9 +493,6 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
             }
         }
 
-    }
-
-
-    
-}
+    } 
+};
 

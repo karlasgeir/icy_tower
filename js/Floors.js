@@ -64,7 +64,11 @@ Platform.prototype.update = function (du) {
     }
     this.reset(ctx);
 
-    this.cy += this.verticalSpeed*du;
+    console.log("GAME HEIGHT",g_GAME_HEIGHT);
+    if(g_GAME_HEIGHT > 0)
+    { 
+        this.cy += this.verticalSpeed*du;
+    }
 
     if(gameOver){
        return; 
