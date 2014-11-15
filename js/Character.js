@@ -41,7 +41,7 @@ Character.prototype.NOMINALS = {
     SLOW: 0.4,                    //Nominal slowdown acceleration of the character
     MAX_ACCELX: 1,              //Maximum x-velocity of the character
     MAX_VELX:18,
-    JUMP_ACCEL: 1.25,           //Nominal x-acceleration fraction when jumping
+    JUMP_VEL: 1.25,           //Nominal x-acceleration fraction when jumping
     GRAVITY: 1,                  //Nominal acceleration do to gravity
 };
 
@@ -235,6 +235,10 @@ Character.prototype.computeSubStep = function (du) {
 };
 var counter=0;;
 Character.prototype.computeAccelX = function(du){
+    if(this._jumping){
+        this.accelX = 0;
+    }
+
     //Developmental
     if(counter > 100){
         console.log("ACCEL",this.accelX);
@@ -243,14 +247,8 @@ Character.prototype.computeAccelX = function(du){
         counter = 0;
     }
     else counter +=1;
-    var accelX = 0
-    if (this._jumping) {
-        var accelX = 0;
-    }
-    else{
-        var accelX = this.NOMINALS.ACCELX;
-    }
-   
+    var accelX = this.NOMINALS.ACCELX
+    
     if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT] && !this._jumping) {
         if (this.velX===0 && this.accelX===0) {return;}
         if (this.velX<0) {
@@ -423,9 +421,9 @@ Character.prototype.computeThrustMag = function () {
 };
 
 Character.prototype.wallBounce = function () {
-    if (this.isBouncing || this.velY === 0) {
+    if (this.isBouncing) {
         return;
-    }       
+    }
     if(this.cx+this.activeSprite.width/2 >= g_right_side ||
         (this.cx-this.activeSprite.width/2 <= g_left_side)) { 
         console.log("SHOUld bounce");
