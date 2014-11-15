@@ -32,17 +32,18 @@ function Character(descr) {
 Character.prototype = new Entity();
 
 Character.prototype.NOMINALS = {
-    ROTATION_RATE: 0.1,          //Rate of rotation in rotation jump
+    ROTATION_RATE: 15,          //Rate of rotation in rotation jump
     ANIM_FRAME_RATE: 15,        //Rate of sprite changes
     SCREEN_MOVE_RATE: 8,        //Rate of screen movement 
     SCREEN_TOP_LIMIT: 200,      //If the character goes above this position the screen moves up
     SCREEN_BOTTOM_LIMIT: 570,   //If the character goes below this position the screen moves down
-    ACCELX: 0.1,                   //Nominal x-acceleration of the character
-    SLOW: 0.4,                    //Nominal slowdown acceleration of the character
+    ACCELX: 0.2,                   //Nominal x-acceleration of the character
+    SLOW: 0.5,                    //Nominal slowdown acceleration of the character
     MAX_ACCELX: 0.8,              //Maximum x-velocity of the character
     MAX_VELX:14,
     JUMP_VEL: 1.25,           //Nominal x-acceleration fraction when jumping
     GRAVITY: 1,                  //Nominal acceleration do to gravity
+    ROTATION_JUMP_THRESHOLD: 10
 };
 
 
@@ -181,9 +182,12 @@ Character.prototype.computeRotation = function(du){
     //If character is jumping, and it should be rotational
     if(this._rotationJump && this._jumping){
         var speedInfluence = 0.1*Math.abs(this.velX);
+        console.log("speedInfluence", speedInfluence);
+        //var speedInfluence = 1;
         //If he's moving right
-        if (this._goingRight) this.rotation += (speedInfluence*Math.PI/this.NOMINALS.ROTATION_RATE)*du;
-        else this.rotation -= (Math.PI/this.NOMINALS.ROTATION_RATE)*du;
+        if (this._goingRight) this.rotation += speedInfluence*(Math.PI/this.NOMINALS.ROTATION_RATE)*du;
+        else this.rotation -= speedInfluence*(Math.PI/this.NOMINALS.ROTATION_RATE)*du;
+        console.log("ROT",this.rotation);
     }
     else this.rotation = 0;
 };
@@ -480,7 +484,7 @@ Character.prototype.render = function (ctx) {
 };
 
 Character.prototype.checkForRotation = function(velX,velY) {
-    if((Math.abs(velX) > ROTATION_JUMP_THRESHOLD) && this._jumping) {
+    if((Math.abs(velX) > this.NOMINALS.ROTATION_JUMP_THRESHOLD) && this._jumping) {
         this._rotationJump = true;
     }
     else {
@@ -488,7 +492,7 @@ Character.prototype.checkForRotation = function(velX,velY) {
     }
 };
 
-var ROTATION_JUMP_THRESHOLD = 8;
+
 Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     var prevLeft = this._goingLeft;
     var prevJumping = this._jumping;
