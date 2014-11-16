@@ -84,8 +84,10 @@ Platform.prototype.update = function (du) {
     //Update game height
     this.gameHeight = g_canvas.height - this.cy + this.platHeight/2 + g_GAME_HEIGHT;
 
-    //Check if it goes under the canvas
-    if (this.cy>g_canvas.height+this.platHeight) {
+    //Where the platform is killed (want it to be able to go a bit under the canvas)
+    var PLATFORM_KILL_LIMIT = g_canvas.height + this.platHeight + 200;
+    //Check if it goes under the PLATFORM_KILL_LIMIT
+    if (this.cy>PLATFORM_KILL_LIMIT) {
         //Kill it
     	this.kill();
         //Create a new platform at top
@@ -101,12 +103,14 @@ Platform.prototype.update = function (du) {
     //If game is over
     if(!gameOver){
          spatialManager.register(this);
-    }   
+    }
 
 };
 
 Platform.prototype.reset = function () {
-
+    entityManager.killPlatforms();
+    g_NUMBER_OF_PLATFORMS = 0;
+    g_TOP_FLOOR = g_canvas.height;
 }
 
 

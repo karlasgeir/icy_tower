@@ -49,19 +49,34 @@ Entity.prototype.setup = function (descr) {
     this._isDeadNow = false;
 };
 
+/*
+    This function sets the position
+    of this entity
+*/
 Entity.prototype.setPos = function (cx, cy) {
     this.cx = cx;
     this.cy = cy;
 };
 
+/*
+    This function gets the position of
+    this entity
+*/
 Entity.prototype.getPos = function () {
     return {posX : this.cx, posY : this.cy};
 };
-
+/*
+    This function returns the radius
+    of this entity
+*/
 Entity.prototype.getRadius = function () {
     return 0;
 };
-
+/*
+    This function returns the size
+    of this entity.
+    The size is an object: {width:, height:}
+*/
 Entity.prototype.getSize = function(){
     if(this instanceof Character){
         return{width: this.activeSprite.width, height: this.activeSprite.height};
@@ -74,22 +89,45 @@ Entity.prototype.getSize = function(){
     }
 };
 
+/*
+    This function returns the rotation of
+    this entity
+*/
 Entity.prototype.getRotation = function(){
     return this.rotation;
 };
 
+/*
+    This function returns the spatial ID
+    for this entity
+*/
 Entity.prototype.getSpatialID = function () {
     return this._spatialID;
 };
 
+/*
+    This function returns the game height
+    for this entity. (The height it has
+    traveled from the ground in the game)
+*/
 Entity.prototype.getGameHeight = function(){
     return this.gameHeight;
 }
 
+
+/*
+    This function tells the entitity that
+    it's dead
+*/
 Entity.prototype.kill = function () {
     this._isDeadNow = true;
 };
 
+/*
+    This function finds the entity it's
+    colliding with, if it's colliding with
+    any
+*/
 Entity.prototype.findHitEntity = function () {
     var pos = this.getPos();
     var size = this.getSize();
@@ -103,6 +141,11 @@ Entity.prototype.isColliding = function () {
     return this.findHitEntity();
 };
 
+/*
+    This function wraps the position of
+    this entity so it doesn't go outside
+    the canvas (unless we want it to)
+*/
 Entity.prototype.wrapPosition = function () {
     this.cx = util.clampRange(this.cx, g_left_side + this.activeSprite.width/2, g_right_side-this.activeSprite.width/2);
     if(g_GAME_HEIGHT === 0){

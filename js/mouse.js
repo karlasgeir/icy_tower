@@ -3,8 +3,8 @@ var g_mDown=false, g_mX=0, g_mY=0;
 
 function handleMousedown(evt) {
 
-    g_mX = event.pageX - g_canvas.offsetLeft;
-    g_mY = event.pageY - g_canvas.offsetTop;
+    g_mX = evt.pageX - g_canvas.offsetLeft;
+    g_mY = evt.pageY - g_canvas.offsetTop;
     g_mDown=true;
 
     if (gameOver && g_MENU_SCREEN) {

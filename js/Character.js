@@ -44,9 +44,12 @@ Character.prototype.NOMINALS = {
     MAX_VELX:14,                    //Maximum x-velocity of the character
     JUMP_VEL: 1.25,                 //Nominal x-acceleration fraction when jumping
     GRAVITY: 1.3,                   //Nominal acceleration do to gravity
-    ROTATION_JUMP_THRESHOLD: 10,     //the x velocity threshhold that determines
+    ROTATION_JUMP_THRESHOLD: 10,    //the x velocity threshhold that determines
                                     //if the jump should be rottional
-    THRUST: 30                      //The nominal jump thrust
+    THRUST: 30,                     //The nominal jump thrust
+    FALL_LENGTH: 600,               //The lenght that the character has to fall to die
+    BOUNCE_ROTATION: 1.5,           //The velocity multiplier when bouncing off the wall rotating
+    BOUNCE:1                        //The velocity multiplier when bouncing off the wall normally
 };
 
 
@@ -242,18 +245,10 @@ Character.prototype.computeSubStep = function (du) {
     this.gameOver();
 };
 Character.prototype.computeAccelX = function(du){
-    //Reset the acceleration if jumping
-    //TODO: remove this if the other thing is workign
-    /*
-    if(this._jumping){
-        this.accelX = 0;
-    }
-    */
     //Shorter notation
     var accelX = this.NOMINALS.ACCELX
     //If no directional key is pressed and not jumping
     if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT]) {
-
         //If the character is stationary we do nothing
         if (this.velX===0 && this.accelX===0) {return;}
         //If the character is moving left
@@ -421,17 +416,8 @@ Character.prototype.applyAccelX = function(du){
     should be returned
 */
 Character.prototype.computeGravity = function () {
-    var gravity = this.NOMINALS.GRAVITY;
-    //If traveling up, increase the gravity
-    //TODO: remove this if the other thing worked
-    /*
-    if (this.velY>0) {
-        gravity = 1.5*this.NOMINALS.GRAVITY;
-    }
-    */
-    //
     if(this.cy+this.activeSprite.height/2 < g_canvas.height || g_GAME_HEIGHT !== 0){
-        return g_useGravity ? gravity : 0;
+        return g_useGravity ? this.NOMINALS.GRAVITY : 0;
     }
     else{
         this.velY = 0;
@@ -483,23 +469,20 @@ Character.prototype.wallBounce = function () {
         this._goingLeft = !this._goingLeft;
         this.isBouncing = true;
 
-        //TODO: change from magic numbers
         //revert the x velocity and leave the y velocity unchanged
         if (this._rotationJump) {
-            return this.velX *=-1.25, this.velY *= 1.25;
+            return this.velX *=-this.NOMINALS.BOUNCE_ROTATION, this.velY *= this.NOMINALS.BOUNCE_ROTATION;
         } else {
-            return this.velX *=-1, this.velY *= 1;
+            return this.velX *=-this.NOMINALS.BOUNCE, this.velY *= this.NOMINALS.BOUNCE;
         }
     }
 };
 
 Character.prototype.gameOver = function () {
-        //TODO: change from magic number
-        var fallLength = 600;
+        var fallLength = this.NOMINALS.FALL_LENGTH;
         //If the player has the fallength or fallen below the canvas
         if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.activeSprite.height/2 > g_canvas.height) {
             //GAME IS OVER
-            //TODO: this should all be implemented in a game over function somewhere else (not in character)
             gameOver = true;
     }
 };
@@ -607,6 +590,7 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
             this.activeSprite = this.sprite.jump[3];
             this._animation.Frame = 0;
         }
+        //We loop through the jump sprites
         else{
             if(this._animation.Frame > 1) this._animation.Frame = 0;
             this.activeSprite = sprite_base.jump[this._animation.Frame];
@@ -615,8 +599,11 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
             }
         }
     }
+    //We are not jumping
     else{
+        //If we are stationary on the ground or platform
         if(velX === 0){
+            //loop through the idle sprites
             if(this._animation.Frame > 2) this._animation.Frame = 0;
             this.activeSprite = this.sprite.idle[this._animation.Frame];
             if(this._animation.Frame === 0 && this._animation.Reverse){
@@ -627,9 +614,10 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
             }
             if(this._animation.Reverse) this._animation.Frame -=1;
             else this._animation.Frame +=1;
-            
         }
+        //If we are moving
         else{
+            //Loop through the walk sprites
             if(this._animation.Frame > 3) this._animation.Frame=0;
             this.activeSprite = sprite_base.walk[this._animation.Frame];
             if(this._animation.Frame === 0 && this._animation.Reverse){
@@ -640,8 +628,6 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
             }
             if(this._animation.Reverse) this._animation.Frame -=1;
             else this._animation.Frame +=1;
-            
-
         }
 
     } 

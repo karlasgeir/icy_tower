@@ -50,7 +50,7 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 _generateInitialPlatforms : function() {
-    var INITIAL_PLATFORMS = 9;
+    var INITIAL_PLATFORMS = 12;
     for (var i = 0; i<INITIAL_PLATFORMS; i++) {
         this.generatePlatform();
     }
@@ -82,13 +82,10 @@ generateWalls : function(descr) {
 init: function() {
     //Reset variables
     g_GAME_HEIGHT  = 0;
-    g_NUMBER_OF_PLATFORMS = 0;
-    g_TOP_FLOOR = g_canvas.height;
-    //Kill the platforms
-    entityManager.killPlatforms();
     //Reset things
     this.resetCharacters();
     this.resetWalls();
+    this.resetPlatforms();
     //Generate the inital plaforms
     this._generateInitialPlatforms();
     //Generate the walls
@@ -108,8 +105,7 @@ resetCharacters: function() {
     this._forEachOf(this._characters, Character.prototype.reset);
 },
 resetPlatforms: function() {
-    this.killPlatforms();
-    this._forEachOf(this._platforms, Platform.prototype.reset);
+    Platform.prototype.reset();
 },
 
 resetWalls: function() {
