@@ -49,6 +49,8 @@ Flame.prototype.update = function (du) {
         return entityManager.KILL_ME_NOW;
     }
 
+    console.log(this.activeSprite);
+
     this.lifeSpan -= du;
 
     if (this.lifeSpan < 0) return entityManager.KILL_ME_NOW;
@@ -78,17 +80,9 @@ Flame.prototype.applyGravity = function (du) {
     var ax = Fx / this.mass;
     var ay = this.ag + (Fy / this.mass);
 
-    //console.log(ax);
-    //console.log(ay);
-
-    console.log(Fy);
-
     // Integrate to get velocity
     this.velX += ax*du;
     this.velY += ay*du;
-
-    //console.log('velx: ' + this.velX);
-    //console.log('vely: ' + this.velY);
             
     // Integrate to get position
     this.cx += this.velX*du;
@@ -104,7 +98,6 @@ Flame.prototype.computeGravity = function(du) {
 }
 
 Flame.prototype.getRadius = function () {
-    console.log((this.activeSprite.width/2)*0.9);
     //return (this.activeSprite.width / 2) * 0.9;       <----------
     //Þetta skilar stundum einhverju rugli yfir í
     //Fx og Fy í gegnum A
