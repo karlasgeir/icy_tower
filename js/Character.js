@@ -58,7 +58,7 @@ Character.prototype.NOMINALS = {
     ACCELX: 0.2,                    //Nominal x-acceleration of the character
     SLOW: 0.5,                      //Nominal slowdown acceleration of the character
     MAX_ACCELX: 0.8,                //Maximum x-acceleration of the character
-    MAX_VELX:14,                    //Maximum x-velocity of the character
+    MAX_VELX:12,                    //Maximum x-velocity of the character
     JUMP_VEL: 1.25,                 //Nominal x-acceleration fraction when jumping
     GRAVITY: 1.3,                   //Nominal acceleration do to gravity
     ROTATION_JUMP_THRESHOLD: 10,     //the x velocity threshhold that determines
@@ -231,7 +231,7 @@ var NOMINAL_ROTATION_RATE = 0.2;
 Character.prototype.computeRotation = function(du){
     //If character is jumping, and it should be rotational
     if(this._rotationJump && this._jumping){
-        var speedInfluence = 0.1*Math.abs(this.velX);
+        var speedInfluence = 0.125*Math.abs(this.velX);
         //If he's moving right the rotation is to the right
         if (this._goingRight) this.rotation += speedInfluence*(Math.PI/this.NOMINALS.ROTATION_RATE)*du;
         //If he's moving left the rotation is to the left
@@ -443,7 +443,7 @@ Character.prototype.gameOver = function () {
     }
 };
 
-var NOMINAL_SPEED = 0.5;
+var NOMINAL_SPEED = 0.25;
 var NOMINAL_SLOW = 2;
 var MAX_SPEED = 18;
 
