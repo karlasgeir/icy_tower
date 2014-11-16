@@ -21,6 +21,23 @@ function Character(descr) {
     this.isBouncing = false;    //True if the character i bouncing of a wall
 
     // Common inherited setup logic from Entity
+
+    this.scale  = this.scale  || 1;
+    this.rememberResets();
+    this._jumping = false;
+    this._falling = false;
+    this._goingLeft = false;
+    this._goingRight = false;
+    this._running = false;
+    this._left = false;
+    this._wall = false;
+    this._animFrame = 0;
+    this.jumpHeight = 0;
+    this._animTicker = 0;
+    this.rotationJump = false;
+    this.currPlatform = false;
+    this.isBouncing = false;
+
     this.setup(descr);
     
     // Default sprites, if not otherwise specified
@@ -41,7 +58,7 @@ Character.prototype.NOMINALS = {
     ACCELX: 0.2,                    //Nominal x-acceleration of the character
     SLOW: 0.5,                      //Nominal slowdown acceleration of the character
     MAX_ACCELX: 0.8,                //Maximum x-acceleration of the character
-    MAX_VELX:14,                    //Maximum x-velocity of the character
+    MAX_VELX:12,                    //Maximum x-velocity of the character
     JUMP_VEL: 1.25,                 //Nominal x-acceleration fraction when jumping
     GRAVITY: 1.3,                   //Nominal acceleration do to gravity
     ROTATION_JUMP_THRESHOLD: 10,    //the x velocity threshhold that determines
@@ -77,6 +94,7 @@ Character.prototype.velY = 0;
 Character.prototype.accelX = 0;
 Character.prototype.accelY = 0;
 Character.prototype.numSubSteps = 1;
+Character.prototype.flameVelocity = 6;
 Character.prototype.speed = 0;
 
 //TODO: add audio
@@ -180,6 +198,35 @@ Character.prototype.handleCollision = function(du){
     }   
 };
 
+
+Character.prototype.makeFlames = function () {
+
+        if (!this._rotationJump) {return;}
+
+        var accelY = -this.computeThrustMag();
+        accelY += this.computeGravity();
+
+        var dX = -Math.sin(this.rotation);
+        var dY = +Math.cos(this.rotation);
+        var launchDist = this.getRadius() * 1.2;
+
+        var relVel = this.flameVelocity;
+        var relVelX = dX * relVel;
+        var relVelY = -dY * relVel;
+
+        entityManager.generateFlame(
+            this.cx + dX * launchDist, 
+            this.cy + dY * launchDist,
+            -this.velX - relVelX, 
+            -this.velY - relVelY,
+            this.rotation);
+    
+
+}
+
+// Function that rotates the character
+var NOMINAL_ROTATION_RATE = 0.2;
+
 /*
     This function checks if the character should be
     rotated, and performs the rotation
@@ -187,7 +234,7 @@ Character.prototype.handleCollision = function(du){
 Character.prototype.computeRotation = function(du){
     //If character is jumping, and it should be rotational
     if(this._rotationJump && this._jumping){
-        var speedInfluence = 0.1*Math.abs(this.velX);
+        var speedInfluence = 0.125*Math.abs(this.velX);
         //If he's moving right the rotation is to the right
         if (this._goingRight) this.rotation += speedInfluence*(Math.PI/this.NOMINALS.ROTATION_RATE)*du;
         //If he's moving left the rotation is to the left
@@ -228,6 +275,8 @@ Character.prototype.computeSubStep = function (du) {
     //Used to deside which sprite to use
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
+
+    this.makeFlames();
     
     //Increment the animTicker
     if(this._animation.Ticker < Math.abs(this.NOMINALS.ANIM_FRAME_RATE-Math.abs(this.velX))){
@@ -377,6 +426,68 @@ Character.prototype.moveScreen = function(du){
     }
 };
 
+Character.prototype.gameOver = function () {
+        var fallLength = 600;
+        if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.activeSprite.height/2 > g_canvas.height) {
+            gameOver = true;
+            g_GAME_HEIGHT  = 0;
+            g_background.cx = 0;
+            NUMBER_OF_PLATFORMS = 8;
+            this.reset();
+            g_background.cy = 0;
+    }
+};
+
+var NOMINAL_SPEED = 0.25;
+var NOMINAL_SLOW = 2;
+var MAX_SPEED = 18;
+
+Character.prototype.computeSpeed = function(){
+    
+    // console.log(this._jumping);
+    if (this._jumping) {
+        NOMINAL_SPEED = 1.25;
+    } else {
+        NOMINAL_SPEED = 1;
+    }
+   
+    if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT]) {
+        if (this.velX===0) {return;}
+        if (this.velX<0) {
+            if(this.velX + NOMINAL_SLOW >0) this.velX=0;
+            else this.velX += NOMINAL_SLOW;
+        }
+        if (this.velX>0) {
+            if(this.velX + NOMINAL_SLOW <0) this.velX=0;
+            else this.velX -= NOMINAL_SLOW;
+        }
+    }
+    if(keys[this.KEY_RIGHT]) {
+
+        this._goingRight = true;
+        this._goingLeft =  false;
+
+        if(this.velX + NOMINAL_SPEED > MAX_SPEED) {
+            this.velX = MAX_SPEED;
+        }
+        else {
+            this.velX += NOMINAL_SPEED;
+        }
+    }
+    else if(keys[this.KEY_LEFT]) {
+
+        this._goingRight = false;
+        this._goingLeft =  true;
+
+        if(this.velX - NOMINAL_SPEED < -MAX_SPEED) {
+            this.velX = -MAX_SPEED;
+        }
+        else {
+            this.velX -= NOMINAL_SPEED;
+        }
+    } 
+};
+
 /*
     This function applys the y component of the
     acceleration (using average velocity)
@@ -491,7 +602,7 @@ Character.prototype.gameOver = function () {
     Function to get the radius
 */
 Character.prototype.getRadius = function () {
-    return this.scale*(this.sprite.width / 2) * 0.9;
+    return (this.activeSprite.width / 2) * 0.9;
 };
 
 /*

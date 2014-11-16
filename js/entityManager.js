@@ -28,6 +28,7 @@ var entityManager = {
 _characters: [],
 _platforms: [],
 _Walls: [],
+_flame: [],
 _bShowPlatforms: true,
 
 // "PRIVATE" METHODS
@@ -64,8 +65,18 @@ _generateWall : function() {
     });
 },
 
+generateFlame: function(cx, cy, velX, velY, rotation) {
+    this._flame.push(new Flame({
+        cx   : cx,
+        cy   : cy,
+        velX : velX,
+        velY : velY,
+        rotation : rotation
+    }));;
+},
+
 deferredSetup : function () {
-    this._categories = [this._platforms,this._characters,this._Walls];
+    this._categories = [this._platforms,this._characters,this._Walls, this._flame];
 },
 
 generatePlatform : function(descr) {

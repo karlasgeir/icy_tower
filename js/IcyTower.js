@@ -147,8 +147,8 @@ function requestPreloads() {
         gameOver : "res/backgrounds/gameOver.png",
         score : "res/backgrounds/score.png",
         go : "res/comboLogos/go.png",
+        fireball: "res/fireballz.png",
         wallsprite : "res/walls/bigger/wallBig2.png"
-
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -180,6 +180,21 @@ function preloadDone() {
     g_sprites.gameOver = new Sprite(g_images.gameOver,g_images.gameOver.width,g_images.gameOver.height,0,0);
 
     g_sprites.go = new Sprite(g_images.go,g_images.go.width,g_images.go.height,0,0);
+
+    g_sprites.fireball = {
+        rotating: {
+            0: new Sprite(g_images.fireball, 13, 10, 5, 35),
+            1: new Sprite(g_images.fireball, 13, 11, 22, 34),
+            2: new Sprite(g_images.fireball, 11, 11, 42, 34),
+            3: new Sprite(g_images.fireball, 13, 11, 60, 33),
+            4: new Sprite(g_images.fireball, 11, 12, 76, 32),
+            5: new Sprite(g_images.fireball, 12, 12, 90, 32),
+            6: new Sprite(g_images.fireball, 12, 10, 103, 34),
+            7: new Sprite(g_images.fireball, 12, 11, 116, 35),
+            8: new Sprite(g_images.fireball, 11, 12, 129, 35),
+            9: new Sprite(g_images.fireball, 12, 12, 141, 35)
+        },
+    }
 
     g_sprites.character = {
         idle:{

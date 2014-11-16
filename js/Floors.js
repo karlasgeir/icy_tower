@@ -90,9 +90,11 @@ Platform.prototype.update = function (du) {
     if (this.cy>PLATFORM_KILL_LIMIT) {
         //Kill it
     	this.kill();
-        //Create a new platform at top
         entityManager.generatePlatform();
     }
+    
+    this.reset(ctx);
+    
     //If the screen has been moved once
     if(g_GAME_HEIGHT > 0)
     { 
@@ -104,7 +106,6 @@ Platform.prototype.update = function (du) {
     if(!gameOver){
          spatialManager.register(this);
     }
-
 };
 
 Platform.prototype.reset = function () {
