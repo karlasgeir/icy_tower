@@ -186,11 +186,18 @@ Character.prototype.checkPlatform = function(){
     This function checks if the character is colliding with a
     platform and handles the collision
 */
+var TOP_PADDLE_HIT_HIGHT = 0;
 Character.prototype.handleCollision = function(du){
     //Get the colliding platform if any
     var isHit = this.isColliding();
     //Check if colliding
     if (isHit) {
+        if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT){ 
+            //TODO: change from magic number
+            g_SCORE += ((isHit.getGameHeight() - TOP_PADDLE_HIT_HIGHT)*g_COMBO_MULTIPLIER)/10;
+            g_SCORE = Math.round(g_SCORE);
+            TOP_PADDLE_HIT_HIGHT = isHit.getGameHeight();
+        }
         //Make sure the characters position is on top of the platform
         this.cy = isHit.getPos().posY - isHit.getSize().height/2 - this.activeSprite.height/2;
         //Settings so the character doesn't fall throught

@@ -95,6 +95,7 @@ generateWalls : function(descr) {
 
 init: function() {
     //Reset variables
+    g_SCORE = 0;
     g_GAME_HEIGHT  = 0;
     //Reset things
     this.resetCharacters();
@@ -164,7 +165,6 @@ update: function(du) {
                 ++i;
             }
         }
-        
     }
     //Hækkum game height
     g_GAME_HEIGHT += g_MOVE_SCREEN*du;
