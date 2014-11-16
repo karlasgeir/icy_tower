@@ -21,7 +21,7 @@ function Character(descr) {
     this.isBouncing = false;    //True if the character i bouncing of a wall
 
     // Common inherited setup logic from Entity
-<<<<<<< HEAD
+
     this.scale  = this.scale  || 1;
     this.rememberResets();
     this._jumping = false;
@@ -38,8 +38,6 @@ function Character(descr) {
     this.currPlatform = false;
     this.isBouncing = false;
 
-=======
->>>>>>> origin/master
     this.setup(descr);
     
     // Default sprites, if not otherwise specified
@@ -197,7 +195,7 @@ Character.prototype.handleCollision = function(du){
     }   
 };
 
-<<<<<<< HEAD
+
 Character.prototype.makeFlames = function () {
 
         if (!this._rotationJump) {return;}
@@ -225,12 +223,11 @@ Character.prototype.makeFlames = function () {
 
 // Function that rotates the character
 var NOMINAL_ROTATION_RATE = 0.2;
-=======
+
 /*
     This function checks if the character should be
     rotated, and performs the rotation
 */
->>>>>>> origin/master
 Character.prototype.computeRotation = function(du){
     //If character is jumping, and it should be rotational
     if(this._rotationJump && this._jumping){
@@ -434,7 +431,6 @@ Character.prototype.moveScreen = function(du){
     }
 };
 
-<<<<<<< HEAD
 Character.prototype.gameOver = function () {
         var fallLength = 600;
         if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.activeSprite.height/2 > g_canvas.height) {
@@ -497,12 +493,6 @@ Character.prototype.computeSpeed = function(){
     } 
 };
 
-Character.prototype.sharpTurns = function () {
-
-    if (this._jumping) {return;}
-    if (this.cx+this.activeSprite.width/2 >= g_canvas.width) {return;}
-    if (this.cx-this.activeSprite.width/2 <= 0) {return;}
-=======
 /*
     This function applys the y component of the
     acceleration (using average velocity)
@@ -514,7 +504,6 @@ Character.prototype.applyAccelY = function(du){
     this.velY = (this.velY + finalv)/2;
     //Apply the velocity
     this.cy += this.velY*du;
->>>>>>> origin/master
 
     //If the character is on a platform it has the same y-velocity
     //as the platform
