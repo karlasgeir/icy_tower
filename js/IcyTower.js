@@ -138,7 +138,7 @@ function requestPreloads() {
     var requiredImages = {
         character   : "res/spritesheet.png",
         character_rev  : "res/spritesheet-rev.png",
-	    testplat : "res/platforms/platform.png",
+	    platform : "res/platforms/platformspritesheet.png",
         backgroundMenu : "res/backgrounds/backgroundPlaceholder.jpg",
         gameBackground : "res/backgrounds/gB7.png",
         logo : "res/backgrounds/logo.png",
@@ -146,7 +146,7 @@ function requestPreloads() {
         mainMenu : "res/backgrounds/mainMenu.png",
         gameOver : "res/backgrounds/gameOver.png",
         score : "res/backgrounds/score.png",
-        go : "res/comboLogos/go.png",
+        notifications : "res/comboLogos/combospritesheet.png",
         fireball: "res/fireballz.png",
         wallsprite : "res/walls/bigger/wallBig2.png"
     };
@@ -157,30 +157,65 @@ function requestPreloads() {
 var g_sprites = {};
 
 function preloadDone() {
-
-   
-    //Loading all the sprite
-    g_sprites.testplat = new Sprite(g_images.testplat,g_images.testplat.width,g_images.testplat.height,0,0);
-
+    /*
+        Loading all the sprites
+    */
+    //Sprites for the platform
+    g_sprites.platform = {
+        normal:{
+            whole: new Sprite(g_images.platform,120,30,132,48),
+            left: new Sprite(g_images.platform,16,32,312,47),
+            middle: new Sprite(g_images.platform,16,32,440,47),
+            right: new Sprite(g_images.platform,16,32,56,173)
+        },
+        lava: new Sprite(g_images.platform,120,30,4,48),
+        rainbow:{
+            whole: new Sprite(g_images.platform,120,30,388,174),
+            left: new Sprite(g_images.platform,16,32,184,173),
+            middle: new Sprite(g_images.platform,16,32,312,173),
+            right: new Sprite(g_images.platform,16,32,56,299)
+        },
+        snow: new Sprite(g_images.platform,120,30,132,300),
+        wood:{
+            whole: new Sprite(g_images.platform,120,30,132,426),
+            left: new Sprite(g_images.platform,16,32,440,299),
+            middle: new Sprite(g_images.platform,16,32,56,425),
+            right: new Sprite(g_images.platform,16,32,312,425)
+        },
+        sign:new Sprite(g_images.platform,41,21,428,431)
+    };
+    //Sprites for the wall
     g_sprites.wallsprite = new Sprite(g_images.wallsprite,g_images.wallsprite.width,g_images.wallsprite.height,0,0);
-    g_left_side = g_sprites.wallsprite.width/2;
-    g_right_side = g_canvas.width - g_sprites.wallsprite.width/2;
-     
+     //Sprites for the menus
     g_sprites.backgroundMenu = new Sprite(
         g_images.backgroundMenu,g_images.backgroundMenu.width,g_images.backgroundMenu.height,0,0);
-
-    g_sprites.gameBackground = new Sprite(
-        g_images.gameBackground,g_images.gameBackground.width,g_images.gameBackground.height,0,0);
-    
+    g_sprites.mainMenu = new Sprite(g_images.mainMenu,g_images.mainMenu.width,g_images.mainMenu.height,0,0);
     g_sprites.logo = new Sprite(g_images.logo,g_images.logo.width,g_images.logo.height,0,0);
     g_sprites.startGame = new Sprite(g_images.startGame,g_images.startGame.width,g_images.startGame.height,0,0);
-
-    g_sprites.mainMenu = new Sprite(g_images.mainMenu,g_images.mainMenu.width,g_images.mainMenu.height,0,0);
     g_sprites.score = new Sprite(g_images.score,g_images.score.width,g_images.score.height,0,0);
     g_sprites.gameOver = new Sprite(g_images.gameOver,g_images.gameOver.width,g_images.gameOver.height,0,0);
 
-    g_sprites.go = new Sprite(g_images.go,g_images.go.width,g_images.go.height,0,0);
+    //The game background
+    g_sprites.gameBackground = new Sprite(
+        g_images.gameBackground,g_images.gameBackground.width,g_images.gameBackground.height,0,0);
 
+    //Sprites for the notifications
+    g_sprites.notifications={
+        go: new Sprite(g_images.notifications,120,86,260,272),
+        amazing: new Sprite(g_images.notifications,120,22,4,52),
+        extreme: new Sprite(g_images.notifications,120,23,132,52),
+        fantastic: new Sprite(g_images.notifications,120,22,260,52),
+        good: new Sprite(g_images.notifications,120,39,388,44),
+        great: new Sprite(g_images.notifications,120,33,4,173),
+        noway: new Sprite(g_images.notifications,120,26,132,176),
+        splendid: new Sprite(g_images.notifications,120,24,260,177),
+        super: new Sprite(g_images.notifications,120,32,388,173),
+        sweet: new Sprite(g_images.notifications,120,31,4,300),
+        wow: new Sprite(g_images.notifications,120,38,132,296),
+    }
+    
+
+    //Sprites for powerups and addons
     g_sprites.fireball = {
         rotating: {
             0: new Sprite(g_images.fireball, 13, 10, 5, 35),
@@ -196,6 +231,7 @@ function preloadDone() {
         },
     }
 
+    //Sprites for the character
     g_sprites.character = {
         idle:{
             0: new Sprite(g_images.character,30,52,50,162),

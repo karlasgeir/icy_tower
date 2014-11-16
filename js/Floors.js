@@ -8,11 +8,10 @@
 var SPACE_BETWEEN_PLATFORMS = 80;
 var NOMINAL_VERTICAL_SPEED = 0.5;
 function Platform(descr) {
-    console.log("GENERATING FLOOR AT: "+ (g_TOP_FLOOR-80));
     /*
         Initial settings that can be overwritten
     */
-    this.sprite = g_sprites.testplat;
+    this.sprite = g_sprites.platform.normal.whole;
     this.platHeight = this.sprite.height;
     this.platWidth = this.sprite.width;
     this.scale  = this.scale  || 1;

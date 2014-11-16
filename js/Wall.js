@@ -8,7 +8,8 @@ function Wall(descr) {
     this.sprite = g_sprites.wallsprite;
     this.wallHeight = this.sprite.height;
     this.wallWidth = this.sprite.width;
-    
+    g_left_side = this.wallWidth/2;
+    g_right_side = g_canvas.width - this.wallWidth/2;
     this.setup(descr);
     
     this.halfWidth = this.wallHeight/2;

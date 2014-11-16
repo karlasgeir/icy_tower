@@ -22,7 +22,7 @@ var g_notification = {
 g_notification.render = function(ctx) {
 
 	if (!gameOver) {
-		g_sprites.go.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
+		g_sprites.notifications.go.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
 	}
 }
 
@@ -46,7 +46,7 @@ g_notification.update = function (du) {
 		this.rotation = 0;
 		this.timeInMiddle -=du;
 	}
-	if (this.timeInMiddle <= 0 && this.cx<=g_canvas.width+g_sprites.go.width/2) {
+	if (this.timeInMiddle <= 0 && this.cx<=g_canvas.width+g_sprites.notifications.go.width/2) {
 		this.speed = 50;
 		this.cx +=this.speed*du;
 	}
