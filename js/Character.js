@@ -219,12 +219,19 @@ Character.prototype.makeFlames = function () {
     var relVelX = dX * relVel;
     var relVelY = -dY * relVel;
 
+    var randomFactor = util.randRange(-1,1);
+    var demonVelX = this.velX;
+    var demonVelY = this.velY;
+
+    var flameVelX = randomFactor*(-this.velX - relVelX); 
+    var flameVelY = randomFactor*(this.velY -relVelY);
+
     //Generate the flame
     entityManager.generateFlame(
         this.cx + dX * launchDist, 
         this.cy + dY * launchDist,
-        -this.velX - relVelX, 
-        -this.velY - relVelY,
+        flameVelX, 
+        flameVelY,
         this.rotation);
     
 
