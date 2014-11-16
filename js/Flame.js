@@ -34,7 +34,7 @@ Flame.prototype.cy = 200;
 Flame.prototype.velX = 1;
 Flame.prototype.velY = 1;
 
-Flame.prototype.Cd = 1; //Drag coefficient
+Flame.prototype.Cd = 0.47; //Drag coefficient
 Flame.prototype.rho = 1.22; //density of what the ball is in, in this case air
 Flame.prototype.ag = 1; //grav
 Flame.prototype.mass = 0.1; //mass of the ball
