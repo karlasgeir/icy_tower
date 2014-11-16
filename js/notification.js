@@ -1,5 +1,5 @@
-
-notificationSprite = function () {
+"use strict";
+var notificationSprite = function () {
 	var currentNotification;
 	/*
 	IF COMBO equals 20

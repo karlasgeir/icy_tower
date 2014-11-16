@@ -97,6 +97,7 @@ init: function() {
     //Reset variables
     g_SCORE = 0;
     g_GAME_HEIGHT  = 0;
+    g_SCORE = new Score();
     //Reset things
     this.resetCharacters();
     this.resetWalls();

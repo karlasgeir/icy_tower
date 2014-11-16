@@ -40,6 +40,4 @@ var g_MENU_SCREEN = true;
 
 var g_TOP_FLOOR = g_canvas.height;
 
-var g_SCORE = 0;
-
-var g_COMBO_MULTIPLIER = 1;
+var g_SCORE;
