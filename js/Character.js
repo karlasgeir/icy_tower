@@ -228,13 +228,14 @@ Character.prototype.makeFlames = function () {
     var relVelX = dX * relVel;
     var relVelY = dY * relVel;
 
-    var randomFactor = util.randRange(-1,1);
+    var randomFactor = util.randRange(-3,3);
 
-    var flameVelX = randomFactor*(-this.velX - relVelX); 
-    var flameVelY = randomFactor*(-this.velY - relVelY);
+    var flameVelX = randomFactor*(+this.velX + relVelX); 
+    var flameVelY = randomFactor*(this.velY + relVelY);
 
     //Generate the flame
-    if (entityManager._flame.length>=8) {return;}
+    //You can limit the amount created like this
+    //if (entityManager._flame.length>10) {return;}       <-----------
     entityManager.generateFlame(
         this.cx + dX * launchDist, 
         this.cy + dY * launchDist,
