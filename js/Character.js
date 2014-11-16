@@ -200,6 +200,7 @@ Character.prototype.computeRotation = function(du){
     update function
 */
 Character.prototype.computeSubStep = function (du) {
+    console.log(this.cx,this.cy);
     //Performs the wallBounce
     this.wallBounce();
     //Register the position before change
@@ -208,13 +209,13 @@ Character.prototype.computeSubStep = function (du) {
     
     //Check for special cases
     this.checkCases();
-    
+   
     //Compute the x acceleration
     this.computeAccelX(du);
 
     //Apply the x acceleration
     this.applyAccelX(du);
-
+  
     //Compute the y acceleration
     this.accelY = -this.computeThrustMag();
     this.accelY += this.computeGravity();
@@ -498,7 +499,7 @@ Character.prototype.gameOver = function () {
             g_GAME_HEIGHT  = 0;
             g_background.cx = 0;
             //TODO: all globals should be marked with g_ prefix
-            NUMBER_OF_PLATFORMS = 8;
+            g_NUMBER_OF_PLATFORMS = 0;
             //TODO: we should be resetting everything in the entity manager instead
             this.reset();
             g_background.cy = 0;
@@ -564,8 +565,6 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     //Check if the jump is rotational
     this.checkForRotation(velX,velY);
     
-    console.log(this._animation.Frame);
-
     //Check if in transition
     if(
         this._goingLeft && velX > 0         //Transition from left to right
@@ -589,6 +588,7 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     if(this._jumping){
         //If we are bouncing of the wall
         if(this.isBouncing){
+            if(this._animation.Frame > 1) this._animation.Frame = 0;
             this.activeSprite = sprite_base.edge[this._animation.Frame];
             if(this._animation.Frame === 0){
                 this._animation.Frame =1;
@@ -610,6 +610,7 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
             this._animation.Frame = 0;
         }
         else{
+            if(this._animation.Frame > 1) this._animation.Frame = 0;
             this.activeSprite = sprite_base.jump[this._animation.Frame];
             if(this._animation.Frame === 0){
                 this._animation.Frame =1;
@@ -618,7 +619,7 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     }
     else{
         if(velX === 0){
-            if(this._animation.Frame >2) this._animation.Frame = 0;
+            if(this._animation.Frame > 2) this._animation.Frame = 0;
             this.activeSprite = this.sprite.idle[this._animation.Frame];
             if(this._animation.Frame === 0 && this._animation.Reverse){
                 this._animation.Reverse = false;
@@ -631,6 +632,7 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
             
         }
         else{
+            if(this._animation.Frame > 3) this._animation.Frame=0;
             this.activeSprite = sprite_base.walk[this._animation.Frame];
             if(this._animation.Frame === 0 && this._animation.Reverse){
                 this._animation.Reverse = false;

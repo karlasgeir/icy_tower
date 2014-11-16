@@ -6,8 +6,6 @@ function handleMousedown(evt) {
     g_mX = event.pageX - g_canvas.offsetLeft;
     g_mY = event.pageY - g_canvas.offsetTop;
     g_mDown=true;
-    console.log('x: '+g_mX);
-    console.log('y: '+g_mY);
 
     if (gameOver && g_MENU_SCREEN) {
         if ((g_mX>=278 && g_mX<=519) && (g_mY>=270 && g_mY<=330)) {

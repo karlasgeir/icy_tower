@@ -4,16 +4,17 @@
 "use strict";
 /* jshint browser: true, devel: true, globalstrict: true */
 // A generic contructor which accepts an arbitrary descriptor object
-
+var SPACE_BETWEEN_PLATFORMS = 80;
 function Platform(descr) {
-
+    g_NUMBER_OF_PLATFORMS += 1;
 	this.setup(descr);
     this.sprite = g_sprites.testplat;
     this.platHeight = this.sprite.height;
     this.platWidth = this.sprite.width;
     this.halfWidth = this.platWidth/2;
     this.halfHeight = this.platHeight/2;
-
+    //TODO: change from magic number
+    this.cy = g_TOP_FLOOR -= SPACE_BETWEEN_PLATFORMS;
     this.scale  = this.scale  || 1;
 
     this.platScale();
@@ -46,6 +47,7 @@ Platform.prototype.render = function (ctx) {
 };
 
 
+
 Platform.prototype.update = function (du) {
 
 	spatialManager.unregister(this);
@@ -58,11 +60,10 @@ Platform.prototype.update = function (du) {
 
     if (this.cy>g_canvas.height+this.platHeight) {
     	this.kill();
-        this.cy = -20;
-        entityManager.makeNewPlatform(this.cy);
+        //this.cy = -20;
+        entityManager.generatePlatform();
     }
     this.reset(ctx);
-
     if(g_GAME_HEIGHT > 0)
     { 
         this.cy += this.verticalSpeed*du;

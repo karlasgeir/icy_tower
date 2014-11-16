@@ -29,7 +29,6 @@ _characters: [],
 _platforms: [],
 _Walls: [],
 _bShowPlatforms: true,
-base_cy: 0,
 
 // "PRIVATE" METHODS
 
@@ -50,17 +49,12 @@ KILL_ME_NOW : -1,
 // Some things must be deferred until after initial construction
 // i.e. thing which need `this` to be defined.
 //
-
 _generateInitialPlatforms : function() {
-    
-    for (var i = 0; i<NUMBER_OF_PLATFORMS; i++) {
-        this.generatePlatform({
-            scale: this.scale,
-            cy: this.base_cy
-        });
-        this.base_cy +=80;
+    var INITIAL_PLATFORMS = 9;
+    console.log("GENERATING PLATFORMS");
+    for (var i = 0; i<INITIAL_PLATFORMS; i++) {
+        this.generatePlatform();
     }
-    this.base_cy = 0;
 },
 
 _generateWall : function() {
@@ -119,18 +113,6 @@ togglePlatforms: function() {
     this._bShowPlatforms = !this._bShowPlatforms;
 },
 
-makeNewPlatform: function(y) {
-
-    var platHeight = g_sprites.testplat.height;
-    NUMBER_OF_PLATFORMS +=1;
-
-    var count = NUMBER_OF_PLATFORMS;
-    if (count>0) {
-        this.generatePlatform({
-            cy: y
-        });
-    }
-},
 
 update: function(du) {
 
@@ -155,11 +137,16 @@ update: function(du) {
                 ++i;
             }
         }
-        //Hækkum game height
-        g_GAME_HEIGHT += g_MOVE_SCREEN*du;
-        if (g_GAME_HEIGHT> g_GAME_TOP_HEIGHT){ 
-            g_GAME_TOP_HEIGHT = g_GAME_HEIGHT;
-        }
+        
+    }
+    //Hækkum game height
+    g_GAME_HEIGHT += g_MOVE_SCREEN*du;
+    if (g_GAME_HEIGHT> g_GAME_TOP_HEIGHT){ 
+        g_GAME_TOP_HEIGHT = g_GAME_HEIGHT;
+    }
+    if(g_GAME_HEIGHT !== 0){
+        console.log(g_TOP_FLOOR);
+        g_TOP_FLOOR += (g_MOVE_SCREEN + Platform.prototype.verticalSpeed)*du;
     }
 },
 

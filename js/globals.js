@@ -23,7 +23,7 @@ var NOMINAL_UPDATE_INTERVAL = 16.666;
 var SECS_TO_NOMINALS = 1000 / NOMINAL_UPDATE_INTERVAL;
 
 //Other globals
-var NUMBER_OF_PLATFORMS = 8;
+var g_NUMBER_OF_PLATFORMS = 0;
 
 var gameOver = true;
 
@@ -37,3 +37,5 @@ var g_right_side = g_canvas.width;
 
 var g_GAME_SCORE=0;
 var g_MENU_SCREEN = true;
+
+var g_TOP_FLOOR = g_canvas.height;
