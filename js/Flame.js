@@ -34,7 +34,7 @@ Flame.prototype.cy = 200;
 Flame.prototype.velX = 1;
 Flame.prototype.velY = 1;
 
-Flame.prototype.Cd = 0.47; //Drag coefficient
+Flame.prototype.Cd = 0.47; //coefficient of drag
 Flame.prototype.rho = 1.22; //density of what the ball is in, in this case air
 Flame.prototype.ag = 1; //grav
 Flame.prototype.mass = 0.1; //mass of the ball
@@ -104,6 +104,7 @@ Flame.prototype.computeGravity = function(du) {
 }
 
 Flame.prototype.getRadius = function () {
+    console.log((this.activeSprite.width/2)*0.9);
     //return (this.activeSprite.width / 2) * 0.9;       <----------
     //Þetta skilar stundum einhverju rugli yfir í
     //Fx og Fy í gegnum A
@@ -114,7 +115,7 @@ Flame.prototype.pickSprite = function() {
 
     var sprite_base = this.sprite;
 
-    if (this._animFrame>8) {
+    if (this._animFrame>=9) {
         this._animFrame = 0;
     }
 

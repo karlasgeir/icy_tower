@@ -70,7 +70,7 @@ Character.prototype.NOMINALS = {
     FALL_LENGTH: 600,               //The lenght that the character has to fall to die
     BOUNCE_ROTATION: 1.5,           //The velocity multiplier when bouncing off the wall rotating
     BOUNCE:1,                       //The velocity multiplier when bouncing off the wall normally
-    FIRE_LAUNCH_MULTIPLIER:1.25     //How far from the character fire will spit out
+    FIRE_LAUNCH_MULTIPLIER:-2     //How far from the character fire will spit out
 };
 
 
