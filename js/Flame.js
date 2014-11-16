@@ -34,6 +34,11 @@ Flame.prototype.cy = 200;
 Flame.prototype.velX = 1;
 Flame.prototype.velY = 1;
 
+Flame.prototype.Cd = 1; //Drag coefficient
+Flame.prototype.rho = 1.22; //density of what the ball is in, in this case air
+Flame.prototype.ag = 1; //grav
+Flame.prototype.mass = 0.1; //mass of the ball
+
 Flame.prototype.lifeSpan = 300 / NOMINAL_UPDATE_INTERVAL;
 
 Flame.prototype.update = function (du) {
@@ -47,17 +52,8 @@ Flame.prototype.update = function (du) {
     this.lifeSpan -= du;
 
     if (this.lifeSpan < 0) return entityManager.KILL_ME_NOW;
-
     
-    
-    var accelY=0.5;
-    accelY += this.computeGravity();
-    
-    var finalv = this.velY + accelY*du;
-    this.velY = (this.velY + finalv)/2;
-    
-    this.cx += this.velX * du;
-    this.cy += this.velY * du;
+    this.applyGravity(du);
 
     this.rotation += 1 * du;
     this.rotation = util.wrapRange(this.rotation,
@@ -66,6 +62,41 @@ Flame.prototype.update = function (du) {
     //this.wrapPosition();
 };
 
+Flame.prototype.applyGravity = function (du) {
+
+    //Kemur magic number úr this.getRadius() í bili, sjá getRadius()
+    var A = Math.PI*this.getRadius()*this.getRadius()/1000;
+
+    // Drag force: Fd = -1/2 * Cd * A * rho * v * v
+    var Fx = -0.5 * this.Cd * A * this.rho * this.velX * this.velX * this.velX / Math.abs(this.velX);
+    var Fy = -0.5 * this.Cd * A * this.rho * this.velY * this.velY * this.velY / Math.abs(this.velY);
+            
+    Fx = (isNaN(Fx) ? 0 : Fx);
+    Fy = (isNaN(Fy) ? 0 : Fy);
+            
+    // Calculate acceleration ( F = ma )
+    var ax = Fx / this.mass;
+    var ay = this.ag + (Fy / this.mass);
+
+    //console.log(ax);
+    //console.log(ay);
+
+    console.log(Fy);
+
+    // Integrate to get velocity
+    this.velX += ax*du;
+    this.velY += ay*du;
+
+    //console.log('velx: ' + this.velX);
+    //console.log('vely: ' + this.velY);
+            
+    // Integrate to get position
+    this.cx += this.velX*du;
+    this.cy += this.velY*du;
+    
+};
+
+
 var NOMINAL_GRAVITY = 1;
 
 Flame.prototype.computeGravity = function(du) {
@@ -73,7 +104,10 @@ Flame.prototype.computeGravity = function(du) {
 }
 
 Flame.prototype.getRadius = function () {
-    return 4;
+    //return (this.activeSprite.width / 2) * 0.9;       <----------
+    //Þetta skilar stundum einhverju rugli yfir í
+    //Fx og Fy í gegnum A
+    return 2;
 };
 
 Flame.prototype.pickSprite = function() {
