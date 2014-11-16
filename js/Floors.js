@@ -60,11 +60,10 @@ Platform.prototype.update = function (du) {
     	this.kill();
         this.cy = -20;
         entityManager.makeNewPlatform(this.cy);
-        console.log(entityManager._platforms[8]);
     }
+    
     this.reset(ctx);
 
-    console.log("GAME HEIGHT",g_GAME_HEIGHT);
     if(g_GAME_HEIGHT > 0)
     { 
         this.cy += this.verticalSpeed*du;

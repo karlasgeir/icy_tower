@@ -7,7 +7,7 @@
 function Character(descr) {
 
     // Common inherited setup logic from Entity
-    this._scale = 1;
+    this.scale  = this.scale  || 1;
     this.rememberResets();
     this._jumping = false;
     this._falling = false;
@@ -53,6 +53,7 @@ Character.prototype.cy = 200;
 Character.prototype.velX = 0;
 Character.prototype.velY = 0;
 Character.prototype.numSubSteps = 1;
+Character.prototype.flameVelocity = 6;
 Character.prototype.speed = 0;
 
 // HACKED-IN AUDIO (no preloading)
@@ -128,6 +129,31 @@ Character.prototype.handleCollision = function(du){
     }   
 };
 
+Character.prototype.makeFlames = function () {
+
+        if (!this._rotationJump) {return;}
+
+        var accelY = -this.computeThrustMag();
+        accelY += this.computeGravity();
+
+        var dX = -Math.sin(this.rotation);
+        var dY = +Math.cos(this.rotation);
+        var launchDist = this.getRadius() * 1.2;
+
+        var relVel = this.flameVelocity;
+        var relVelX = dX * relVel;
+        var relVelY = -dY * relVel;
+
+        entityManager.generateFlame(
+            this.cx + dX * launchDist, 
+            this.cy + dY * launchDist,
+            -this.velX - relVelX, 
+            -this.velY - relVelY,
+            this.rotation);
+    
+
+}
+
 // Function that rotates the character
 var NOMINAL_ROTATION_RATE = 0.2;
 Character.prototype.computeRotation = function(du){
@@ -147,6 +173,8 @@ Character.prototype.computeSubStep = function (du) {
 
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
+
+    this.makeFlames();
     
     if (this.velY === 0 && (g_GAME_HEIGHT === 0 || !this.currPlatform)) {
         this._jumping = false;
@@ -295,7 +323,6 @@ Character.prototype.computeSpeed = function(){
             this.velX -= NOMINAL_SPEED;
         }
     } 
-    else return 0;
 };
 
 Character.prototype.sharpTurns = function () {
@@ -390,7 +417,7 @@ Character.prototype.wallBounce = function (velX, velY) {
 };
 
 Character.prototype.getRadius = function () {
-    return this.scale*(this.sprite.width / 2) * 0.9;
+    return (this.activeSprite.width / 2) * 0.9;
 };
 
 
