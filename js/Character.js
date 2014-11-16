@@ -465,11 +465,18 @@ Character.prototype.computeThrustMag = function () {
 /*
     This function implements the wall bounce
 */
+var REBOUNCE_LIMIT = 100;
 Character.prototype.wallBounce = function () {
-
-    if (this.isBouncing) {
-        return;
+    if(this.isBouncing){
+        if(this.cx+this.activeSprite.width/2 + REBOUNCE_LIMIT >= g_right_side ||
+        (this.cx-this.activeSprite.width/2 - REBOUNCE_LIMIT <= g_left_side)){
+            return;
+        }
+        else{
+            this.isBouncing = false;
+        }
     }
+
     if(this.cx+this.activeSprite.width/2 >= g_right_side ||
         (this.cx-this.activeSprite.width/2 <= g_left_side)) {
         this._goingRight = !this._goingRight;
@@ -484,7 +491,6 @@ Character.prototype.wallBounce = function () {
             return this.velX *=-1, this.velY *= 1;
         }
     }
-    else this.isBouncing = false;
 };
 
 Character.prototype.gameOver = function () {
