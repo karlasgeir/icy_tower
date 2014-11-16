@@ -86,19 +86,22 @@ Platform.prototype.update = function (du) {
 
     //Check if it goes under the canvas
     if (this.cy>g_canvas.height+this.platHeight) {
+        //Kill it
     	this.kill();
+        //Create a new platform at top
         entityManager.generatePlatform();
     }
+    //If the screen has been moved once
     if(g_GAME_HEIGHT > 0)
     { 
+        //Begin scrolling
         this.cy += this.verticalSpeed*du;
     }
 
-    if(gameOver && g_menu.gameStarted){
-        return; 
+    //If game is over
+    if(!gameOver){
+         spatialManager.register(this);
     }   
-
-    spatialManager.register(this);
 
 };
 
