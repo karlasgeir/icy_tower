@@ -65,6 +65,9 @@ _generateWall : function() {
     });
 },
 
+/*
+    This function generates a flame
+*/
 generateFlame: function(cx, cy, velX, velY, rotation) {
     this._flame.push(new Flame({
         cx   : cx,

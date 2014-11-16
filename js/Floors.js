@@ -91,10 +91,7 @@ Platform.prototype.update = function (du) {
         //Kill it
     	this.kill();
         entityManager.generatePlatform();
-    }
-    
-    this.reset(ctx);
-    
+    }    
     //If the screen has been moved once
     if(g_GAME_HEIGHT > 0)
     { 

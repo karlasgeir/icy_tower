@@ -49,6 +49,9 @@ function Character(descr) {
 //Create an Entity
 Character.prototype = new Entity();
 
+/*
+    These are various nominal values
+*/
 Character.prototype.NOMINALS = {
     ROTATION_RATE: 15,              //Rate of rotation in rotation jump
     ANIM_FRAME_RATE: 12,            //Rate of sprite changes actually lower is faster
@@ -66,7 +69,8 @@ Character.prototype.NOMINALS = {
     THRUST: 30,                     //The nominal jump thrust
     FALL_LENGTH: 600,               //The lenght that the character has to fall to die
     BOUNCE_ROTATION: 1.5,           //The velocity multiplier when bouncing off the wall rotating
-    BOUNCE:1                        //The velocity multiplier when bouncing off the wall normally
+    BOUNCE:1,                       //The velocity multiplier when bouncing off the wall normally
+    FIRE_LAUNCH_MULTIPLIER:1.25     //How far from the character fire will spit out
 };
 
 
@@ -198,28 +202,30 @@ Character.prototype.handleCollision = function(du){
     }   
 };
 
-
+/*
+    This function creates the flames
+*/
 Character.prototype.makeFlames = function () {
+    //Flames are only created if the jump is rotational 
+    if (!this._rotationJump) {return;}
+    //Get the rotational offset
+    var dX = -Math.sin(this.rotation);
+    var dY = +Math.cos(this.rotation);
+    //Set the launch distance
+    var launchDist = this.getRadius() * this.NOMINALS.FIRE_LAUNCH_MULTIPLIER;
 
-        if (!this._rotationJump) {return;}
+    //Calculate the x and y velocities
+    var relVel = this.flameVelocity;
+    var relVelX = dX * relVel;
+    var relVelY = -dY * relVel;
 
-        var accelY = -this.computeThrustMag();
-        accelY += this.computeGravity();
-
-        var dX = -Math.sin(this.rotation);
-        var dY = +Math.cos(this.rotation);
-        var launchDist = this.getRadius() * 1.2;
-
-        var relVel = this.flameVelocity;
-        var relVelX = dX * relVel;
-        var relVelY = -dY * relVel;
-
-        entityManager.generateFlame(
-            this.cx + dX * launchDist, 
-            this.cy + dY * launchDist,
-            -this.velX - relVelX, 
-            -this.velY - relVelY,
-            this.rotation);
+    //Generate the flame
+    entityManager.generateFlame(
+        this.cx + dX * launchDist, 
+        this.cy + dY * launchDist,
+        -this.velX - relVelX, 
+        -this.velY - relVelY,
+        this.rotation);
     
 
 }

@@ -38,8 +38,6 @@ Flame.prototype.lifeSpan = 600 / NOMINAL_UPDATE_INTERVAL;
 
 Flame.prototype.update = function (du) {
 
-    spatialManager.unregister(this);
-
     this.pickSprite();
 
     if (this._isDeadNow) {
@@ -67,8 +65,6 @@ Flame.prototype.update = function (du) {
                                    0, consts.FULL_CIRCLE);
 
     //this.wrapPosition();
-
-    spatialManager.register(this);
 };
 
 var NOMINAL_GRAVITY = 1;
