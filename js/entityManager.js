@@ -51,7 +51,6 @@ KILL_ME_NOW : -1,
 //
 _generateInitialPlatforms : function() {
     var INITIAL_PLATFORMS = 9;
-    console.log("GENERATING PLATFORMS");
     for (var i = 0; i<INITIAL_PLATFORMS; i++) {
         this.generatePlatform();
     }
@@ -81,21 +80,36 @@ generateWalls : function(descr) {
 },
 
 init: function() {
+    //Reset variables
+    g_GAME_HEIGHT  = 0;
+    g_NUMBER_OF_PLATFORMS = 0;
+    g_TOP_FLOOR = g_canvas.height;
+    //Kill the platforms
+    entityManager.killPlatforms();
+    //Reset things
+    this.resetCharacters();
+    this.resetWalls();
+    //Generate the inital plaforms
     this._generateInitialPlatforms();
-    //this._generateShip();
+    //Generate the walls
     this._generateWall();
 },
 
 killPlatforms: function () {
-    var c = 0;
-    while (c < this._platforms.length) {
+    var c = this._platforms.length-1;
+    while (c >= 0) {
         spatialManager.unregister(this._platforms[c]);
-        this._platforms.splice(c, 1);
-        ++c;
+        this._platforms.splice(0, 1);
+        --c;
     }
+    
 },
 resetCharacters: function() {
     this._forEachOf(this._characters, Character.prototype.reset);
+},
+resetPlatforms: function() {
+    this.killPlatforms();
+    this._forEachOf(this._platforms, Platform.prototype.reset);
 },
 
 resetWalls: function() {
@@ -107,6 +121,9 @@ haltCharacters: function() {
 },	
 haltWalls: function() {
     this._forEachOf(this._Walls, Wall.prototype.halt);
+},
+haltPlatforms: function() {
+    this._forEachOf(this._platforms, Platform.prototype.halt);
 },
 
 togglePlatforms: function() {
@@ -145,7 +162,6 @@ update: function(du) {
         g_GAME_TOP_HEIGHT = g_GAME_HEIGHT;
     }
     if(g_GAME_HEIGHT !== 0){
-        console.log(g_TOP_FLOOR);
         g_TOP_FLOOR += (g_MOVE_SCREEN + Platform.prototype.verticalSpeed)*du;
     }
 },

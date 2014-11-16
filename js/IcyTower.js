@@ -234,7 +234,6 @@ function preloadDone() {
 
    
 
-    entityManager.init();
     createInitialCharacter();
 
     main.init();

@@ -62,6 +62,10 @@ Wall.prototype.update = function (du) {
     }
 };
 
+Wall.prototype.halt = function(){
+    this.verticalSpeed = 0;
+}
+
 Wall.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
     this.halt();

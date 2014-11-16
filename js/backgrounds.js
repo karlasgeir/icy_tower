@@ -12,7 +12,11 @@ var g_background =  {
 backgroundPic = function() {
 	var currentSprite;
 	//set our background image based on level
-	if (gameOver) {
+	if (gameOver && !g_menu.gameStarted){
+        g_background.cy = 0;
+        g_background.cx = 0;
+    }
+    if (gameOver) {
 		currentSprite = g_sprites.backgroundMenu;
 	}
     if (!gameOver) {

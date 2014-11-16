@@ -200,7 +200,6 @@ Character.prototype.computeRotation = function(du){
     update function
 */
 Character.prototype.computeSubStep = function (du) {
-    console.log(this.cx,this.cy);
     //Performs the wallBounce
     this.wallBounce();
     //Register the position before change
@@ -496,13 +495,6 @@ Character.prototype.gameOver = function () {
             //GAME IS OVER
             //TODO: this should all be implemented in a game over function somewhere else (not in character)
             gameOver = true;
-            g_GAME_HEIGHT  = 0;
-            g_background.cx = 0;
-            //TODO: all globals should be marked with g_ prefix
-            g_NUMBER_OF_PLATFORMS = 0;
-            //TODO: we should be resetting everything in the entity manager instead
-            this.reset();
-            g_background.cy = 0;
     }
 };
 
