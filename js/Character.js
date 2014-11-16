@@ -70,7 +70,7 @@ Character.prototype.NOMINALS = {
     FALL_LENGTH: 600,               //The lenght that the character has to fall to die
     BOUNCE_ROTATION: 1.5,           //The velocity multiplier when bouncing off the wall rotating
     BOUNCE:1,                       //The velocity multiplier when bouncing off the wall normally
-    FIRE_LAUNCH_MULTIPLIER:1.25     //How far from the character fire will spit out
+    FIRE_LAUNCH_MULTIPLIER:0.25     //How far from the character fire will spit out
 };
 
 
@@ -99,6 +99,7 @@ Character.prototype.accelX = 0;
 Character.prototype.accelY = 0;
 Character.prototype.numSubSteps = 1;
 Character.prototype.flameVelocity = 6;
+Character.prototype.flameSpawnRate = 1 / NOMINAL_UPDATE_INTERVAL;
 Character.prototype.speed = 0;
 
 //TODO: add audio
@@ -215,31 +216,32 @@ Character.prototype.handleCollision = function(du){
 Character.prototype.makeFlames = function () {
     //Flames are only created if the jump is rotational 
     if (!this._rotationJump) {return;}
+
     //Get the rotational offset
-    var dX = -Math.sin(this.rotation);
-    var dY = +Math.cos(this.rotation);
+    var dX = +Math.sin(this.rotation);
+    var dY = -Math.cos(this.rotation);
     //Set the launch distance
     var launchDist = this.getRadius() * this.NOMINALS.FIRE_LAUNCH_MULTIPLIER;
 
     //Calculate the x and y velocities
     var relVel = this.flameVelocity;
     var relVelX = dX * relVel;
-    var relVelY = -dY * relVel;
+    var relVelY = dY * relVel;
 
     var randomFactor = util.randRange(-1,1);
-    var demonVelX = this.velX;
-    var demonVelY = this.velY;
 
     var flameVelX = randomFactor*(-this.velX - relVelX); 
-    var flameVelY = randomFactor*(this.velY -relVelY);
+    var flameVelY = randomFactor*(-this.velY - relVelY);
 
     //Generate the flame
+    if (entityManager._flame.length>=8) {return;}
     entityManager.generateFlame(
         this.cx + dX * launchDist, 
         this.cy + dY * launchDist,
         flameVelX, 
         flameVelY,
         this.rotation);
+
     
 
 }
@@ -292,11 +294,13 @@ Character.prototype.computeSubStep = function (du) {
     //Apply the y acceleration
     this.applyAccelY(du);
     
+    //Call the functions that creates flames
+    this.makeFlames();
+
+    
     //Used to deside which sprite to use
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
-
-    this.makeFlames();
     
     //Increment the animTicker
     if(this._animation.Ticker < Math.abs(this.NOMINALS.ANIM_FRAME_RATE-Math.abs(this.velX))){

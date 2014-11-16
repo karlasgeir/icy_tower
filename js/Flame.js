@@ -34,7 +34,7 @@ Flame.prototype.cy = 200;
 Flame.prototype.velX = 1;
 Flame.prototype.velY = 1;
 
-Flame.prototype.lifeSpan = 600 / NOMINAL_UPDATE_INTERVAL;
+Flame.prototype.lifeSpan = 300 / NOMINAL_UPDATE_INTERVAL;
 
 Flame.prototype.update = function (du) {
 
@@ -48,15 +48,14 @@ Flame.prototype.update = function (du) {
 
     if (this.lifeSpan < 0) return entityManager.KILL_ME_NOW;
 
-    /*
-    þetta er allt saman í vinnslu
-    var accelY=2;
+    
+    
+    var accelY=0.5;
     accelY += this.computeGravity();
     
     var finalv = this.velY + accelY*du;
     this.velY = (this.velY + finalv)/2;
-    */
-
+    
     this.cx += this.velX * du;
     this.cy += this.velY * du;
 
