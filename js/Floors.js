@@ -52,6 +52,28 @@ Platform.prototype.platPosition = function() {
     this.cx = util.randRange(leftSide  + this.scale*this.platWidth/2,rightSide - this.scale*this.platWidth/2);
 };
 
+Platform.prototype.platPicker = function() {
+
+    var sprite_base = this.sprite;
+
+    if(this.platID<100) {
+        this.activeSprite = sprite_base.normal.whole;
+    }
+    if(this.platID>=100) {
+        this.activeSprite = sprite_base.snow;
+    }
+    if(this.platID>=200) {
+        this.activeSprite = sprite_base.wood.whole;
+    }
+    if(this.platID>=300) {
+        this.activeSprite = sprite_base.lava;
+    }
+    if(this.platID>=400) {
+        this.activeSprite = sprite_base.rainbow.whole;
+    }
+
+}
+
 /*
     This function desides the scale of the platform
 */
@@ -68,6 +90,7 @@ Platform.prototype.render = function (ctx) {
     // pass my scale into the sprite, for drawing
     this.activeSprite.scale = this.scale;
     // draw the sprite
+
 	this.activeSprite.drawCentredAtScaleWidth(ctx, this.cx, this.cy);
     //reset the scale
     this.sprite.scale = origScale;
@@ -93,7 +116,7 @@ Platform.prototype.update = function (du) {
     //Unregister from spatial manager
 	spatialManager.unregister(this);
 
-
+    this.platPicker();
 
     var isHit = this.isColliding();
 
@@ -117,8 +140,9 @@ Platform.prototype.update = function (du) {
     if (this.cy>PLATFORM_KILL_LIMIT) {
         //Kill it
     	this.kill();
+        var id = g_NUMBER_OF_PLATFORMS+1;
         entityManager.generatePlatform({
-            platID: g_NUMBER_OF_PLATFORMS
+            platID: id
         });
     }    
     //If the screen has been moved once
