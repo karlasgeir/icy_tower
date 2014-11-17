@@ -51,10 +51,10 @@ Character.prototype.NOMINALS = {
     MAX_ACCELX: 0.8,                //Maximum x-acceleration of the character
     MAX_VELX:12,                    //Maximum x-velocity of the character
     JUMP_VEL: 1.25,                 //Nominal x-acceleration fraction when jumping
-    GRAVITY: 1.3,                   //Nominal acceleration do to gravity
+    GRAVITY: 1,                   //Nominal acceleration do to gravity
     ROTATION_JUMP_THRESHOLD: 10,    //the x velocity threshhold that determines
                                     //if the jump should be rottional
-    THRUST: 30,                     //The nominal jump thrust
+    THRUST: 13,                     //The nominal jump thrust
     FALL_LENGTH: 600,               //The lenght that the character has to fall to die
     BOUNCE_ROTATION: 1.5,           //The velocity multiplier when bouncing off the wall rotating
     BOUNCE:1,                       //The velocity multiplier when bouncing off the wall normally
@@ -182,7 +182,7 @@ Character.prototype.handleCollision = function(du){
     //Get the colliding platform if any
     var isHit = this.isColliding();
     //Check if colliding
-    if (isHit) {
+    if (isHit && this.velY >0) {
         if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT){ 
             var score = ((isHit.id - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier());
             score = Math.round(score);         
@@ -340,8 +340,11 @@ Character.prototype.computeSubStep = function (du) {
     this.applyAccelX(du);
   
     //Compute the y acceleration
-    this.accelY = -this.computeThrustMag();
-    this.accelY += this.computeGravity();
+    this.accelY = this.computeGravity();
+    console.log("BEFORE THRUST",this.velY);
+    this.velY -= this.computeThrustMag();
+    console.log("AFTER THRUST",this.velY);
+   
     
     //Apply the y acceleration
     this.applyAccelY(du);
@@ -459,7 +462,8 @@ Character.prototype.computeAccelX = function(du){
 */
 Character.prototype.checkCases = function(){
     //If the character is landing 
-    if (this.velY === 0 && (g_GAME_HEIGHT === 0 || !this.currPlatform)) {
+    if (this.activeSprite.height/2 + this.cy >= g_canvas.height 
+        && (g_GAME_HEIGHT === 0 || !this.currPlatform)) {
         this._jumping = false;
         this._falling = false;
         this._roationJump = false;
@@ -535,10 +539,14 @@ Character.prototype.moveScreen = function(du){
     acceleration (using average velocity)
 */
 Character.prototype.applyAccelY = function(du){
+    
     //Calculate final velocty
     var finalv = this.velY + this.accelY*du;
+    console.log("FINALV",finalv)
+
     //Calculate average velocity
     this.velY = (this.velY + finalv)/2;
+    console.log("AVGV", this.velY)
     
     //If the character is on a platform it has the same y-velocity
     //as the platform
@@ -570,10 +578,12 @@ Character.prototype.applyAccelX = function(du){
     should be returned
 */
 Character.prototype.computeGravity = function () {
-    if(this.cy+this.activeSprite.height/2 < g_canvas.height || g_GAME_HEIGHT !== 0){
+    console.log(this.accelY,this.velY);
+    if(this.cy+this.activeSprite.height/2 < g_canvas.height || g_GAME_HEIGHT !== 0 ){
         return g_useGravity ? this.NOMINALS.GRAVITY : 0;
     }
     else{
+        console.log("HERE");
         this.velY = 0;
     }
     return 0;
@@ -589,7 +599,6 @@ Character.prototype.computeThrustMag = function () {
     //Needs more work
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
         //Reset the y velocity
-        //this.velY = 0;
         this._jumping = true;
         //We don't want x-velocity to decrease jump height
         if (speedInfluence<1) {

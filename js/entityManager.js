@@ -96,7 +96,8 @@ deferredSetup : function () {
 },
 
 generatePlatform : function(descr) {
-    this._platforms.push(new Platform(descr));
+    g_TOP_FLOOR = new Platform(descr);
+    this._platforms.push(g_TOP_FLOOR);
 },
 
 generatePower : function(descr) {
@@ -204,9 +205,6 @@ update: function(du) {
     g_GAME_HEIGHT += g_MOVE_SCREEN*du;
     if (g_GAME_HEIGHT> g_GAME_TOP_HEIGHT){ 
         g_GAME_TOP_HEIGHT = g_GAME_HEIGHT;
-    }
-    if(g_GAME_HEIGHT !== 0){
-        g_TOP_FLOOR += (g_MOVE_SCREEN + Platform.prototype.verticalSpeed)*du;
     }
 },
 
