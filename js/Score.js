@@ -5,8 +5,8 @@ function Score() {
     this.comboMultiplier= 1;
     this.topDist = 10;
     this.rightDist = 10;
-    this.distbetween = 5;
-    this.scale = 1;
+    this.distbetween = 1;
+    this.scale = 0.7;
     this.sprite = g_sprites.numbers;
     this.cy = this.sprite[0].height/2 + this.topDist;
 };
@@ -31,7 +31,7 @@ Score.prototype.setComboMultiplier = function(combo){
 Score.prototype.render = function(ctx){
     var spritescore = this.createSpriteScore();
     var cx = g_canvas.width - this.rightDist - this.getWidth();
-    this.draw(ctx,cx,this.cy,this.distbetween,spritescore);
+    this.draw(ctx,cx,this.cy,this.distbetween,spritescore,this.scale);
 }
 
 Score.prototype.createSpriteScore = function(){
@@ -49,9 +49,13 @@ Score.prototype.renderFinalScore = function(ctx,x,cy){
     this.draw(ctx,cx,cy,this.distbetween,this.createSpriteScore());
 }
 
-Score.prototype.draw = function(ctx,cx,cy,distbetween,sprites){
+Score.prototype.draw = function(ctx,cx,cy,distbetween,sprites,scale){
+    if(scale === undefined) scale = 1;
     sprites.forEach(function(number){
+        var oldscale = number.scale;
+        number.scale = scale;
         number.drawCentredAt(ctx,cx,cy);
+        number.scale = oldscale;
         cx += number.width + distbetween
     });
 }

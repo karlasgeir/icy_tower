@@ -250,8 +250,6 @@ Character.prototype.makeFlames = function () {
 
 }
 
-// Function that rotates the character
-var NOMINAL_ROTATION_RATE = 0.2;
 
 /*
     This function checks if the character should be
@@ -454,67 +452,6 @@ Character.prototype.moveScreen = function(du){
     }
 };
 
-Character.prototype.gameOver = function () {
-        var fallLength = 600;
-        if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.activeSprite.height/2 > g_canvas.height) {
-            gameOver = true;
-            g_GAME_HEIGHT  = 0;
-            g_background.cx = 0;
-            NUMBER_OF_PLATFORMS = 8;
-            this.reset();
-            g_background.cy = 0;
-    }
-};
-
-var NOMINAL_SPEED = 0.25;
-var NOMINAL_SLOW = 2;
-var MAX_SPEED = 18;
-
-Character.prototype.computeSpeed = function(){
-    
-    // console.log(this._jumping);
-    if (this._jumping) {
-        NOMINAL_SPEED = 1.25;
-    } else {
-        NOMINAL_SPEED = 1;
-    }
-   
-    if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT]) {
-        if (this.velX===0) {return;}
-        if (this.velX<0) {
-            if(this.velX + NOMINAL_SLOW >0) this.velX=0;
-            else this.velX += NOMINAL_SLOW;
-        }
-        if (this.velX>0) {
-            if(this.velX + NOMINAL_SLOW <0) this.velX=0;
-            else this.velX -= NOMINAL_SLOW;
-        }
-    }
-    if(keys[this.KEY_RIGHT]) {
-
-        this._goingRight = true;
-        this._goingLeft =  false;
-
-        if(this.velX + NOMINAL_SPEED > MAX_SPEED) {
-            this.velX = MAX_SPEED;
-        }
-        else {
-            this.velX += NOMINAL_SPEED;
-        }
-    }
-    else if(keys[this.KEY_LEFT]) {
-
-        this._goingRight = false;
-        this._goingLeft =  true;
-
-        if(this.velX - NOMINAL_SPEED < -MAX_SPEED) {
-            this.velX = -MAX_SPEED;
-        }
-        else {
-            this.velX -= NOMINAL_SPEED;
-        }
-    } 
-};
 
 /*
     This function applys the y component of the
@@ -637,6 +574,7 @@ Character.prototype.getRadius = function () {
     Function to reset the character
 */
 Character.prototype.reset = function () {
+    TOP_PADDLE_HIT_HIGHT = 0;
     this.setPos(this.reset_cx, this.reset_cy);
     this.halt();
 };
