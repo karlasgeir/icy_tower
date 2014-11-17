@@ -481,11 +481,8 @@ Character.prototype.checkCases = function(){
         this._goingRight = false;
         this.isOnFire = false;
     }
-    if (this.velX > 0 || this.velX <0) {
+    if (this.velX !== 0) {
         this.isOnFire = true;
-    }
-    if(this.velY !==this.currPlatform.verticalSpeed) {
-        this.isOnFire = false;
     }
 }
 
@@ -682,7 +679,7 @@ Character.prototype.render = function (ctx) {
     //Reset the scale
     this.sprite.scale = origScale;
 
-    if((this.velY ===0 || this.currPlatform) && this.isOnFire){
+    if((this.velY === 0 || this.currPlatform) && this.isOnFire){
         if(this._animation.FireFrame < g_sprites.fire.length-1){
             g_sprites.fire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.activeSprite.width/6,this.cy+this.activeSprite.height/6);
             this._animation.FireFrame += 1;
