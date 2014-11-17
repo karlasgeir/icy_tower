@@ -92,7 +92,7 @@ generateFlame: function(cx, cy, velX, velY, rotation) {
 },
 
 deferredSetup : function () {
-    this._categories = [this._platforms,this._characters,this._Walls, this._flame, this._Explotions];
+    this._categories = [this._platforms,this._characters,this._Walls, this._flame, this._Explotions, this._power];
 },
 
 generatePlatform : function(descr) {
