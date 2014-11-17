@@ -30,14 +30,8 @@ Score.prototype.setComboMultiplier = function(combo){
 
 Score.prototype.render = function(ctx){
     var spritescore = this.createSpriteScore();
-    var cx = g_canvas.width - this.rightDist - spritescore.length*g_sprites.numbers[0].width;
-    var cy = this.cy;
-    console.log(this.score,cx,cy);
-    var distbetween = this.distbetween;
-    spritescore.forEach(function(number){
-        number.drawCentredAt(ctx,cx,cy);
-        cx += number.width + distbetween
-    });
+    var cx = g_canvas.width - this.rightDist - this.getWidth();
+    this.draw(ctx,cx,this.cy,this.distbetween,spritescore);
 }
 
 Score.prototype.createSpriteScore = function(){
@@ -48,4 +42,26 @@ Score.prototype.createSpriteScore = function(){
         spriteArray.push(sprite[int]);
     });
     return spriteArray;
+}
+
+Score.prototype.renderFinalScore = function(ctx,x,cy){
+    var cx = x+this.sprite[0].width/2;
+    this.draw(ctx,cx,cy,this.distbetween,this.createSpriteScore());
+}
+
+Score.prototype.draw = function(ctx,cx,cy,distbetween,sprites){
+    sprites.forEach(function(number){
+        number.drawCentredAt(ctx,cx,cy);
+        cx += number.width + distbetween
+    });
+}
+
+Score.prototype.getWidth = function(){
+    var scoreArray = (""+this.score).split('');
+    var sprite = this.sprite;
+    var width = 0;
+    scoreArray.forEach(function(int){
+        width += sprite[int].width;
+    });
+    return width + this.distbetween*(scoreArray.length);
 }

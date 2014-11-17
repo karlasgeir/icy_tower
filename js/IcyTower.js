@@ -223,7 +223,7 @@ function preloadDone() {
         3: new Sprite(g_images.numbers,58,67,419,155),
         4: new Sprite(g_images.numbers,61,68,290,29),
         5: new Sprite(g_images.numbers,49,65,168,31),
-        6: new Sprite(g_images.numbers,71,66,157,282),
+        6: new Sprite(g_images.numbers,58,66,291,156),
         7: new Sprite(g_images.numbers,55,61,165,159),
         8: new Sprite(g_images.numbers,57,65,36,31),
         9: new Sprite(g_images.numbers,69,66,414,30),
