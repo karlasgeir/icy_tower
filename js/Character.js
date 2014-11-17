@@ -183,7 +183,7 @@ Character.prototype.handleCollision = function(du){
     var isHit = this.isColliding();
     //Check if colliding
     if (isHit) {
-        if(isHit.id > TOP_PADDLE_HIT_HIGHT){ 
+        if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT){ 
             var score = ((isHit.id - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier());
             score = Math.round(score);         
             TOP_PADDLE_HIT_HIGHT = isHit.id;
@@ -495,6 +495,9 @@ Character.prototype.computeGravity = function () {
     if(this.cy+this.activeSprite.height/2 < g_canvas.height || g_GAME_HEIGHT !== 0){
         return g_useGravity ? this.NOMINALS.GRAVITY : 0;
     }
+    else{
+        this.velY = 0;
+    }
     return 0;
 };
 
@@ -508,7 +511,7 @@ Character.prototype.computeThrustMag = function () {
     //Needs more work
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
         //Reset the y velocity
-        this.velY = 0;
+        //this.velY = 0;
         this._jumping = true;
         //We don't want x-velocity to decrease jump height
         if (speedInfluence<1) {
@@ -524,7 +527,7 @@ Character.prototype.computeThrustMag = function () {
 /*
     This function implements the wall bounce
 */
-var REBOUNCE_LIMIT = 100;
+var REBOUNCE_LIMIT = 200;
 Character.prototype.wallBounce = function () {
     if(this.isBouncing){
         if(this.cx+this.activeSprite.width/2 + REBOUNCE_LIMIT >= g_right_side ||
