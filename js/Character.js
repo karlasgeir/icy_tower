@@ -603,7 +603,7 @@ Character.prototype.render = function (ctx) {
     this.sprite.scale = origScale;
     if((this.velY ===0 || this.currPlatform) && this.isOnFire){
         if(this._animation.FireFrame < g_sprites.fire.length-1){
-            g_sprites.fire[this._animation.FireFrame].drawCentredAt(ctx,this.cx,this.cy+this.activeSprite.width/2);
+            g_sprites.fire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.activeSprite.width/6,this.cy+this.activeSprite.height/6);
             this._animation.FireFrame += 1;
         }
         else {
