@@ -340,9 +340,7 @@ Character.prototype.computeSubStep = function (du) {
   
     //Compute the y acceleration
     this.accelY = this.computeGravity();
-    console.log("BEFORE THRUST",this.velY);
     this.velY -= this.computeThrustMag();
-    console.log("AFTER THRUST",this.velY);
    
     
     //Apply the y acceleration
@@ -541,11 +539,9 @@ Character.prototype.applyAccelY = function(du){
     
     //Calculate final velocty
     var finalv = this.velY + this.accelY*du;
-    console.log("FINALV",finalv)
 
     //Calculate average velocity
     this.velY = (this.velY + finalv)/2;
-    console.log("AVGV", this.velY)
     
     //If the character is on a platform it has the same y-velocity
     //as the platform
@@ -577,12 +573,10 @@ Character.prototype.applyAccelX = function(du){
     should be returned
 */
 Character.prototype.computeGravity = function () {
-    console.log(this.accelY,this.velY);
     if(this.cy+this.activeSprite.height/2 < g_canvas.height || g_GAME_HEIGHT !== 0 ){
         return g_useGravity ? this.NOMINALS.GRAVITY : 0;
     }
     else{
-        console.log("HERE");
         this.velY = 0;
     }
     return 0;

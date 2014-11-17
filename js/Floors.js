@@ -32,7 +32,13 @@ function Platform(descr) {
     this.halfHeight = this.platHeight/2
 
     g_NUMBER_OF_PLATFORMS += 1;         //Increment the number of platforms
-    this.cy = g_TOP_FLOOR.cy - g_TOP_FLOOR.activeSprite.height/2 - SPACE_BETWEEN_PLATFORMS;
+    console.log(g_TOP_FLOOR);
+    if(g_TOP_FLOOR instanceof Platform){
+        this.cy = g_TOP_FLOOR.cy - g_TOP_FLOOR.activeSprite.height/2 - SPACE_BETWEEN_PLATFORMS;
+        console.log(this.cy);
+    }
+    else this.cy = g_canvas.height - SPACE_BETWEEN_PLATFORMS;
+    
 };
 //Create entity
 Platform.prototype = new Entity();

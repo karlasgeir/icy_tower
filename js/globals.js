@@ -38,7 +38,7 @@ var g_right_side = g_canvas.width;
 var g_GAME_SCORE=0;
 var g_MENU_SCREEN = true;
 
-var g_TOP_FLOOR = g_canvas.height;
+var g_TOP_FLOOR;
 
 var g_SCORE;
 
