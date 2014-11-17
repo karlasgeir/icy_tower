@@ -120,7 +120,6 @@ Character.prototype.update = function (du) {
         this.computeSubStep(dStep);
     }
 
-
     //Do rotation in jump
     this.computeRotation(du);
     
@@ -178,6 +177,7 @@ Character.prototype.checkPlatform = function(){
     platform and handles the collision
 */
 var TOP_PADDLE_HIT_HIGHT = 0;
+
 Character.prototype.handleCollision = function(du){
     //Get the colliding platform if any
     var isHit = this.isColliding();
@@ -200,6 +200,41 @@ Character.prototype.handleCollision = function(du){
         this.currPlatform = isHit;
     }   
 };
+ 
+var g_COMBO_PLAT_IDS = [];
+
+Character.prototype.handleCombo = function() {
+    
+    var isHit = this.isColliding();
+    var arrayLength = g_COMBO_PLAT_IDS.length;
+
+    if (this.velY<0) {return;}
+
+    if (isHit) {
+        for (var i=0; i<arrayLength; i++) {
+            if (g_COMBO_PLAT_IDS[i] === isHit.platID) {
+                return;
+            }
+        }
+        g_COMBO_PLAT_IDS.push(isHit.platID); 
+    }
+};
+
+Character.prototype.setCombo = function() {
+
+    var arrayLength = g_COMBO_PLAT_IDS.length;
+    var currentID = g_COMBO_PLAT_IDS[arrayLength-1];
+    var lastID = g_COMBO_PLAT_IDS[arrayLength-2];
+
+    var comboBreaker = currentID - lastID;
+
+    if (comboBreaker >= 2) {
+        g_COMBO = true;
+    } else {g_COMBO = false;}
+
+    console.log(g_COMBO);
+
+}
 
 /*
     This function creates the flames
@@ -225,10 +260,6 @@ Character.prototype.makeFlames = function () {
     var flameVelY = randomFactor*(this.velY + relVelY);
 
     //Generate the flame
-    //You can limit the amount created like this
-    //var scoreInfluence = Math.round(g_SCORE.getScore()/100);
-    //console.log(scoreInfluence);
-    //console.log(g_SCORE.getScore());
 
     if(entityManager._flame.length>this.NUMBER_OF_FIREBALLS) {return;}      
     entityManager.generateFlame(
@@ -263,15 +294,10 @@ Character.prototype.computeRotation = function(du){
     update function
 */
 Character.prototype.computeSubStep = function (du) {
-    //Performs the wallBounce
-    this.wallBounce();
 
     //Register the position before change
     var prevX = this.cx;
     var prevY = this.cy;
-    
-    //Check for special cases
-    this.checkCases();
    
     //Compute the x acceleration
     this.computeAccelX(du);
@@ -288,6 +314,16 @@ Character.prototype.computeSubStep = function (du) {
     
     //Call the functions that creates flames
     this.makeFlames();
+
+    //Handle combo
+    this.handleCombo();
+    this.setCombo();
+
+    //Performs the wallBounce
+    this.wallBounce();
+
+    //Check for special cases
+    this.checkCases();
    
     //Used to deside which sprite to use
     var nextX = prevX + this.velX * du;
@@ -307,7 +343,6 @@ Character.prototype.computeSubStep = function (du) {
         this._animation.FireTicker += du;
     }
     else{
-        this.isOnFire = true;
         this._animation.FireTicker = 0;
     }
 
@@ -407,6 +442,13 @@ Character.prototype.checkCases = function(){
     if(this.velX===0){
         this._goingLeft = false;
         this._goingRight = false;
+        this.isOnFire = false;
+    }
+    if (this.velX > 0 || this.velX <0) {
+        this.isOnFire = true;
+    }
+    if(this.velY !==0) {
+        this.isOnFire = false;
     }
 }
 
@@ -601,6 +643,7 @@ Character.prototype.render = function (ctx) {
     this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation);
     //Reset the scale
     this.sprite.scale = origScale;
+
     if((this.velY ===0 || this.currPlatform) && this.isOnFire){
         if(this._animation.FireFrame < g_sprites.fire.length-1){
             g_sprites.fire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.activeSprite.width/6,this.cy+this.activeSprite.height/6);
@@ -608,12 +651,10 @@ Character.prototype.render = function (ctx) {
         }
         else {
             this._animation.FireFrame = 0
-            this.isOnFire = false
         };
     }
     else {
-            this._animation.FireFrame = 0
-            this.isOnFire = false
+            this._animation.FireFrame = 0 
     };
 
    

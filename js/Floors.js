@@ -128,14 +128,10 @@ Platform.prototype.update = function (du) {
     //Unregister from spatial manager
 	spatialManager.unregister(this);
 
-    console.log(this.scaleOne);
-    console.log(this.scaleTwo);
-
     var isHit = this.isColliding();
 
     if (isHit) {
         var platID = this.getID();
-        console.log(platID);
     }
    
 

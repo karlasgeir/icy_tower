@@ -118,6 +118,8 @@ generateExplotion: function(cx,cy){
 init: function() {
     //Reset variables
     g_SCORE = 0;
+    g_COMBO_PLAT_IDS = [];
+    g_COMBO = false;
     g_GAME_HEIGHT  = 0;
     g_SCORE = new Score();
     //Reset things

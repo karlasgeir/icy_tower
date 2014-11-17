@@ -43,3 +43,4 @@ var g_TOP_FLOOR = g_canvas.height;
 var g_SCORE;
 
 var g_COMBO = false;
+

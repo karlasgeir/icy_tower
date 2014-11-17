@@ -147,6 +147,7 @@ function requestPreloads() {
         gameOver : "res/backgrounds/gameOver.png",
         score : "res/backgrounds/score.png",
         notifications : "res/comboLogos/combospritesheet.png",
+        go : "res/comboLogos/go.png",
         fireball: "res/fireballz.png",
         power: "res/powerUps/powerUpTest.png",
         wallsprite : "res/walls/bigger/wallBig2.png",
@@ -364,7 +365,7 @@ function preloadDone() {
 
     //Sprites for the notifications
     g_sprites.notifications={
-        go: new Sprite(g_images.notifications,120,86,260,272),
+        go: new Sprite(g_images.go,g_images.go.width,g_images.go.height,0,0),
         amazing: new Sprite(g_images.notifications,120,22,4,52),
         extreme: new Sprite(g_images.notifications,120,23,132,52),
         fantastic: new Sprite(g_images.notifications,120,22,260,52),
