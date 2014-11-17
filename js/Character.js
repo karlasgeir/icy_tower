@@ -202,6 +202,7 @@ Character.prototype.handleCollision = function(du){
 };
  
 var g_COMBO_PLAT_IDS = [];
+var floorsInCombo = 0;
 
 Character.prototype.handleCombo = function() {
     
@@ -216,9 +217,11 @@ Character.prototype.handleCombo = function() {
                 return;
             }
         }
-        g_COMBO_PLAT_IDS.push(isHit.platID); 
+        g_COMBO_PLAT_IDS.push(isHit.platID);
     }
 };
+
+
 
 Character.prototype.setCombo = function() {
 
@@ -232,7 +235,7 @@ Character.prototype.setCombo = function() {
         g_COMBO = true;
     } else {g_COMBO = false;}
 
-    console.log(g_COMBO);
+    //console.log(g_COMBO);
 
 }
 
@@ -343,6 +346,7 @@ Character.prototype.computeSubStep = function (du) {
         this._animation.FireTicker += du;
     }
     else{
+        this.isOnFire = false;
         this._animation.FireTicker = 0;
     }
 
@@ -447,9 +451,10 @@ Character.prototype.checkCases = function(){
     if (this.velX > 0 || this.velX <0) {
         this.isOnFire = true;
     }
-    if(this.velY !==0) {
+    if(this.velY !==Platform.prototype.verticalSpeed) {
         this.isOnFire = false;
     }
+    console.log(this.velY);
 }
 
 /*
@@ -650,13 +655,14 @@ Character.prototype.render = function (ctx) {
             this._animation.FireFrame += 1;
         }
         else {
-            this._animation.FireFrame = 0
+            this.isOnFire = false;
+            this._animation.FireFrame = 0;
         };
     }
     else {
-            this._animation.FireFrame = 0 
+        this.isOnFire = false;
+        this._animation.FireFrame = 0 
     };
-
    
 };
 
