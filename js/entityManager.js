@@ -29,11 +29,8 @@ _characters: [],
 _platforms: [],
 _Walls: [],
 _flame: [],
-<<<<<<< HEAD
 _Explotions:[],
-=======
 _power: [],
->>>>>>> c4b7c3b4ef4fd618308020239d27e21a34123da7
 _bShowPlatforms: true,
 
 // "PRIVATE" METHODS
@@ -95,11 +92,7 @@ generateFlame: function(cx, cy, velX, velY, rotation) {
 },
 
 deferredSetup : function () {
-<<<<<<< HEAD
     this._categories = [this._platforms,this._characters,this._Walls, this._flame, this._Explotions];
-=======
-    this._categories = [this._platforms,this._characters,this._Walls, this._flame, this._power];
->>>>>>> c4b7c3b4ef4fd618308020239d27e21a34123da7
 },
 
 generatePlatform : function(descr) {
