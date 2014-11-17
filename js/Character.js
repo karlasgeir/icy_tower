@@ -184,11 +184,8 @@ Character.prototype.handleCollision = function(du){
     //Check if colliding
     if (isHit) {
         if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT){ 
-            //TODO: change from magic number
             var score = ((isHit.id - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier());
-            score = Math.round(score);
-            TOP_PADDLE_HIT_HIGHT = isHit.getGameHeight();
-            g_SCORE.addToScore(score);            
+            score = Math.round(score);         
             TOP_PADDLE_HIT_HIGHT = isHit.id;
             g_SCORE.addToScore(score);
         }
