@@ -148,6 +148,7 @@ function requestPreloads() {
         score : "res/backgrounds/score.png",
         notifications : "res/comboLogos/combospritesheet.png",
         fireball: "res/fireballz.png",
+        power: "res/powerUps/powerUpTest.png",
         wallsprite : "res/walls/bigger/wallBig2.png"
     };
 
@@ -184,6 +185,10 @@ function preloadDone() {
         },
         sign:new Sprite(g_images.platform,41,21,428,431)
     };
+
+    //Power sprite
+    g_sprites.power = new Sprite(g_images.power,g_images.power.width,g_images.power.height,0,0);
+
     //Sprites for the wall
     g_sprites.wallsprite = new Sprite(g_images.wallsprite,g_images.wallsprite.width,g_images.wallsprite.height,0,0);
      //Sprites for the menus

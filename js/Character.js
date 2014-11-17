@@ -198,9 +198,7 @@ Character.prototype.handleCollision = function(du){
             var score = ((isHit.getGameHeight() - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier())/10;
             score = Math.round(score);
             TOP_PADDLE_HIT_HIGHT = isHit.getGameHeight();
-            g_SCORE.addToScore(score);
-            console.log(g_SCORE.getScore());
-            
+            g_SCORE.addToScore(score);            
         }
         //Make sure the characters position is on top of the platform
         this.cy = isHit.getPos().posY - isHit.getSize().height/2 - this.activeSprite.height/2;
@@ -208,6 +206,7 @@ Character.prototype.handleCollision = function(du){
         g_useGravity = false;
         this._jumping = false;
         this.velY = 0;
+
         //Put the platform into currPlatform
         this.currPlatform = isHit;
     }   
@@ -238,16 +237,17 @@ Character.prototype.makeFlames = function () {
 
     //Generate the flame
     //You can limit the amount created like this
-    //if (entityManager._flame.length>10) {return;}       <-----------
+    var scoreInfluence = Math.round(g_SCORE.getScore()/100);
+    //console.log(scoreInfluence);
+    //console.log(g_SCORE.getScore());
+
+    if (entityManager._flame.length>scoreInfluence) {return;}      
     entityManager.generateFlame(
         this.cx + dX * launchDist, 
         this.cy + dY * launchDist,
         flameVelX, 
         flameVelY,
-        this.rotation);
-
-    
-
+        this.rotation);  
 }
 
 // Function that rotates the character
@@ -301,6 +301,9 @@ Character.prototype.computeSubStep = function (du) {
     //Call the functions that creates flames
     this.makeFlames();
 
+    if (this.velY<0 || this.velY === 0) {
+        this._falling = false;
+    } else {this._falling = true;}
     
     //Used to deside which sprite to use
     var nextX = prevX + this.velX * du;

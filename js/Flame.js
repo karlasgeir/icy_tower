@@ -1,5 +1,5 @@
 // ======
-// BULLET
+// FLAME
 // ======
 
 "use strict";
@@ -48,8 +48,6 @@ Flame.prototype.update = function (du) {
     if (this._isDeadNow) {
         return entityManager.KILL_ME_NOW;
     }
-
-    console.log(this.activeSprite);
 
     this.lifeSpan -= du;
 
@@ -108,7 +106,7 @@ Flame.prototype.pickSprite = function() {
 
     var sprite_base = this.sprite;
 
-    if (this._animFrame>=9) {
+    if (this._animFrame>=8) {
         this._animFrame = 0;
     }
 
