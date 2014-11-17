@@ -1,14 +1,10 @@
-"use strict";
-var notificationSprite = function () {
-	var currentNotification;
-	/*
-	IF COMBO equals 20
-	currentNotification = correctSprite;
-	etc.
-	return currentNotification;
-	*/
-}
+// ========================
+// NOTIFICATIONS
+// ========================
 
+"use strict";
+
+/* jshint browser: true, devel: true, globalstrict: true */
 
 var g_notification = {
 
