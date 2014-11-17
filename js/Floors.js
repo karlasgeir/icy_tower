@@ -17,7 +17,7 @@ function Platform(descr) {
     this.platHeight = this.activeSprite.height;
     this.platWidth = this.activeSprite.width;
     this.scale  = this.scale  || 1;
-    this.id = g_NUMBER_OF_PLATFORMS;
+    this.id = g_NUMBER_OF_PLATFORMS+1;
 
     //Setup from descr (can override the above)
     this.setup(descr);

@@ -195,9 +195,9 @@ Character.prototype.handleCollision = function(du){
     if (isHit) {
         if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT){ 
             //TODO: change from magic number
-            var score = ((isHit.getGameHeight() - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier())/10;
+            var score = ((isHit.id - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier());
             score = Math.round(score);
-            TOP_PADDLE_HIT_HIGHT = isHit.getGameHeight();
+            TOP_PADDLE_HIT_HIGHT = isHit.id;
             g_SCORE.addToScore(score);
             console.log(g_SCORE.getScore());
             
