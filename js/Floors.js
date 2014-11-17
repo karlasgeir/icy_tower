@@ -11,10 +11,13 @@ function Platform(descr) {
     /*
         Initial settings that can be overwritten
     */
-    this.sprite = g_sprites.platform.normal.whole;
-    this.platHeight = this.sprite.height;
-    this.platWidth = this.sprite.width;
+    this.sprite = g_sprites.platform;
+    this.activeSprite = this.sprite.normal.whole;
+    this.signSprite = this.sprite.sign;
+    this.platHeight = this.activeSprite.height;
+    this.platWidth = this.activeSprite.width;
     this.scale  = this.scale  || 1;
+    this.id = g_NUMBER_OF_PLATFORMS;
 
     //Setup from descr (can override the above)
     this.setup(descr);
@@ -59,13 +62,25 @@ Platform.prototype.platScale = function () {
 */
 Platform.prototype.render = function (ctx) {
     //sace the original scale
-    var origScale = this.sprite.scale;
+    var origScale = this.activeSprite.scale;
     // pass my scale into the sprite, for drawing
-    this.sprite.scale = this.scale;
+    this.activeSprite.scale = this.scale;
     // draw the sprite
-	this.sprite.drawCentredAtScaleWidth(ctx, this.cx, this.cy, 0);
+	this.activeSprite.drawCentredAtScaleWidth(ctx, this.cx, this.cy);
     //reset the scale
     this.sprite.scale = origScale;
+
+    if(this.id % 10 === 0 && this.id > 1){
+        console.log(this.signSprite);
+        this.signSprite.drawCentredAt(ctx,this.cx,this.cy);
+        ctx.save();
+        ctx.font = "15px Georiga bold";
+        ctx.fillStyle = "#A4E2FF";
+        ctx.textBaseline = "middle";
+        ctx.textAlign="center";
+        ctx.fillText(this.id,this.cx,this.cy);
+        ctx.restore();
+    }
 };
 
 /*
