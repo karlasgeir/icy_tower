@@ -58,6 +58,7 @@ function updateSimulation(du) {
     entityManager.update(du);
     g_background.update(du);
     g_notification.update(du);
+    g_combo.update(du);
 }
 
 // GAME-SPECIFIC DIAGNOSTICS
@@ -114,6 +115,7 @@ function renderSimulation(ctx) {
         entityManager.render(ctx);
         g_SCORE.render(ctx);
         g_notification.render(ctx);
+        g_combo.render(ctx);
     }
 
     if (gameOver && g_MENU_SCREEN) {

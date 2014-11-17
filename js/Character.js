@@ -221,8 +221,6 @@ Character.prototype.handleCombo = function() {
 };
 
 
-
-
 Character.prototype.setCombo = function() {
 
     var arrayLength = g_COMBO_PLAT_IDS.length;
@@ -235,7 +233,11 @@ Character.prototype.setCombo = function() {
 
     if (comboBreaker >= 2) {
         g_COMBO = true;
-    } else {g_COMBO = false;}
+    } else {
+        g_PLATS_GONE_IN_COMBO = 0;
+        g_PLATS_IN_COMBO = [];
+        g_COMBO = false;
+    }
 };
 
 var g_PLATS_IN_COMBO = [];
@@ -244,10 +246,6 @@ Character.prototype.platsInCombo = function() {
     
     var isHit = this.isColliding();
     var arrayLength = g_PLATS_IN_COMBO.length;
-
-    if (this.velY<0) {return;}
-
-
 
     if (isHit) {
 
@@ -265,9 +263,10 @@ Character.prototype.platsInCombo = function() {
             g_PLATS_IN_COMBO = [];
         }
     }
-    var numOfPlatsInCombo = highestPlat-lowestPlat;
+
+    var numOfPlatsInCombo =g_PLATS_IN_COMBO[arrayLength-1]-g_PLATS_IN_COMBO[0];
     g_PLATS_GONE_IN_COMBO = numOfPlatsInCombo;
-    console.log(g_PLATS_GONE_IN_COMBO);
+
 };
 
 /*
