@@ -110,9 +110,9 @@ function processDiagnostics() {
 function renderSimulation(ctx) {
 
     g_background.render(ctx);
-
     if (!gameOver && !g_MENU_SCREEN) {
         entityManager.render(ctx);
+        g_SCORE.render(ctx);
         g_notification.render(ctx);
     }
 
@@ -148,7 +148,8 @@ function requestPreloads() {
         score : "res/backgrounds/score.png",
         notifications : "res/comboLogos/combospritesheet.png",
         fireball: "res/fireballz.png",
-        wallsprite : "res/walls/bigger/wallBig2.png"
+        wallsprite : "res/walls/bigger/wallBig2.png",
+        numbers: "res/scoreNumbers/numbersspritesheet.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -212,6 +213,20 @@ function preloadDone() {
         super: new Sprite(g_images.notifications,120,32,388,173),
         sweet: new Sprite(g_images.notifications,120,31,4,300),
         wow: new Sprite(g_images.notifications,120,38,132,296),
+    }
+
+    //Sprites for numbers
+    g_sprites.numbers = {
+        0: new Sprite(g_images.numbers,71,66,157,282),
+        1: new Sprite(g_images.numbers,51,63,39,158),
+        2: new Sprite(g_images.numbers,58,69,35,281),
+        3: new Sprite(g_images.numbers,58,67,419,155),
+        4: new Sprite(g_images.numbers,61,68,290,29),
+        5: new Sprite(g_images.numbers,49,65,168,31),
+        6: new Sprite(g_images.numbers,71,66,157,282),
+        7: new Sprite(g_images.numbers,55,61,165,159),
+        8: new Sprite(g_images.numbers,57,65,36,31),
+        9: new Sprite(g_images.numbers,69,66,414,30),
     }
     
 
