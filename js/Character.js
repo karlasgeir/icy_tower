@@ -451,7 +451,7 @@ Character.prototype.checkCases = function(){
     if (this.velX > 0 || this.velX <0) {
         this.isOnFire = true;
     }
-    if(this.velY !==Platform.prototype.verticalSpeed) {
+    if(this.velY !==this.currPlatform.verticalSpeed) {
         this.isOnFire = false;
     }
     console.log(this.velY);
