@@ -23,42 +23,60 @@ g_combo.logoPicker = function () {
 	if (plats>5 && plats<=10) {
 		g_combo.resetNotification();
 		currentNotification = g_sprites.notifications.good;
+		currentNotification.scale = 1;
+		g_FIREBOLTS = 10;
 	}
 	if (plats>10 && plats<=15) {
 		g_combo.resetNotification();
 		currentNotification = g_sprites.notifications.sweet;
+		currentNotification.scale = 1.3;
+		g_FIREBOLTS = 20;
 	}
 	if (plats>15 && plats<=25) {
 		g_combo.resetNotification();
 		currentNotification = g_sprites.notifications.great;
+		currentNotification.scale = 1.5;
+		g_FIREBOLTS = 25;
 	}
 	if (plats>25 && plats<=35) {
 		g_combo.resetNotification();
 		currentNotification = g_sprites.notifications.super;
+		currentNotification.scale = 1.8;
+		g_FIREBOLTS = 30;
 	}
 	if (plats>35 && plats<=50) {
 		g_combo.resetNotification();
 		currentNotification = g_sprites.notifications.wow;
+		currentNotification.scale = 2;
+		g_FIREBOLTS = 40;
 	}
 	if (plats>50 && plats<=70) {
 		g_combo.resetNotification();
 		currentNotification = g_sprites.notifications.amazing;
+		currentNotification.scale = 2.5;
 	}
 	if (plats>70 && plats<=100) {
 		g_combo.resetNotification();
 		currentNotification = g_sprites.notifications.extreme;
+		currentNotification.scale = 2.8;
+		g_FIREBOLTS = 50;
 	}
 	if (plats>100 && plats<=140) {
 		g_combo.resetNotification();
 		currentNotification = g_sprites.notifications.fantastic;
+		currentNotification.scale = 3;
 	}
 	if (plats>140 && plats<=200) {
 		g_combo.resetNotification();
 		currentNotification = g_sprites.notifications.splendid;
+		currentNotification.scale = 3.2;
+		g_FIREBOLTS = 60;
 	}
 	if (plats>200) {
 		g_combo.resetNotification();
 		currentNotification = g_sprites.notifications.noway;
+		currentNotification.scale = 3.5;
+		g_FIREBOLTS = 80;
 	}
 
 	return currentNotification;

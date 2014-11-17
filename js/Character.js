@@ -58,7 +58,6 @@ Character.prototype.NOMINALS = {
     FALL_LENGTH: 600,               //The lenght that the character has to fall to die
     BOUNCE_ROTATION: 1.5,           //The velocity multiplier when bouncing off the wall rotating
     BOUNCE:1,                       //The velocity multiplier when bouncing off the wall normally
-    NUMBER_OF_FIREBALLS: 30 ,        //How many fireballs are generated 
     FIRE_LAUNCH_MULTIPLIER:-2,      //How far from the character fire will spit out
     FireTickRate:15                 //How fast the fire animation is
 };
@@ -236,6 +235,7 @@ Character.prototype.setCombo = function() {
     } else {
         g_PLATS_GONE_IN_COMBO = 0;
         g_PLATS_IN_COMBO = [];
+        g_FIREBOLTS = 0;
         g_COMBO = false;
     }
 };
@@ -294,7 +294,7 @@ Character.prototype.makeFlames = function () {
 
     //Generate the flame
 
-    if(entityManager._flame.length>this.NUMBER_OF_FIREBALLS) {return;}      
+    if(entityManager._flame.length>g_FIREBOLTS) {return;}      
     entityManager.generateFlame(
         this.cx + dX * launchDist, 
         this.cy + dY * launchDist,
