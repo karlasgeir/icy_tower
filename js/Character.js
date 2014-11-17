@@ -288,11 +288,7 @@ Character.prototype.computeSubStep = function (du) {
     
     //Call the functions that creates flames
     this.makeFlames();
-
-    if (this.velY<0 || this.velY === 0) {
-        this._falling = false;
-    } else {this._falling = true;}
-    
+   
     //Used to deside which sprite to use
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
