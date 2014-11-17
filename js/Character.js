@@ -14,29 +14,15 @@ function Character(descr) {
     this._animation = {
         Frame: 0,               //Used to deside which sprite to use
         Ticker: 0,              //Used to desie when to change sprite
-        Reverse: false          //Used to know when to reverse through sprite array              
+        Reverse: false,         //Used to know when to reverse through sprite array              
+        FireFrame:0,            //Frame count for the fire
+        FireTicker:0
     };
     this.rotationJump = false;  //True if the character is doing a rotation jump
     this.currPlatform = false;  //True if the character is on a platform
     this.isBouncing = false;    //True if the character i bouncing of a wall
 
     // Common inherited setup logic from Entity
-
-    this.scale  = this.scale  || 1;
-    this.rememberResets();
-    this._jumping = false;
-    this._falling = false;
-    this._goingLeft = false;
-    this._goingRight = false;
-    this._running = false;
-    this._left = false;
-    this._wall = false;
-    this._animFrame = 0;
-    this.jumpHeight = 0;
-    this._animTicker = 0;
-    this.rotationJump = false;
-    this.currPlatform = false;
-    this.isBouncing = false;
 
     this.setup(descr);
     
@@ -70,8 +56,9 @@ Character.prototype.NOMINALS = {
     FALL_LENGTH: 600,               //The lenght that the character has to fall to die
     BOUNCE_ROTATION: 1.5,           //The velocity multiplier when bouncing off the wall rotating
     BOUNCE:1,                       //The velocity multiplier when bouncing off the wall normally
-    FIRE_LAUNCH_MULTIPLIER:-2  ,    //How far from the character fire will spit out
-    NUMBER_OF_FIREBALLS: 30         //How many fireballs are generated 
+    NUMBER_OF_FIREBALLS: 30 ,        //How many fireballs are generated 
+    FIRE_LAUNCH_MULTIPLIER:-2,      //How far from the character fire will spit out
+    FireTickRate:15                 //How fast the fire animation is
 };
 
 
@@ -196,10 +183,12 @@ Character.prototype.handleCollision = function(du){
     if (isHit) {
         if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT){ 
             //TODO: change from magic number
-            var score = ((isHit.getGameHeight() - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier())/10;
+            var score = ((isHit.id - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier());
             score = Math.round(score);
             TOP_PADDLE_HIT_HIGHT = isHit.getGameHeight();
             g_SCORE.addToScore(score);            
+            TOP_PADDLE_HIT_HIGHT = isHit.id;
+            g_SCORE.addToScore(score);
         }
         //Make sure the characters position is on top of the platform
         this.cy = isHit.getPos().posY - isHit.getSize().height/2 - this.activeSprite.height/2;
@@ -251,8 +240,6 @@ Character.prototype.makeFlames = function () {
         this.rotation);  
 }
 
-// Function that rotates the character
-var NOMINAL_ROTATION_RATE = 0.2;
 
 /*
     This function checks if the character should be
@@ -458,67 +445,6 @@ Character.prototype.moveScreen = function(du){
     }
 };
 
-Character.prototype.gameOver = function () {
-        var fallLength = 600;
-        if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.activeSprite.height/2 > g_canvas.height) {
-            gameOver = true;
-            g_GAME_HEIGHT  = 0;
-            g_background.cx = 0;
-            NUMBER_OF_PLATFORMS = 8;
-            this.reset();
-            g_background.cy = 0;
-    }
-};
-
-var NOMINAL_SPEED = 0.25;
-var NOMINAL_SLOW = 2;
-var MAX_SPEED = 18;
-
-Character.prototype.computeSpeed = function(){
-    
-    // console.log(this._jumping);
-    if (this._jumping) {
-        NOMINAL_SPEED = 1.25;
-    } else {
-        NOMINAL_SPEED = 1;
-    }
-   
-    if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT]) {
-        if (this.velX===0) {return;}
-        if (this.velX<0) {
-            if(this.velX + NOMINAL_SLOW >0) this.velX=0;
-            else this.velX += NOMINAL_SLOW;
-        }
-        if (this.velX>0) {
-            if(this.velX + NOMINAL_SLOW <0) this.velX=0;
-            else this.velX -= NOMINAL_SLOW;
-        }
-    }
-    if(keys[this.KEY_RIGHT]) {
-
-        this._goingRight = true;
-        this._goingLeft =  false;
-
-        if(this.velX + NOMINAL_SPEED > MAX_SPEED) {
-            this.velX = MAX_SPEED;
-        }
-        else {
-            this.velX += NOMINAL_SPEED;
-        }
-    }
-    else if(keys[this.KEY_LEFT]) {
-
-        this._goingRight = false;
-        this._goingLeft =  true;
-
-        if(this.velX - NOMINAL_SPEED < -MAX_SPEED) {
-            this.velX = -MAX_SPEED;
-        }
-        else {
-            this.velX -= NOMINAL_SPEED;
-        }
-    } 
-};
 
 /*
     This function applys the y component of the
@@ -641,6 +567,7 @@ Character.prototype.getRadius = function () {
     Function to reset the character
 */
 Character.prototype.reset = function () {
+    TOP_PADDLE_HIT_HIGHT = 0;
     this.setPos(this.reset_cx, this.reset_cy);
     this.halt();
 };
@@ -656,6 +583,7 @@ Character.prototype.halt = function () {
     Function that renders the correct sprite
 */
 Character.prototype.render = function (ctx) {
+    
     //Remember the original scale
     var origScale = this.sprite.scale;
     //Set scale
@@ -664,6 +592,16 @@ Character.prototype.render = function (ctx) {
     this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation);
     //Reset the scale
     this.sprite.scale = origScale;
+    if((this.velY ===0 || this.currPlatform) && this._animation.FireTicker < this.NOMINALS.FireTickRate){
+        if(this._animation.FireFrame < g_sprites.fire.length-1){
+            g_sprites.fire[this._animation.FireFrame].drawCentredAt(ctx,this.cx,this.cy+this.activeSprite.width/2);
+            this._animation.FireFrame += 1;
+        }
+        else this._animation.FireFrame = 0;
+    }
+    else if(this.velY === 0 || this.currPlatform) this._animation.FireTicker += 1;
+    else this._animation.FireFrame = 0;
+
 };
 
 /*
