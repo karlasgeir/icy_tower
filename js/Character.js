@@ -202,7 +202,6 @@ Character.prototype.handleCollision = function(du){
 };
  
 var g_COMBO_PLAT_IDS = [];
-var floorsInCombo = 0;
 
 Character.prototype.handleCombo = function() {
     
@@ -223,6 +222,7 @@ Character.prototype.handleCombo = function() {
 
 
 
+
 Character.prototype.setCombo = function() {
 
     var arrayLength = g_COMBO_PLAT_IDS.length;
@@ -231,13 +231,44 @@ Character.prototype.setCombo = function() {
 
     var comboBreaker = currentID - lastID;
 
+    var isHit = this.isColliding();
+
     if (comboBreaker >= 2) {
         g_COMBO = true;
     } else {g_COMBO = false;}
+};
 
-    //console.log(g_COMBO);
+var g_PLATS_IN_COMBO = [];
 
-}
+Character.prototype.platsInCombo = function() {
+    
+    var isHit = this.isColliding();
+    var arrayLength = g_PLATS_IN_COMBO.length;
+
+    if (this.velY<0) {return;}
+
+
+
+    if (isHit) {
+
+        var lowestPlat = g_PLATS_IN_COMBO[0];
+        for (var i=0; i<arrayLength; i++) {
+            if (g_PLATS_IN_COMBO[i] === isHit.platID) {
+                return;
+            }
+        }
+        if (g_COMBO) {
+            var highestPlat = isHit.platID;
+            g_PLATS_IN_COMBO.push(highestPlat);
+        }
+        if (!g_COMBO) {
+            g_PLATS_IN_COMBO = [];
+        }
+    }
+    var numOfPlatsInCombo = highestPlat-lowestPlat;
+    g_PLATS_GONE_IN_COMBO = numOfPlatsInCombo;
+    console.log(g_PLATS_GONE_IN_COMBO);
+};
 
 /*
     This function creates the flames
@@ -321,6 +352,7 @@ Character.prototype.computeSubStep = function (du) {
     //Handle combo
     this.handleCombo();
     this.setCombo();
+    this.platsInCombo();
 
     //Performs the wallBounce
     this.wallBounce();
@@ -454,7 +486,6 @@ Character.prototype.checkCases = function(){
     if(this.velY !==this.currPlatform.verticalSpeed) {
         this.isOnFire = false;
     }
-    console.log(this.velY);
 }
 
 /*
