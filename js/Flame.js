@@ -49,8 +49,6 @@ Flame.prototype.update = function (du) {
         return entityManager.KILL_ME_NOW;
     }
 
-    console.log(this.activeSprite);
-
     this.lifeSpan -= du;
 
     if (this.lifeSpan < 0) return entityManager.KILL_ME_NOW;

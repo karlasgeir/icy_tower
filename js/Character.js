@@ -16,11 +16,13 @@ function Character(descr) {
         Ticker: 0,              //Used to desie when to change sprite
         Reverse: false,         //Used to know when to reverse through sprite array              
         FireFrame:0,            //Frame count for the fire
-        FireTicker:0
+        FireTicker:0,
     };
     this.rotationJump = false;  //True if the character is doing a rotation jump
     this.currPlatform = false;  //True if the character is on a platform
-    this.isBouncing = false;    //True if the character i bouncing of a wall
+    this.isBouncing = false;    //True if the character is bouncing of a wall
+    this.isOnFire = false;      //True if the character is on fire
+
 
     // Common inherited setup logic from Entity
 
@@ -224,7 +226,7 @@ Character.prototype.makeFlames = function () {
 
     //Generate the flame
     //You can limit the amount created like this
-    //if (entityManager._flame.length>10) {return;}       <-----------
+    //if (entityManager._flame.length>10) {return;}   
     entityManager.generateFlame(
         this.cx + dX * launchDist, 
         this.cy + dY * launchDist,
@@ -262,6 +264,7 @@ Character.prototype.computeRotation = function(du){
 Character.prototype.computeSubStep = function (du) {
     //Performs the wallBounce
     this.wallBounce();
+
     //Register the position before change
     var prevX = this.cx;
     var prevY = this.cy;
@@ -299,6 +302,16 @@ Character.prototype.computeSubStep = function (du) {
         this.chooseSprite(this.velX,this.velY,nextX,nextY);
         this._animation.Ticker = 0;
     }
+    //Increment the fire animation ticker
+    if(this._animation.FireTicker <= this.NOMINALS.FireTickRate){
+        this._animation.FireTicker += du;
+    }
+    else{
+        this.isOnFire = true;
+        this._animation.FireTicker = 0;
+    }
+
+
     //Check if screen needs to be moved
     this.moveScreen();
     this.wrapPosition();
@@ -520,13 +533,15 @@ Character.prototype.wallBounce = function () {
         (this.cx-this.activeSprite.width/2 - REBOUNCE_LIMIT <= g_left_side)){
             return;
         }
-        else{
-            this.isBouncing = false;
-        }
+        else this.isBouncing = false;
+
     }
 
     if(this.cx+this.activeSprite.width/2 >= g_right_side ||
         (this.cx-this.activeSprite.width/2 <= g_left_side)) {
+        if(this._goingLeft) var expX = this.cx-this.activeSprite.width/2;
+        else var expX = this.cx + this.activeSprite.width/2; 
+        entityManager.generateExplotion(expX,this.cy);
         this._goingRight = !this._goingRight;
         this._goingLeft = !this._goingLeft;
         this.isBouncing = true;
@@ -585,16 +600,22 @@ Character.prototype.render = function (ctx) {
     this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation);
     //Reset the scale
     this.sprite.scale = origScale;
-    if((this.velY ===0 || this.currPlatform) && this._animation.FireTicker < this.NOMINALS.FireTickRate){
+    if((this.velY ===0 || this.currPlatform) && this.isOnFire){
         if(this._animation.FireFrame < g_sprites.fire.length-1){
             g_sprites.fire[this._animation.FireFrame].drawCentredAt(ctx,this.cx,this.cy+this.activeSprite.width/2);
             this._animation.FireFrame += 1;
         }
-        else this._animation.FireFrame = 0;
+        else {
+            this._animation.FireFrame = 0
+            this.isOnFire = false
+        };
     }
-    else if(this.velY === 0 || this.currPlatform) this._animation.FireTicker += 1;
-    else this._animation.FireFrame = 0;
+    else {
+            this._animation.FireFrame = 0
+            this.isOnFire = false
+    };
 
+   
 };
 
 /*

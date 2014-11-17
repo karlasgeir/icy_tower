@@ -29,6 +29,7 @@ _characters: [],
 _platforms: [],
 _Walls: [],
 _flame: [],
+_Explotions:[],
 _bShowPlatforms: true,
 
 // "PRIVATE" METHODS
@@ -79,7 +80,7 @@ generateFlame: function(cx, cy, velX, velY, rotation) {
 },
 
 deferredSetup : function () {
-    this._categories = [this._platforms,this._characters,this._Walls, this._flame];
+    this._categories = [this._platforms,this._characters,this._Walls, this._flame, this._Explotions];
 },
 
 generatePlatform : function(descr) {
@@ -91,6 +92,11 @@ generateCharacter : function(descr) {
 },
 generateWalls : function(descr) {
     this._Walls.push(new Wall(descr));
+},
+generateExplotion: function(cx,cy){
+    console.log("GENERATING EXPLOTION");
+    this._Explotions.push(new Explotion(cx,cy));
+    console.log(this._Explotions);
 },
 
 init: function() {

@@ -61,7 +61,6 @@ Sprite.prototype.drawCentredAtScaleWidth = function (ctx, cx, cy, rotation) {
     
     var w = this.width,
         h = this.height;
-    console.log("drawing",this.scale,this.image,this.cx,this.cy);
     ctx.save();
     ctx.translate(cx, cy);
     ctx.rotate(rotation);

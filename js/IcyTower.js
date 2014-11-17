@@ -150,7 +150,8 @@ function requestPreloads() {
         fireball: "res/fireballz.png",
         wallsprite : "res/walls/bigger/wallBig2.png",
         numbers: "res/scoreNumbers/numbersspritesheet.png",
-        fire: "res/Ground/fire/firespritesheet.png"
+        fire: "res/Ground/fire/firespritesheet.png",
+        explotion: "res/explotion/explotionspritesheet.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -162,6 +163,74 @@ function preloadDone() {
     /*
         Loading all the sprites
     */
+    //Explotions
+    g_sprites.explotion = [
+        new Sprite(g_images.explotion,17,15,49,90),
+        new Sprite(g_images.explotion,18,17,177,90),
+        new Sprite(g_images.explotion,19,18,305,90),
+        new Sprite(g_images.explotion,22,25,430,88),
+        new Sprite(g_images.explotion,23,26,558,88),
+        new Sprite(g_images.explotion,25,28,685,87),
+        new Sprite(g_images.explotion,25,28,813,87),
+        new Sprite(g_images.explotion,27,34,940,82),
+        new Sprite(g_images.explotion,31,35,44,209),
+        new Sprite(g_images.explotion,32,37,172,208),
+        new Sprite(g_images.explotion,34,37,299,208),
+        new Sprite(g_images.explotion,36,40,426,207),
+        new Sprite(g_images.explotion,38,41,553,206),
+        new Sprite(g_images.explotion,39,42,681,205),
+        new Sprite(g_images.explotion,40,43,808,205),
+        new Sprite(g_images.explotion,41,41,936,204),
+        new Sprite(g_images.explotion,42,46,40,331),
+        new Sprite(g_images.explotion,44,46,167,331),
+        new Sprite(g_images.explotion,44,47,295,330),
+        new Sprite(g_images.explotion,47,48,421,330),
+        new Sprite(g_images.explotion,49,49,548,329),
+        new Sprite(g_images.explotion,49,49,676,329),
+        new Sprite(g_images.explotion,50,51,804,328),
+        new Sprite(g_images.explotion,52,53,931,327),
+        new Sprite(g_images.explotion,53,53,35,455),
+        new Sprite(g_images.explotion,53,53,163,455),
+        new Sprite(g_images.explotion,55,55,290,454),
+        new Sprite(g_images.explotion,56,55,417,454),
+        new Sprite(g_images.explotion,58,57,544,453),
+        new Sprite(g_images.explotion,58,57,672,453),
+        new Sprite(g_images.explotion,60,58,799,452),
+        new Sprite(g_images.explotion,62,59,926,451),
+        new Sprite(g_images.explotion,62,59,30,578),
+        new Sprite(g_images.explotion,64,61,157,578),
+        new Sprite(g_images.explotion,65,62,284,578),
+        new Sprite(g_images.explotion,66,63,412,577),
+        new Sprite(g_images.explotion,67,63,539,577),
+        new Sprite(g_images.explotion,68,64,667,576),
+        new Sprite(g_images.explotion,69,64,795,576),
+        new Sprite(g_images.explotion,69,62,923,578),
+        new Sprite(g_images.explotion,70,63,27,705),
+        new Sprite(g_images.explotion,71,64,155,704),
+        new Sprite(g_images.explotion,73,65,282,703),
+        new Sprite(g_images.explotion,72,66,412,702),
+        new Sprite(g_images.explotion,73,67,539,701),
+        new Sprite(g_images.explotion,74,67,667,701),
+        new Sprite(g_images.explotion,74,68,796,700),
+        new Sprite(g_images.explotion,75,69,923,699),
+        new Sprite(g_images.explotion,76,71,27,825),
+        new Sprite(g_images.explotion,76,72,156,824),
+        new Sprite(g_images.explotion,76,73,284,823),
+        new Sprite(g_images.explotion,77,74,412,822),
+        new Sprite(g_images.explotion,78,76,540,820),
+        new Sprite(g_images.explotion,79,77,667,819),
+        new Sprite(g_images.explotion,78,79,796,817),
+        new Sprite(g_images.explotion,79,80,924,816),
+        new Sprite(g_images.explotion,79,82,29,942),
+        new Sprite(g_images.explotion,81,83,156,941),
+        new Sprite(g_images.explotion,80,85,286,939),
+        new Sprite(g_images.explotion,80,86,414,938),
+        new Sprite(g_images.explotion,81,87,542,937),
+        new Sprite(g_images.explotion,82,89,670,935),
+        new Sprite(g_images.explotion,82,91,798,933),
+        new Sprite(g_images.explotion,83,92,926,932)
+    ];
+
     //Fire on the ground
     g_sprites.fire = [
         new Sprite(g_images.fire,67,70,33,53),
