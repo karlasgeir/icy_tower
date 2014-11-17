@@ -183,7 +183,7 @@ Character.prototype.handleCollision = function(du){
     var isHit = this.isColliding();
     //Check if colliding
     if (isHit) {
-        if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT){ 
+        if(isHit.id > TOP_PADDLE_HIT_HIGHT){ 
             var score = ((isHit.id - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier());
             score = Math.round(score);         
             TOP_PADDLE_HIT_HIGHT = isHit.id;
@@ -461,14 +461,15 @@ Character.prototype.applyAccelY = function(du){
     var finalv = this.velY + this.accelY*du;
     //Calculate average velocity
     this.velY = (this.velY + finalv)/2;
-    //Apply the velocity
-    this.cy += this.velY*du;
-
+    
     //If the character is on a platform it has the same y-velocity
     //as the platform
     if(this.currPlatform && g_GAME_HEIGHT > 0){
-        this.cy += Platform.prototype.verticalSpeed*du;
+        this.velY += Platform.prototype.verticalSpeed;
     }
+
+    //Apply the velocity
+    this.cy += this.velY*du;
 }
 
 /*
@@ -493,9 +494,6 @@ Character.prototype.applyAccelX = function(du){
 Character.prototype.computeGravity = function () {
     if(this.cy+this.activeSprite.height/2 < g_canvas.height || g_GAME_HEIGHT !== 0){
         return g_useGravity ? this.NOMINALS.GRAVITY : 0;
-    }
-    else{
-        this.velY = 0;
     }
     return 0;
 };
@@ -661,7 +659,7 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     }
 
     //If jumping
-    if(this._jumping){
+    if(this._jumping && !this.currPlatform){
         //If we are bouncing of the wall
         if(this.isBouncing){
             if(this._animation.Frame > 1) this._animation.Frame = 0;
