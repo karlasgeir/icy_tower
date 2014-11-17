@@ -70,7 +70,8 @@ Character.prototype.NOMINALS = {
     FALL_LENGTH: 600,               //The lenght that the character has to fall to die
     BOUNCE_ROTATION: 1.5,           //The velocity multiplier when bouncing off the wall rotating
     BOUNCE:1,                       //The velocity multiplier when bouncing off the wall normally
-    FIRE_LAUNCH_MULTIPLIER:-2    //How far from the character fire will spit out
+    FIRE_LAUNCH_MULTIPLIER:-2  ,    //How far from the character fire will spit out
+    NUMBER_OF_FIREBALLS: 30         //How many fireballs are generated 
 };
 
 
@@ -237,11 +238,11 @@ Character.prototype.makeFlames = function () {
 
     //Generate the flame
     //You can limit the amount created like this
-    var scoreInfluence = Math.round(g_SCORE.getScore()/100);
+    //var scoreInfluence = Math.round(g_SCORE.getScore()/100);
     //console.log(scoreInfluence);
     //console.log(g_SCORE.getScore());
 
-    if (entityManager._flame.length>scoreInfluence) {return;}      
+    if (entityManager._flame.length>this.NUMBER_OF_FIREBALLS) {return;}      
     entityManager.generateFlame(
         this.cx + dX * launchDist, 
         this.cy + dY * launchDist,
