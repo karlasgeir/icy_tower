@@ -1,5 +1,5 @@
 // ======
-// BULLET
+// FLAME
 // ======
 
 "use strict";
@@ -106,7 +106,7 @@ Flame.prototype.pickSprite = function() {
 
     var sprite_base = this.sprite;
 
-    if (this._animFrame>=9) {
+    if (this._animFrame>=8) {
         this._animFrame = 0;
     }
 

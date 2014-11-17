@@ -29,7 +29,11 @@ _characters: [],
 _platforms: [],
 _Walls: [],
 _flame: [],
+<<<<<<< HEAD
 _Explotions:[],
+=======
+_power: [],
+>>>>>>> c4b7c3b4ef4fd618308020239d27e21a34123da7
 _bShowPlatforms: true,
 
 // "PRIVATE" METHODS
@@ -54,7 +58,9 @@ KILL_ME_NOW : -1,
 _generateInitialPlatforms : function() {
     var INITIAL_PLATFORMS = 12;
     for (var i = 0; i<INITIAL_PLATFORMS; i++) {
-        this.generatePlatform();
+        this.generatePlatform({
+            platID: i
+            });
     }
 },
 
@@ -65,6 +71,15 @@ _generateWall : function() {
         cy: 0
     });
 },
+
+_generatePower: function() {
+      
+    this.generatePower({
+        cx: 200,
+        cy: 200
+    });
+},
+
 
 /*
     This function generates a flame
@@ -80,11 +95,19 @@ generateFlame: function(cx, cy, velX, velY, rotation) {
 },
 
 deferredSetup : function () {
+<<<<<<< HEAD
     this._categories = [this._platforms,this._characters,this._Walls, this._flame, this._Explotions];
+=======
+    this._categories = [this._platforms,this._characters,this._Walls, this._flame, this._power];
+>>>>>>> c4b7c3b4ef4fd618308020239d27e21a34123da7
 },
 
 generatePlatform : function(descr) {
     this._platforms.push(new Platform(descr));
+},
+
+generatePower : function(descr) {
+    this._power.push(new Power(descr));
 },
 
 generateCharacter : function(descr) {
@@ -112,6 +135,7 @@ init: function() {
     this._generateInitialPlatforms();
     //Generate the walls
     this._generateWall();
+    this._generatePower();
 },
 
 killPlatforms: function () {

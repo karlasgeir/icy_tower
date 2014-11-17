@@ -19,6 +19,8 @@ function Platform(descr) {
     this.scale  = this.scale  || 1;
     this.id = g_NUMBER_OF_PLATFORMS+1;
 
+    this.platID = 0;
+
     //Setup from descr (can override the above)
     this.setup(descr);
 
@@ -85,9 +87,21 @@ Platform.prototype.render = function (ctx) {
 /*
     This function updates the platform
 */
+var COMBO_THRESHOLD = 2;
+
 Platform.prototype.update = function (du) {
     //Unregister from spatial manager
 	spatialManager.unregister(this);
+
+
+
+    var isHit = this.isColliding();
+
+    if (isHit) {
+        var platID = this.getID();
+        console.log(platID);
+    }
+   
 
     //Check for death
 	if (this._isDeadNow) {
@@ -103,7 +117,9 @@ Platform.prototype.update = function (du) {
     if (this.cy>PLATFORM_KILL_LIMIT) {
         //Kill it
     	this.kill();
-        entityManager.generatePlatform();
+        entityManager.generatePlatform({
+            platID: g_NUMBER_OF_PLATFORMS
+        });
     }    
     //If the screen has been moved once
     if(g_GAME_HEIGHT > 0)
@@ -117,6 +133,10 @@ Platform.prototype.update = function (du) {
          spatialManager.register(this);
     }
 };
+
+Platform.prototype.getID = function() {
+    return this.platID;
+}
 
 Platform.prototype.reset = function () {
     entityManager.killPlatforms();

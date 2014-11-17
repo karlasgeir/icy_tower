@@ -58,6 +58,7 @@ Character.prototype.NOMINALS = {
     FALL_LENGTH: 600,               //The lenght that the character has to fall to die
     BOUNCE_ROTATION: 1.5,           //The velocity multiplier when bouncing off the wall rotating
     BOUNCE:1,                       //The velocity multiplier when bouncing off the wall normally
+    NUMBER_OF_FIREBALLS: 30 ,        //How many fireballs are generated 
     FIRE_LAUNCH_MULTIPLIER:-2,      //How far from the character fire will spit out
     FireTickRate:15                 //How fast the fire animation is
 };
@@ -186,9 +187,10 @@ Character.prototype.handleCollision = function(du){
             //TODO: change from magic number
             var score = ((isHit.id - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier());
             score = Math.round(score);
+            TOP_PADDLE_HIT_HIGHT = isHit.getGameHeight();
+            g_SCORE.addToScore(score);            
             TOP_PADDLE_HIT_HIGHT = isHit.id;
             g_SCORE.addToScore(score);
-            
         }
         //Make sure the characters position is on top of the platform
         this.cy = isHit.getPos().posY - isHit.getSize().height/2 - this.activeSprite.height/2;
@@ -196,6 +198,7 @@ Character.prototype.handleCollision = function(du){
         g_useGravity = false;
         this._jumping = false;
         this.velY = 0;
+
         //Put the platform into currPlatform
         this.currPlatform = isHit;
     }   
@@ -226,16 +229,17 @@ Character.prototype.makeFlames = function () {
 
     //Generate the flame
     //You can limit the amount created like this
-    //if (entityManager._flame.length>10) {return;}   
+    //var scoreInfluence = Math.round(g_SCORE.getScore()/100);
+    //console.log(scoreInfluence);
+    //console.log(g_SCORE.getScore());
+
+    if(entityManager._flame.length>this.NUMBER_OF_FIREBALLS) {return;}      
     entityManager.generateFlame(
         this.cx + dX * launchDist, 
         this.cy + dY * launchDist,
         flameVelX, 
         flameVelY,
-        this.rotation);
-
-    
-
+        this.rotation);  
 }
 
 
@@ -287,8 +291,7 @@ Character.prototype.computeSubStep = function (du) {
     
     //Call the functions that creates flames
     this.makeFlames();
-
-    
+   
     //Used to deside which sprite to use
     var nextX = prevX + this.velX * du;
     var nextY = prevY + this.velY * du;
