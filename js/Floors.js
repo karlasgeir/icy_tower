@@ -71,7 +71,6 @@ Platform.prototype.render = function (ctx) {
     this.sprite.scale = origScale;
 
     if(this.id % 10 === 0 && this.id > 1){
-        console.log(this.signSprite);
         this.signSprite.drawCentredAt(ctx,this.cx,this.cy);
         ctx.save();
         ctx.font = "15px Georiga bold";

@@ -149,7 +149,8 @@ function requestPreloads() {
         notifications : "res/comboLogos/combospritesheet.png",
         fireball: "res/fireballz.png",
         wallsprite : "res/walls/bigger/wallBig2.png",
-        numbers: "res/scoreNumbers/numbersspritesheet.png"
+        numbers: "res/scoreNumbers/numbersspritesheet.png",
+        fire: "res/Ground/fire/firespritesheet.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -161,6 +162,93 @@ function preloadDone() {
     /*
         Loading all the sprites
     */
+    //Fire on the ground
+    g_sprites.fire = [
+        new Sprite(g_images.fire,67,70,33,53),
+        new Sprite(g_images.fire,67,70,161,53),
+        new Sprite(g_images.fire,67,70,289,53),
+        new Sprite(g_images.fire,67,70,417,53),
+        new Sprite(g_images.fire,67,70,545,53),
+        new Sprite(g_images.fire,67,70,673,53),
+        new Sprite(g_images.fire,67,70,794,53),
+        new Sprite(g_images.fire,67,70,922,53),
+        new Sprite(g_images.fire,67,70,1050,53),
+        new Sprite(g_images.fire,67,70,1178,53),
+        new Sprite(g_images.fire,67,70,33,183),
+        new Sprite(g_images.fire,67,70,161,183),
+        new Sprite(g_images.fire,67,70,289,183),
+        new Sprite(g_images.fire,67,70,417,183),
+        new Sprite(g_images.fire,67,70,545,183),
+        new Sprite(g_images.fire,67,70,673,183),
+        new Sprite(g_images.fire,67,70,794,183),
+        new Sprite(g_images.fire,67,70,922,183),
+        new Sprite(g_images.fire,67,70,1050,183),
+        new Sprite(g_images.fire,67,70,1178,183),
+        new Sprite(g_images.fire,67,70,33,304),
+        new Sprite(g_images.fire,67,70,161,304),
+        new Sprite(g_images.fire,67,70,289,304),
+        new Sprite(g_images.fire,67,70,417,304),
+        new Sprite(g_images.fire,67,70,545,304),
+        new Sprite(g_images.fire,67,70,673,304),
+        new Sprite(g_images.fire,67,70,794,304),
+        new Sprite(g_images.fire,67,70,922,304),
+        new Sprite(g_images.fire,67,70,1050,304),
+        new Sprite(g_images.fire,67,70,1178,304),
+        new Sprite(g_images.fire,67,70,33,436),
+        new Sprite(g_images.fire,67,70,161,436),
+        new Sprite(g_images.fire,67,70,289,436),
+        new Sprite(g_images.fire,67,70,417,436),
+        new Sprite(g_images.fire,67,70,545,436),
+        new Sprite(g_images.fire,67,70,673,436),
+        new Sprite(g_images.fire,67,70,794,436),
+        new Sprite(g_images.fire,67,70,922,436),
+        new Sprite(g_images.fire,67,70,1050,436),
+        new Sprite(g_images.fire,67,70,1178,436),
+        new Sprite(g_images.fire,67,70,33,561),
+        new Sprite(g_images.fire,67,70,161,561),
+        new Sprite(g_images.fire,67,70,289,561),
+        new Sprite(g_images.fire,67,70,417,561),
+        new Sprite(g_images.fire,67,70,545,561),
+        new Sprite(g_images.fire,67,70,673,561),
+        new Sprite(g_images.fire,67,70,794,561),
+        new Sprite(g_images.fire,67,70,922,561),
+        new Sprite(g_images.fire,67,70,1050,561),
+        new Sprite(g_images.fire,67,70,1178,561),
+        new Sprite(g_images.fire,67,70,33,688),
+        new Sprite(g_images.fire,67,70,161,688),
+        new Sprite(g_images.fire,67,70,289,688),
+        new Sprite(g_images.fire,67,70,417,688),
+        new Sprite(g_images.fire,67,70,545,688),
+        new Sprite(g_images.fire,67,70,673,688),
+        new Sprite(g_images.fire,67,70,794,688),
+        new Sprite(g_images.fire,67,70,922,688),
+        new Sprite(g_images.fire,67,70,1050,688),
+        new Sprite(g_images.fire,67,70,1178,688),
+        new Sprite(g_images.fire,67,70,33,809),
+        new Sprite(g_images.fire,67,70,161,809),
+        new Sprite(g_images.fire,67,70,289,809),
+        new Sprite(g_images.fire,67,70,417,809),
+        new Sprite(g_images.fire,67,70,545,809),
+        new Sprite(g_images.fire,67,70,673,809),
+        new Sprite(g_images.fire,67,70,794,809),
+        new Sprite(g_images.fire,67,70,922,809),
+        new Sprite(g_images.fire,67,70,1050,809),
+        new Sprite(g_images.fire,67,70,1178,809),
+        new Sprite(g_images.fire,67,70,33,939),
+        new Sprite(g_images.fire,67,70,161,939),
+        new Sprite(g_images.fire,67,70,289,939),
+        new Sprite(g_images.fire,67,70,417,939),
+        new Sprite(g_images.fire,67,70,545,939),
+        new Sprite(g_images.fire,67,70,673,939),
+        new Sprite(g_images.fire,67,70,794,939),
+        new Sprite(g_images.fire,67,70,922,939),
+        new Sprite(g_images.fire,67,70,1050,939),
+        new Sprite(g_images.fire,67,70,1178,939),
+    ];
+    //minnkum eldinn
+    g_sprites.fire.forEach(function(fireSprite){
+        fireSprite.scale = 0.8;
+    });
     //Sprites for the platform
     g_sprites.platform = {
         normal:{

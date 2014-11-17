@@ -14,29 +14,15 @@ function Character(descr) {
     this._animation = {
         Frame: 0,               //Used to deside which sprite to use
         Ticker: 0,              //Used to desie when to change sprite
-        Reverse: false          //Used to know when to reverse through sprite array              
+        Reverse: false,         //Used to know when to reverse through sprite array              
+        FireFrame:0,            //Frame count for the fire
+        FireTicker:0
     };
     this.rotationJump = false;  //True if the character is doing a rotation jump
     this.currPlatform = false;  //True if the character is on a platform
     this.isBouncing = false;    //True if the character i bouncing of a wall
 
     // Common inherited setup logic from Entity
-
-    this.scale  = this.scale  || 1;
-    this.rememberResets();
-    this._jumping = false;
-    this._falling = false;
-    this._goingLeft = false;
-    this._goingRight = false;
-    this._running = false;
-    this._left = false;
-    this._wall = false;
-    this._animFrame = 0;
-    this.jumpHeight = 0;
-    this._animTicker = 0;
-    this.rotationJump = false;
-    this.currPlatform = false;
-    this.isBouncing = false;
 
     this.setup(descr);
     
@@ -70,7 +56,8 @@ Character.prototype.NOMINALS = {
     FALL_LENGTH: 600,               //The lenght that the character has to fall to die
     BOUNCE_ROTATION: 1.5,           //The velocity multiplier when bouncing off the wall rotating
     BOUNCE:1,                       //The velocity multiplier when bouncing off the wall normally
-    FIRE_LAUNCH_MULTIPLIER:-2    //How far from the character fire will spit out
+    FIRE_LAUNCH_MULTIPLIER:-2,      //How far from the character fire will spit out
+    FireTickRate:15                 //How fast the fire animation is
 };
 
 
@@ -199,7 +186,6 @@ Character.prototype.handleCollision = function(du){
             score = Math.round(score);
             TOP_PADDLE_HIT_HIGHT = isHit.id;
             g_SCORE.addToScore(score);
-            console.log(g_SCORE.getScore());
             
         }
         //Make sure the characters position is on top of the platform
@@ -590,6 +576,7 @@ Character.prototype.halt = function () {
     Function that renders the correct sprite
 */
 Character.prototype.render = function (ctx) {
+    
     //Remember the original scale
     var origScale = this.sprite.scale;
     //Set scale
@@ -598,6 +585,16 @@ Character.prototype.render = function (ctx) {
     this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation);
     //Reset the scale
     this.sprite.scale = origScale;
+    if((this.velY ===0 || this.currPlatform) && this._animation.FireTicker < this.NOMINALS.FireTickRate){
+        if(this._animation.FireFrame < g_sprites.fire.length-1){
+            g_sprites.fire[this._animation.FireFrame].drawCentredAt(ctx,this.cx,this.cy+this.activeSprite.width/2);
+            this._animation.FireFrame += 1;
+        }
+        else this._animation.FireFrame = 0;
+    }
+    else if(this.velY === 0 || this.currPlatform) this._animation.FireTicker += 1;
+    else this._animation.FireFrame = 0;
+
 };
 
 /*
