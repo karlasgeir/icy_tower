@@ -124,11 +124,19 @@ init: function() {
     this.resetCharacters();
     this.resetWalls();
     this.resetPlatforms();
+    this.killExplotions();
     //Generate the inital plaforms
     this._generateInitialPlatforms();
     //Generate the walls
     this._generateWall();
     this._generatePower();
+},
+killExplotions: function(){
+    var c = this._Explotions.length-1;
+    while (c >= 0) {
+        this._Explotions.splice(0, 1);
+        --c;
+    }
 },
 
 killPlatforms: function () {
