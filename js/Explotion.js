@@ -34,7 +34,7 @@ Explotion.prototype.update = function(du){
 
 Explotion.prototype.changeSprite = function(){
     if(this.animFrame < g_sprites.explotion.length-1){
-        this.animFrame += 1;
+        this.animFrame += 7;
     }
     else {
         this.shouldDraw = false;
