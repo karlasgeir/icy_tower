@@ -101,6 +101,10 @@ Character.prototype.jumpSound = new Audio(
     "sounds/something");
 */
 
+//Hljóðprufa
+Character.prototype.jumpSound = new Audio("res/sounds/jump_01.wav");
+Character.prototype.jumpSound2 = new Audio("res/sounds/jump_02.wav");
+
 /*
     This function updates everything about
     the character including it's position, 
@@ -591,6 +595,7 @@ Character.prototype.computeGravity = function () {
     return 0;
 };
 
+var toggle = 0;
 /*
     This computes the magnitude of the jump
     acceleration
@@ -602,6 +607,15 @@ Character.prototype.computeThrustMag = function () {
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
         //Reset the y velocity
         this._jumping = true;
+       
+        if (toggle ===4) {
+            this.jumpSound2.play();
+            toggle = 0;
+        }
+        else{
+        this.jumpSound.play();
+        toggle += 1;
+        }
         //We don't want x-velocity to decrease jump height
         if (speedInfluence<1) {
             return this.NOMINALS.THRUST;
