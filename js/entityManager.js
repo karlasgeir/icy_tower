@@ -91,7 +91,6 @@ generatePlatform : function(descr) {
 },
 
 generatePower : function(descr) {
-    console.log("Trying to generate power");
     this._power.push(new Power(descr));
 },
 
@@ -102,9 +101,7 @@ generateWalls : function(descr) {
     this._Walls.push(new Wall(descr));
 },
 generateExplotion: function(cx,cy){
-    console.log("GENERATING EXPLOTION");
     this._Explotions.push(new Explotion(cx,cy));
-    console.log(this._Explotions);
 },
 
 init: function() {

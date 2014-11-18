@@ -222,6 +222,7 @@ Character.prototype.handleCombo = function() {
         }
         g_COMBO_PLAT_IDS.push(isHit.id);
     }
+    console.log(g_COMBO_PLAT_IDS);
 };
 
 
@@ -251,6 +252,7 @@ Character.prototype.platsInCombo = function() {
     
     var isHit = this.isColliding();
     var arrayLength = g_PLATS_IN_COMBO.length;
+
 
     if (isHit && isHit instanceof Platform) {
         var lowestPlat = g_PLATS_IN_COMBO[0];

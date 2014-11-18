@@ -121,15 +121,3 @@ g_comboLogos.resetNotification = function() {
 	this.newCombo = false;
 	
 };
-
-g_comboLogos.render = function(ctx) {
-
-	var sprite = this.logoPicker();
-	if(typeof sprite === 'undefined'){
-		return;
- 	};
-
-	if (!gameOver) {
-		sprite.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
-	}
-}
