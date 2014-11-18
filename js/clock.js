@@ -19,8 +19,9 @@ function Clock(descr) {
 
     this.cx = this.clockWidth;
     this.cy = this.clockHeight;
-}
+};
 
+Clock.prototype = new Entity();
 
 Clock.prototype.render = function (ctx) {
 	this.sprite.drawCentredAt(ctx, this.cx, this.cy, 0);
@@ -28,4 +29,5 @@ Clock.prototype.render = function (ctx) {
 };
 
 Clock.prototype.update = function (du) {
+
 };

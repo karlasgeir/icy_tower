@@ -206,7 +206,6 @@ update: function(du) {
         while (i < aCategory.length) {
             var cat = aCategory[i];
             var status = cat.update(du);
-            if (cat instanceof Clock) {return;}
             var pos = cat.getPos();
             if (status === this.KILL_ME_NOW) {
                 aCategory.splice(i,1);
@@ -215,7 +214,7 @@ update: function(du) {
                 if(g_GAME_HEIGHT <0) {
                     g_GAME_HEIGHT = 0;
                 }
-                if(!(cat instanceof Notification)){
+                if(!(cat instanceof (Notification && Clock))){
                     cat.setPos(pos.posX,pos.posY+g_MOVE_SCREEN*du);
                 }
                 ++i;

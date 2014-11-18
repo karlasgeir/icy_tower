@@ -344,12 +344,9 @@ Character.prototype.computeSubStep = function (du) {
 
     //Apply the x acceleration
     this.applyAccelX(du);
-    console.log("VELYBEFORE",this.velY);
     //Compute the y acceleration
     this.accelY = this.computeGravity();
-    this.velY -= this.computeThrustMag();
-     console.log("VELY",this.velY,"ACCY",this.accelY);
-   
+    this.velY -= this.computeThrustMag();   
     
     //Apply the y acceleration
     this.applyAccelY(du);
