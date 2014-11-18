@@ -17,6 +17,7 @@ function Character(descr) {
         Reverse: false,         //Used to know when to reverse through sprite array              
         FireFrame:0,            //Frame count for the fire
         FireTicker:0,
+        revFire:false
     };
     this.rotationJump = false;  //True if the character is doing a rotation jump
     this.currPlatform = false;  //True if the character is on a platform
@@ -334,6 +335,7 @@ Character.prototype.computeRotation = function(du){
 */
 Character.prototype.computeSubStep = function (du) {
 
+
     //Register the position before change
     var prevX = this.cx;
     var prevY = this.cy;
@@ -343,10 +345,11 @@ Character.prototype.computeSubStep = function (du) {
 
     //Apply the x acceleration
     this.applyAccelX(du);
-  
+    console.log("VELYBEFORE",this.velY);
     //Compute the y acceleration
     this.accelY = this.computeGravity();
     this.velY -= this.computeThrustMag();
+     console.log("VELY",this.velY,"ACCY",this.accelY);
    
     
     //Apply the y acceleration
@@ -384,7 +387,6 @@ Character.prototype.computeSubStep = function (du) {
         this._animation.FireTicker += du;
     }
     else{
-        this.isOnFire = false;
         this._animation.FireTicker = 0;
     }
 
@@ -573,8 +575,9 @@ Character.prototype.applyAccelX = function(du){
     This function calculates the gravity that
     should be returned
 */
+var NOMINAL_GRAVITY_MARGIN= 1;
 Character.prototype.computeGravity = function () {
-    if(this.cy+this.activeSprite.height/2 < g_canvas.height || g_GAME_HEIGHT !== 0 ){
+    if(this.cy+this.activeSprite.height/2+NOMINAL_GRAVITY_MARGIN < g_canvas.height || g_GAME_HEIGHT !== 0 ){
         return g_useGravity ? this.NOMINALS.GRAVITY : 0;
     }
     else{
@@ -681,16 +684,21 @@ Character.prototype.render = function (ctx) {
     this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation);
     //Reset the scale
     this.sprite.scale = origScale;
-
     if((this.velY === 0 || this.currPlatform) && this.isOnFire){
-        if(this._animation.FireFrame < g_sprites.fire.length-1){
-            g_sprites.fire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.activeSprite.width/6,this.cy+this.activeSprite.height/6);
+        g_sprites.fire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.activeSprite.width/6,this.cy+this.activeSprite.height/6);
+        if(this._animation.FireFrame === 0 && this._animation.revFire){
+            this._animation.revFire = false;
             this._animation.FireFrame += 1;
         }
-        else {
-            this.isOnFire = false;
-            this._animation.FireFrame = 0;
-        };
+        else if(this._animation.FireFrame < g_sprites.fire.length-1 ){
+            if(this._animation.revFire) this._animation.FireFrame -= 1;
+            else this._animation.FireFrame += 1;
+        }
+        else if(this._animation.FireFrame === g_sprites.fire.length-1){
+            this._animation.revFire = true;
+            this._animation.FireFrame -= 1;
+        }
+        
     }
     else {
         this.isOnFire = false;
