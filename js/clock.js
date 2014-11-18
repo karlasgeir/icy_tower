@@ -37,6 +37,33 @@ Clock.prototype.update = function (du) {
 	var speedInfluence = 0.2;
 	var jumpInfluence = 0.5;
 
+	/*
+	var dX = +Math.sin(this.rotation);
+    var dY = -Math.cos(this.rotation);
+    //Set the launch distance
+    var launchDist = this.getRadius() * this.NOMINALS.FIRE_LAUNCH_MULTIPLIER;
+
+    //Calculate the x and y velocities
+    var relVel = this.flameVelocity;
+    var relVelX = dX * relVel;
+    var relVelY = dY * relVel;
+
+    var randomFactor = util.randRange(-3,3);
+
+    var flameVelX = randomFactor*(+this.velX + relVelX); 
+    var flameVelY = randomFactor*(this.velY + relVelY);
+	
+    //Generate the flame
+
+    if(entityManager._flame.length>g_FIREBOLTS) {return;}      
+    entityManager.generateFlame(
+        this.cx + dX * launchDist, 
+        this.cy + dY * launchDist,
+        flameVelX, 
+        flameVelY,
+        this.rotation);
+*/
+
 	if (this.rotation>circle) {
 		if (g_VERTICAL_SPEED>1.5) {return;}
 		g_VERTICAL_SPEED +=speedInfluence;

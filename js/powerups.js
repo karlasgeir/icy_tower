@@ -90,11 +90,16 @@ Power.prototype.cy = 0;
 Power.prototype.Width=this.powerWidth;
 Power.prototype.Height= this.powerHeight;
 
+//Hljod fyrir powerup
+Power.prototype.coinsound = new Audio("res/sounds/smw_coin.wav");
+Power.prototype.diamondsound = new Audio("res/sounds/demant.wav");
+
 Power.prototype.update = function (du) {
     spatialManager.unregister(this);
      
     //Check for death
     if (this._isDeadNow) {
+        this.coinsound.play();
         return entityManager.KILL_ME_NOW;
     }
 
@@ -105,6 +110,7 @@ Power.prototype.update = function (du) {
     if(g_GAME_HEIGHT > 0)
     { 
         //Begin scrolling
+        
         this.cy += g_VERTICAL_SPEED*du;
     }
     if(!gameOver){
