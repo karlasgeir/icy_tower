@@ -184,8 +184,7 @@ Character.prototype.handleCollision = function(du){
     if(isHit){
         if (isHit && isHit instanceof Platform && this._jumping && this.velY > 0) {
             if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT ){ 
-                var score = ((isHit.id - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier());
-                score = Math.round(score);         
+                var score = (isHit.id - TOP_PADDLE_HIT_HIGHT);        
                 TOP_PADDLE_HIT_HIGHT = isHit.id;
                 g_SCORE.addToScore(score);
             }

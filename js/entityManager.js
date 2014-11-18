@@ -130,6 +130,7 @@ init: function() {
     g_GAME_HEIGHT  = 0;
     g_FIREBOLTS = 0;
     g_SCORE = new Score();
+    g_SCORE_MULTIPLIER = 1;
     //Reset things
     this.resetCharacters();
     this.resetWalls();

@@ -38,5 +38,4 @@ Clock.prototype.update = function (du) {
 	if (this.rotation>circle) {
 		this.rotation = 0;
 	}
-	console.log(this.rotation);
 };

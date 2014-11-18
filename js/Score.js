@@ -13,7 +13,7 @@ function Score() {
 
 
 Score.prototype.addToScore = function(score){
-    this.score += score;
+    this.score += Math.round(score*g_SCORE_MULTIPLIER);
 };
 
 Score.prototype.getScore = function(){
