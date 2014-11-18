@@ -12,19 +12,17 @@ var g_comboLogos = {
 	timeInMiddle: 600/NOMINAL_UPDATE_INTERVAL,
 	rotation: 0,
 	speed : 3,
-	newCombo: false,
 	isOn : []
 };
 
-var NEW_COMBO = false;
 g_comboLogos.checkCombos = function () {
+
 	var arrayLength = this.isOn.length;
 	var plats = g_PLATS_GONE_IN_COMBO;
 	var currentNotification = {name:"",scale:1};
 	var shouldDraw = false;
-	var oldID = this.isOn[arrayLength];
+
 	if (plats>5 && plats<=14) {
-		console.log("COMBO!");
 		currentNotification.name = "GOOD";
 		currentNotification.scale = 1;
 		//g_SCORE.setComboMultiplier(1.2);
@@ -85,18 +83,10 @@ g_comboLogos.checkCombos = function () {
 		shouldDraw = this.ifDoesntExist(10);
 	}
 
-	var newID = this.isOn[arrayLength];
-
-
 	if (!g_COMBO) {
 		this.resetNotification();
 		//g_SCORE.resetComboMultiplier();
 	}
-
-	if (oldID !== newID) {
-		this.newCombo = true;
-	} else {this.newCombo = false;}
-
 	//return currentNotification;
 	if(shouldDraw) entityManager.generateNotification(currentNotification.name,currentNotification.scale);
 }
@@ -118,6 +108,5 @@ g_comboLogos.resetNotification = function() {
 	this.timeInMiddle = 600/NOMINAL_UPDATE_INTERVAL;
 	this.rotation = 0;
 	this.speed = 3;
-	this.newCombo = false;
-	
+	this.isOn = [];
 };
