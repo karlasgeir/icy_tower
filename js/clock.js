@@ -13,7 +13,7 @@ function Clock(descr) {
     this.clockHeight = this.sprite.height;
     this.clockWidth = this.sprite.width/2;
     this.scale  = this.scale  || 1;
-    this.timer = 600/NOMINAL_UPDATE_INTERVAL;
+    this.timer = 1/NOMINAL_UPDATE_INTERVAL;
     this.rotation = 0;
     this.speed = 0;
 
@@ -25,9 +25,18 @@ Clock.prototype = new Entity();
 
 Clock.prototype.render = function (ctx) {
 	this.sprite.drawCentredAt(ctx, this.cx, this.cy, 0);
-	g_sprites.indicator.drawCentredAt(ctx, this.cx, this.cy, 0);
+	g_sprites.indicator.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
 };
 
 Clock.prototype.update = function (du) {
 
+	var tickRate = this.timer/18;
+	this.rotation +=tickRate*du;
+
+	var circle = 2*Math.PI;
+
+	if (this.rotation>circle) {
+		this.rotation = 0;
+	}
+	console.log(this.rotation);
 };
