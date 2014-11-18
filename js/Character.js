@@ -214,7 +214,7 @@ Character.prototype.handleCombo = function() {
 
     if (this.velY<0) {return;}
 
-    if (isHit) {
+    if (isHit instanceof Platform) {
         for (var i=0; i<arrayLength; i++) {
             if (g_COMBO_PLAT_IDS[i] === isHit.platID) {
                 return;
@@ -252,7 +252,7 @@ Character.prototype.platsInCombo = function() {
     var isHit = this.isColliding();
     var arrayLength = g_PLATS_IN_COMBO.length;
 
-    if (isHit) {
+    if (isHit instanceof Platform) {
         var lowestPlat = g_PLATS_IN_COMBO[0];
         for (var i=0; i<arrayLength; i++) {
             if (g_PLATS_IN_COMBO[i] === isHit.platID) {
