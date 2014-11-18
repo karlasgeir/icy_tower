@@ -60,17 +60,34 @@ unregister: function(entity) {
 },
 
 findEntityInRange: function(posX, posY, width,height, gameHeight) {
+
     for (var entity in this._entities) {
-        var e = this._entities[entity];
-        var pos=e.getPos();
-        var size = e.getSize();
-        if(util.isBetween(gameHeight,e.getGameHeight()-9,e.getGameHeight()+15)){
-            if(posX - width/2 < pos.posX+size.width/2
-                && posX + width/2 > pos.posX - size.width/2){
-                return e;
+            var e = this._entities[entity];
+            var pos=e.getPos();
+            var size = e.getSize();
+            if (e instanceof Power){ 
+                //TODO   
+
+                   /* if(pos.posX-pos.width/2<posX+width/2 && pos.posX+pos.width/2> posX- width/2){
+                        
+                        if(pos.posY-pos.width/2<posY+height/2 && pos.posY+pos.width/2>posY- height/2){*/
+                                 
+                        //}
+                      
+                    //}
+                  
             }
-        }
+            
+                else if(util.isBetween(gameHeight,e.getGameHeight()-9,e.getGameHeight()+15)){
+                    if(posX - width/2 < pos.posX+size.width/2
+                            && posX + width/2 > pos.posX - size.width/2){
+                        
+                        return e;
+                    }
+                }
+            
     }
+
     return false;
 },
 

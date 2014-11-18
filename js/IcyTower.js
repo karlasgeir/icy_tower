@@ -151,7 +151,7 @@ function requestPreloads() {
         notifications : "res/comboLogos/combospritesheet.png",
         go : "res/comboLogos/go.png",
         fireball: "res/fireballz.png",
-        power: "res/powerUps/powerUpTest.png",
+        power: "res/powerUps/power_sheet1.png",
         wallsprite : "res/walls/bigger/wallBig2.png",
         numbers: "res/scoreNumbers/numbersspritesheet.png",
         fire: "res/Ground/fire/firespritesheet.png",
@@ -348,7 +348,36 @@ function preloadDone() {
     };
 
     //Power sprite
-    g_sprites.power = new Sprite(g_images.power,g_images.power.width,g_images.power.height,0,0);
+     g_sprites.power = {
+        ruby:{
+            0: new Sprite(g_images.power,40,74,0,60),
+            1: new Sprite(g_images.power,40,74,51,60),
+            2: new Sprite(g_images.power,40,74,102,60),
+            3: new Sprite(g_images.power,40,74,153,60),
+            4: new Sprite(g_images.power,40,74,210,60),
+            5: new Sprite(g_images.power,40,74,262,60),
+            6: new Sprite(g_images.power,40,74,312,60)
+
+        },
+        crystal:{
+            0: new Sprite(g_images.power,38,60,0,0),
+            1: new Sprite(g_images.power,38,60,50,0),
+            2: new Sprite(g_images.power,38,60,100,0),
+            3: new Sprite(g_images.power,38,60,156,0),
+            4: new Sprite(g_images.power,38,60,208,0),
+            5: new Sprite(g_images.power,38,60,258,0),
+            6: new Sprite(g_images.power,38,60,311,0),
+            7: new Sprite(g_images.power,38,60,364,0)
+        },
+        coin:{
+            0: new Sprite(g_images.power,45,47,0,200),
+            1: new Sprite(g_images.power,45,47,0,250),
+            2: new Sprite(g_images.power,45,47,0,300),
+            3: new Sprite(g_images.power,45,47,0,350)
+        },
+        skull: {0:new Sprite(g_images.power,60,60,340,340)}
+    };
+    
 
     //Sprites for the wall
     g_sprites.wallsprite = new Sprite(g_images.wallsprite,g_images.wallsprite.width,g_images.wallsprite.height,0,0);

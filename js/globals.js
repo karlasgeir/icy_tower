@@ -48,3 +48,5 @@ var g_PLATS_GONE_IN_COMBO = 0;
 
 var g_FIREBOLTS = 0;
 
+var powerSprite_is_alive =false;
+

@@ -590,6 +590,8 @@ Character.prototype.computeThrustMag = function () {
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
         //Reset the y velocity
         this._jumping = true;
+        //generate power.
+        entityManager._generatePower();
         //We don't want x-velocity to decrease jump height
         if (speedInfluence<1) {
             return this.NOMINALS.THRUST;

@@ -70,12 +70,38 @@ _generateWall : function() {
 },
 
 _generatePower: function() {
-      
-    this.generatePower({
-        cx: 200,
-        cy: 200
-    });
+  
+
+
+   var rand= Math.floor((Math.random()*100)+1);
+
+   
+   if(rand<20 && !powerSprite_is_alive){
+        
+        if(rand<=2){
+            power_is_ruby=true;
+            return this._pushPower();}
+        else if(rand  <= 4){
+            power_is_skull=true;
+            return this._pushPower();}
+        else if(rand <= 10){
+            power_is_crystal=true;
+            return this._pushPower();}
+        else if(rand <=20){
+            power_is_coin=true;
+            return this._pushPower();}         
+    }
+    else {return;}
 },
+
+_pushPower : function(){
+        powerSprite_is_alive=true;  
+        this.generatePower({
+            cx: Math.floor((Math.random()*(g_right_side-140))+(g_left_side+20)),
+            cy: -400
+        });
+ },
+
 
 
 /*

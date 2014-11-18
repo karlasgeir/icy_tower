@@ -87,6 +87,9 @@ Entity.prototype.getSize = function(){
     else if(this instanceof Wall){
         return {width: this.wallWidth, height:this.wallHeight};
     }
+    else if(this instanceof Power){
+        return {width: this.Width, height:this.Height};
+    }
 };
 
 /*
