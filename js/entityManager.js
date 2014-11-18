@@ -75,8 +75,8 @@ generateFlame: function(cx, cy, velX, velY, rotation) {
     }));;
 },
 
-generateNotification: function(type){
-    this._Notifications.push(new Notification(type));
+generateNotification: function(type,scale){
+    this._Notifications.push(new Notification(type,scale));
 },
 
 deferredSetup : function () {
@@ -109,7 +109,6 @@ generateExplotion: function(cx,cy){
 
 init: function() {
     //Reset variables
-    g_SCORE = 0;
     g_COMBO_PLAT_IDS = [];
     g_PLATS_IN_COMBO = [];
     g_COMBO = false;
@@ -189,18 +188,17 @@ update: function(du) {
         while (i < aCategory.length) {
             var cat = aCategory[i];
             var status = cat.update(du);
-            console.log(cat);
             var pos = cat.getPos();
-
             if (status === this.KILL_ME_NOW) {
-                console.log("KILL",aCategory[i]);
                 aCategory.splice(i,1);
             }
             else {
                 if(g_GAME_HEIGHT <0) {
                     g_GAME_HEIGHT = 0;
                 }
-                cat.setPos(pos.posX,pos.posY+g_MOVE_SCREEN*du);
+                if(!(cat instanceof Notification)){
+                    cat.setPos(pos.posX,pos.posY+g_MOVE_SCREEN*du);
+                }
                 ++i;
             }
         }

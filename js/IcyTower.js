@@ -57,7 +57,7 @@ function updateSimulation(du) {
     
     entityManager.update(du);
     g_background.update(du);
-    g_comboLogos.update(du);
+    g_comboLogos.checkCombos();
 }
 
 // GAME-SPECIFIC DIAGNOSTICS
@@ -113,7 +113,6 @@ function renderSimulation(ctx) {
     if (!gameOver && !g_MENU_SCREEN) {
         entityManager.render(ctx);
         g_SCORE.render(ctx);
-        g_comboLogos.render(ctx);
     }
 
     if (gameOver && g_MENU_SCREEN) {

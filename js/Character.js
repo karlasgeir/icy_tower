@@ -51,7 +51,7 @@ Character.prototype.NOMINALS = {
     MAX_ACCELX: 0.8,                //Maximum x-acceleration of the character
     MAX_VELX:12,                    //Maximum x-velocity of the character
     JUMP_VEL: 1.25,                 //Nominal x-acceleration fraction when jumping
-    GRAVITY: 1.3,                   //Nominal acceleration do to gravity
+    GRAVITY: 1.2,                   //Nominal acceleration do to gravity
     ROTATION_JUMP_THRESHOLD: 10,    //the x velocity threshhold that determines
                                     //if the jump should be rottional
     THRUST: 13,                     //The nominal jump thrust
@@ -214,13 +214,13 @@ Character.prototype.handleCombo = function() {
 
     if (this.velY<0) {return;}
 
-    if (isHit) {
+    if (isHit && isHit instanceof Platform) {
         for (var i=0; i<arrayLength; i++) {
-            if (g_COMBO_PLAT_IDS[i] === isHit.platID) {
+            if (g_COMBO_PLAT_IDS[i] === isHit.id) {
                 return;
             }
         }
-        g_COMBO_PLAT_IDS.push(isHit.platID);
+        g_COMBO_PLAT_IDS.push(isHit.id);
     }
 };
 
@@ -252,22 +252,21 @@ Character.prototype.platsInCombo = function() {
     var isHit = this.isColliding();
     var arrayLength = g_PLATS_IN_COMBO.length;
 
-    if (isHit) {
+    if (isHit && isHit instanceof Platform) {
         var lowestPlat = g_PLATS_IN_COMBO[0];
         for (var i=0; i<arrayLength; i++) {
-            if (g_PLATS_IN_COMBO[i] === isHit.platID) {
+            if (g_PLATS_IN_COMBO[i] === isHit.id) {
                 return;
             }
         }
         if (g_COMBO) {
-            var highestPlat = isHit.platID;
+            var highestPlat = isHit.id;
             g_PLATS_IN_COMBO.push(highestPlat);
         }
         if (!g_COMBO) {
             g_PLATS_IN_COMBO = [];
         }
     }
-
     var numOfPlatsInCombo =g_PLATS_IN_COMBO[arrayLength-1]-g_PLATS_IN_COMBO[0];
     g_PLATS_GONE_IN_COMBO = numOfPlatsInCombo;
 

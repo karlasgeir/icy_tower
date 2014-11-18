@@ -17,72 +17,72 @@ var g_comboLogos = {
 };
 
 var NEW_COMBO = false;
-
-g_comboLogos.logoPicker = function () {
-
+g_comboLogos.checkCombos = function () {
 	var arrayLength = this.isOn.length;
-	var currentNotification;
 	var plats = g_PLATS_GONE_IN_COMBO;
-
+	var currentNotification = {name:"",scale:1};
+	var shouldDraw = false;
 	var oldID = this.isOn[arrayLength];
-
 	if (plats>5 && plats<=14) {
-		currentNotification = g_sprites.notifications.good;          
+		console.log("COMBO!");
+		currentNotification.name = "GOOD";
 		currentNotification.scale = 1;
-		g_FIREBOLTS = 20;
-		this.ifDoesntExist(1);
+		//g_SCORE.setComboMultiplier(1.2);
+		shouldDraw = this.ifDoesntExist(1);
 	}
 	if (plats>14 && plats<=24) {
-		currentNotification = g_sprites.notifications.sweet;
+		currentNotification.name = "SWEET";
 		currentNotification.scale = 1.3;
-		g_FIREBOLTS = 30;
-		this.ifDoesntExist(2);
+		//g_SCORE.setComboMultiplier(1.4);
+		shouldDraw = this.ifDoesntExist(2);
 	}
 	if (plats>24 && plats<=34) {
-		currentNotification = g_sprites.notifications.great;
+		currentNotification.name = "GREAT";
 		currentNotification.scale = 1.5;
-		g_FIREBOLTS = 40;
-		this.ifDoesntExist(3);
+		//g_SCORE.setComboMultiplier(1.6);
+		shouldDraw = this.ifDoesntExist(3);
 	}
 	if (plats>34 && plats<=50) {
-		currentNotification = g_sprites.notifications.super;
+		currentNotification.name = "SUPER";
 		currentNotification.scale = 1.8;
-		g_FIREBOLTS = 50;
-		this.ifDoesntExist(4);
+		//g_SCORE.setComboMultiplier(1.8);
+		shouldDraw = this.ifDoesntExist(4);
 	}
 	if (plats>50 && plats<=70) {
-		currentNotification = g_sprites.notifications.wow;
+		currentNotification.name = "WOW";
 		currentNotification.scale = 2;
-		g_FIREBOLTS = 60;
-		this.ifDoesntExist(5);
+		//g_SCORE.setComboMultiplier(2.0);
+		shouldDraw = this.ifDoesntExist(5);
 	}
 	if (plats>70 && plats<=100) {
-		currentNotification = g_sprites.notifications.amazing;
+		currentNotification.name = "AMAZING";
 		currentNotification.scale = 2.5;
-		this.ifDoesntExist(6);
+		//g_SCORE.setComboMultiplier(2.3);
+		shouldDraw = this.ifDoesntExist(6);
 	}
 	if (plats>100 && plats<=140) {
-		currentNotification = g_sprites.notifications.extreme;
+		currentNotification.name = "EXTREME";
 		currentNotification.scale = 2.8;
-		g_FIREBOLTS = 80;
-		this.ifDoesntExist(7);
+		//g_SCORE.setComboMultiplier(2.6);
+		shouldDraw = this.ifDoesntExist(7);
 	}
 	if (plats>140 && plats<=180) {
-		currentNotification = g_sprites.notifications.fantastic;
+		currentNotification.name = "FANTASTIC";
 		currentNotification.scale = 3;
-		this.ifDoesntExist(8);
+		//g_SCORE.setComboMultiplier(3);
+		shouldDraw = this.ifDoesntExist(8);
 	}
 	if (plats>180 && plats<=250) {
-		currentNotification = g_sprites.notifications.splendid;
+		currentNotification.name = "SPLENDID";
 		currentNotification.scale = 3.2;
-		g_FIREBOLTS = 90;
-		this.ifDoesntExist(9);
+		//g_SCORE.setComboMultiplier(3.5);
+		shouldDraw = this.ifDoesntExist(9);
 	}
 	if (plats>200) {
-		currentNotification = g_sprites.notifications.noway;
+		//g_SCORE.setComboMultiplier(4);
+		currentNotification.name = "NOWAY";
 		currentNotification.scale = 3.5;
-		g_FIREBOLTS = 100;
-		this.ifDoesntExist(10);
+		shouldDraw = this.ifDoesntExist(10);
 	}
 
 	var newID = this.isOn[arrayLength];
@@ -90,27 +90,29 @@ g_comboLogos.logoPicker = function () {
 
 	if (!g_COMBO) {
 		this.resetNotification();
+		//g_SCORE.resetComboMultiplier();
 	}
 
 	if (oldID !== newID) {
 		this.newCombo = true;
 	} else {this.newCombo = false;}
 
-	return currentNotification;
+	//return currentNotification;
+	if(shouldDraw) entityManager.generateNotification(currentNotification.name,currentNotification.scale);
 }
 
 g_comboLogos.ifDoesntExist = function (item) {
 	var arrayLength = this.isOn.length;
 	for (var i = 0; i<arrayLength; i++) {
 		if (this.isOn[i] === item) {
-			return;
+			return false;
 		}
 	}
 	this.isOn.push(item);
+	return true;
 }
 
 g_comboLogos.resetNotification = function() {
-
 	this.cx = 0;
 	this.cy = g_canvas.height/2;
 	this.timeInMiddle = 600/NOMINAL_UPDATE_INTERVAL;
@@ -129,58 +131,5 @@ g_comboLogos.render = function(ctx) {
 
 	if (!gameOver) {
 		sprite.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
-	}
-}
-
-
-g_comboLogos.update = function (du) {
-
-	var sprite = this.logoPicker();
-	if(typeof sprite === 'undefined'){
-		return;
- 	};
-
-	if (gameOver || g_MENU_SCREEN) {
-		this.timeInMiddle = 600/NOMINAL_UPDATE_INTERVAL;
-		return;
-	}
-
-	var randomFactor = util.randRange(-3,3);
-
-    var flameVelX = randomFactor*(this.speed); 
-    var flameVelY = randomFactor*(this.speed);
-
-    var dX = +Math.sin(this.rotation);
-    var dY = -Math.cos(this.rotation);
-
-	if (this.cx < g_canvas.width/2) {
-		this.speed = 20;
-		this.cx +=this.speed*du;
-		this.rotation += 2;
-
-		entityManager.generateFlame(
-        this.cx+dX, 
-        this.cy+dY,
-        flameVelX, 
-        flameVelY,
-        this.rotation); 
-
-		return;
-	}
-
-
-	
-	if (this.cx >= g_canvas.width/2 && this.timeInMiddle > 0) {
-		this.cx = g_canvas.width/2;
-		this.rotation = 0;
-		this.timeInMiddle -=du;
-	}
-	if (this.timeInMiddle <= 0 && this.cx<=g_canvas.width+sprite.width) {
-		this.speed = 50;
-		this.cx +=this.speed*du;
-		entityManager.generateExplotion(this.cx,this.cy);
-	}
-	if (this.cx>=g_canvas.width+sprite.width && this.newCombo) {
-		this.resetNotification();
 	}
 }

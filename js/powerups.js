@@ -140,7 +140,7 @@ Power.prototype.handleCollision = function(){
         case "ruby":
             break;
         case "skull":
-            gameOver = true;
+            //gameOver = true;
             break;
         case "crystal":
             break;
