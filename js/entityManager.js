@@ -61,49 +61,6 @@ _generateInitialPlatforms : function() {
     }
 },
 
-_generateWall : function() {
-      
-    this.generateWalls({
-        cx: 0,
-        cy: 0
-    });
-},
-
-_generatePower: function() {
-  
-
-
-   var rand= Math.floor((Math.random()*100)+1);
-
-   
-   if(rand<20 && !powerSprite_is_alive){
-        
-        if(rand<=2){
-            power_is_ruby=true;
-            return this._pushPower();}
-        else if(rand  <= 4){
-            power_is_skull=true;
-            return this._pushPower();}
-        else if(rand <= 10){
-            power_is_crystal=true;
-            return this._pushPower();}
-        else if(rand <=20){
-            power_is_coin=true;
-            return this._pushPower();}         
-    }
-    else {return;}
-},
-
-_pushPower : function(){
-        powerSprite_is_alive=true;  
-        this.generatePower({
-            cx: Math.floor((Math.random()*(g_right_side-140))+(g_left_side+20)),
-            cy: -400
-        });
- },
-
-
-
 /*
     This function generates a flame
 */
@@ -123,10 +80,13 @@ deferredSetup : function () {
 
 generatePlatform : function(descr) {
     g_TOP_FLOOR = new Platform(descr);
+    var rand = util.randRange(0,10);
+    if(rand < 5) entityManager.generatePower();
     this._platforms.push(g_TOP_FLOOR);
 },
 
 generatePower : function(descr) {
+    console.log("Trying to generate power");
     this._power.push(new Power(descr));
 },
 
@@ -159,8 +119,7 @@ init: function() {
     //Generate the inital plaforms
     this._generateInitialPlatforms();
     //Generate the walls
-    this._generateWall();
-    this._generatePower();
+    this.generateWalls();
 },
 killExplotions: function(){
     var c = this._Explotions.length-1;
@@ -218,6 +177,7 @@ update: function(du) {
             var pos = cat.getPos();
 
             if (status === this.KILL_ME_NOW) {
+                console.log("KILL",aCategory[i]);
                 aCategory.splice(i,1);
             }
             else {

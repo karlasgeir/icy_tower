@@ -349,33 +349,33 @@ function preloadDone() {
 
     //Power sprite
      g_sprites.power = {
-        ruby:{
-            0: new Sprite(g_images.power,40,74,0,60),
-            1: new Sprite(g_images.power,40,74,51,60),
-            2: new Sprite(g_images.power,40,74,102,60),
-            3: new Sprite(g_images.power,40,74,153,60),
-            4: new Sprite(g_images.power,40,74,210,60),
-            5: new Sprite(g_images.power,40,74,262,60),
-            6: new Sprite(g_images.power,40,74,312,60)
+        ruby:[
+            new Sprite(g_images.power,41,60,0,66),
+            new Sprite(g_images.power,42,60,49,66),
+            new Sprite(g_images.power,41,60,103,66),
+            new Sprite(g_images.power,38,60,155,66),
+            new Sprite(g_images.power,41,60,209,66),
+            new Sprite(g_images.power,40,60,264,66),
+            new Sprite(g_images.power,39,60,314,66)
 
-        },
-        crystal:{
-            0: new Sprite(g_images.power,38,60,0,0),
-            1: new Sprite(g_images.power,38,60,50,0),
-            2: new Sprite(g_images.power,38,60,100,0),
-            3: new Sprite(g_images.power,38,60,156,0),
-            4: new Sprite(g_images.power,38,60,208,0),
-            5: new Sprite(g_images.power,38,60,258,0),
-            6: new Sprite(g_images.power,38,60,311,0),
-            7: new Sprite(g_images.power,38,60,364,0)
-        },
-        coin:{
-            0: new Sprite(g_images.power,45,47,0,200),
-            1: new Sprite(g_images.power,45,47,0,250),
-            2: new Sprite(g_images.power,45,47,0,300),
-            3: new Sprite(g_images.power,45,47,0,350)
-        },
-        skull: {0:new Sprite(g_images.power,60,60,340,340)}
+        ],
+        crystal:[
+            new Sprite(g_images.power,35,57,0,0),
+            new Sprite(g_images.power,36,57,51,0),
+            new Sprite(g_images.power,34,57,105,0),
+            new Sprite(g_images.power,34,57,157,0),
+            new Sprite(g_images.power,34,57,209,0),
+            new Sprite(g_images.power,34,57,261,0),
+            new Sprite(g_images.power,34,57,313,0),
+            new Sprite(g_images.power,35,57,365,0)
+        ],
+        coin:[
+            new Sprite(g_images.power,39,45,0,204),
+            new Sprite(g_images.power,34,45,0,250),
+            new Sprite(g_images.power,26,45,5,299),
+            new Sprite(g_images.power,6,45,15,347)
+        ],
+        skull: [new Sprite(g_images.power,55,59,345,341)]
     };
     
 

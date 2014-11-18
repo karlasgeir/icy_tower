@@ -126,14 +126,13 @@ Character.prototype.update = function (du) {
     this.gameHeight = g_canvas.height - this.cy - this.activeSprite.height/2 + g_GAME_HEIGHT;
 
     //If the character is traveling down
-    if(this._jumping && this.velY > 0){
+    
         //He can collide
         this.handleCollision();
-    }
-    else{
+    
         //Check if he's on a platform
         this.checkPlatform();
-    }
+
     //If game is not over
     if(!gameOver){
         //Reregister in the spatial manager
@@ -181,8 +180,8 @@ Character.prototype.handleCollision = function(du){
     //Get the colliding platform if any
     var isHit = this.isColliding();
     //Check if colliding
-    if (isHit) {
-        if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT){ 
+    if (isHit && isHit instanceof Platform && this._jumping && this.velY > 0) {
+        if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT ){ 
             var score = ((isHit.id - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier());
             score = Math.round(score);         
             TOP_PADDLE_HIT_HIGHT = isHit.id;
@@ -197,7 +196,13 @@ Character.prototype.handleCollision = function(du){
 
         //Put the platform into currPlatform
         this.currPlatform = isHit;
-    }   
+    }
+    else if(isHit && isHit instanceof Power){
+        //TODO: handle powerups
+        console.log("CHARACTER GETS IT");
+        isHit.kill();
+
+    }
 };
  
 var g_COMBO_PLAT_IDS = [];
@@ -592,7 +597,7 @@ Character.prototype.computeThrustMag = function () {
         //this.velY = 0;
         this._jumping = true;
         //generate power.
-        entityManager._generatePower();
+        entityManager.generatePlatform();
         //We don't want x-velocity to decrease jump height
         if (speedInfluence<1) {
             return this.NOMINALS.THRUST;

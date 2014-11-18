@@ -34,22 +34,38 @@ function Power(descr) {
 0        1         2         3         4         5         6         7         8
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 */
-var power_is_ruby = false;
-var power_is_crystal= false;
-var power_is_skull =false;
-var power_is_coin = false;
 
 var NOMINAL_VERTICAL_SPEED = 0.5;
-
 // A generic contructor which accepts an arbitrary descriptor object
 function Power(descr) {
-
-
     this.sprite = this.sprite || g_sprites.power;
-    this.activeSprite = this.activeSprite || g_sprites.power.ruby[0];
-
-    this.powerWidth = this.activeSprite.height;
-    this.powerHeight = this.activeSprite.width;
+    var rand= util.randRange(1,20);
+    switch(true){
+        case (rand <= 2):
+            this.type="ruby";
+            this.activeSprite = this.sprite.ruby;
+            break;
+        case (rand <=4):
+            this.type="skull";
+            this.activeSprite = this.sprite.skull;
+            break;
+        case (rand <= 10):
+            this.type = "crystal";
+            this.activeSprite = this.sprite.crystal;
+            break;
+        case (rand <= 20):
+            this.type = "coin";
+            this.activeSprite = this.sprite.coin;
+            break;
+        default:
+            this.type = false;
+            this.activeSprite = false
+    } 
+    this.width = this.activeSprite[0].height;
+    this.height = this.activeSprite[0].width;
+    this.cy= g_TOP_FLOOR.cy - g_TOP_FLOOR.halfHeight - this.height/2;
+    this.cx= util.randRange(g_TOP_FLOOR.cx - g_TOP_FLOOR.halfWidth,g_TOP_FLOOR.cx + g_TOP_FLOOR.halfWidth);
+    
     //console.log("dfafdasfdasfdasÞ:   "+this.powerWidth);
      this.powerID = 0;
 
@@ -60,6 +76,8 @@ function Power(descr) {
     this.setup(descr);
 
     this._animFrame=0;
+    this._animTickRate=10;
+    this._animTick=0;
 }
 
 Power.prototype = new Entity();
@@ -72,22 +90,18 @@ Power.prototype.cy = 0;
 Power.prototype.Width=this.powerWidth;
 Power.prototype.Height= this.powerHeight;
 Power.prototype.verticalSpeed = NOMINAL_VERTICAL_SPEED;
-//Power.prototype.type=skull;
 
 Power.prototype.update = function (du) {
     spatialManager.unregister(this);
      
-    this.pickSprite();
-
-   /* var isHit = this.isColliding();
-    if (isHit) {
-        var powerID = this.getID();
-    //    console.log(platID);
-    }*/
-    
+    //Check for death
     if (this._isDeadNow) {
         return entityManager.KILL_ME_NOW;
     }
+
+    this.checkForKill();
+
+    this.incrementFrame();
 
     if(g_GAME_HEIGHT > 0)
     { 
@@ -97,50 +111,21 @@ Power.prototype.update = function (du) {
     if(!gameOver){
          spatialManager.register(this);
     } 
-    //setTimeout(this.update,1000000);
-
 };
 
-Power.prototype.pickSprite = function() {
-
-    this.checkForKill();
-    if (powerSprite_is_alive) { 
-
-        if(power_is_ruby){
-         var sprite_base=this.sprite;
-            if(this._animFrame>=5){
-                this._animFrame=0;
-            }
-            this._animFrame+=1;
-            this.activeSprite=sprite_base.ruby[this._animFrame];
-         
+Power.prototype.incrementFrame = function() {
+    if(this._animTick < this._animTickRate){
+        this._animTick += 1;
+    } 
+    else{
+        if(this._animFrame < this.activeSprite.length-1){
+            this._animFrame += 1;
         }
-        else if(power_is_crystal){
-            var sprite_base=this.sprite;
-            if(this._animFrame>=6){
-                this._animFrame=0;
-            }
-            this._animFrame+=1;
-             this.activeSprite=sprite_base.crystal[this._animFrame];
-       }
-       else if(power_is_coin){
-           var sprite_base=this.sprite;
-           if(this._animFrame>=3){
-               this._animFrame=0;
-               this.activeSprite=sprite_base.coin[this._animFrame];
-           }
-           this._animFrame+=1;
-           this.activeSprite=sprite_base.coin[this._animFrame];
-       }
-       else if(power_is_skull){
-    
-           var sprite_base=this.sprite;
-          this.activeSprite=sprite_base.skull[0];
+        else{
+            this._animFrame = 0
         }
-     
-     }
-    else {
-        return;}
+        this._animTick = 0;
+    }
 };
 
 
@@ -150,7 +135,7 @@ Power.prototype.render = function (ctx) {
     
    // var origScale = this.sprite.scale;
     this.sprite.scale = this._scale;
-    this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,0);
+    this.activeSprite[this._animFrame].drawCentredAt(ctx, this.cx, this.cy);
     
 };
 
@@ -159,12 +144,15 @@ Power.prototype.getID = function() {
 }
 Power.prototype.checkForKill = function(){
     if(this.cy>650){
-        powerSprite_is_alive=false;
-        power_is_ruby=false;
-        power_is_skull=false;
-        power_is_crystal=false;
-        power_is_coin=false;
         this.kill();
     }
+
+Power.prototype.getRadius = function(){
+    return this.activeSprite[this._animFrame].height/2;
+}
+
+Power.prototype.getSize = function(){
+    return {width:this.activeSprite[this._animFrame].width,height:this.activeSprite[this._animFrame].height};
+}
 
 };

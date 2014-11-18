@@ -88,7 +88,6 @@ g_comboLogos.logoPicker = function () {
 
 	var newID = this.isOn[arrayLength];
 
-	console.log(this.isOn);
 
 	if (!g_COMBO) {
 		this.resetNotification();

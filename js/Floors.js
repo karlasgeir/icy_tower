@@ -19,8 +19,6 @@ function Platform(descr) {
     this.scale  = this.scale  || 1;
     this.id = g_NUMBER_OF_PLATFORMS+1;
 
-    this.platID = 0;
-
     //Setup from descr (can override the above)
     this.setup(descr);
 
@@ -62,26 +60,25 @@ Platform.prototype.platPosition = function() {
 Platform.prototype.platPicker = function() {
 
     var sprite_base = this.sprite;
-
-    if(this.platID<100) {
+    if(this.id<100) {
         this.activeSprite = sprite_base.normal.whole;
     }
-    if(this.platID>=100) {
+    if(this.id>=100) {
         this.activeSprite = sprite_base.snow;
         this.scaleOne = 2;
         this.scaleTwo = 2.5;
     }
-    if(this.platID>=200) {
+    if(this.id>=200) {
         this.activeSprite = sprite_base.wood.whole;
         this.scaleOne = 2;
         this.scaleTwo = 2.25;
     }
-    if(this.platID>=300) {
+    if(this.id>=300) {
         this.activeSprite = sprite_base.lava;
         this.scaleOne = 1.8;
         this.scaleTwo = 2.1;
     }
-    if(this.platID>=400) {
+    if(this.id>=400) {
         this.activeSprite = sprite_base.rainbow.whole;
         this.scaleOne = 1.5;
         this.scaleTwo = 2;
@@ -147,9 +144,7 @@ Platform.prototype.update = function (du) {
         //Kill it
     	this.kill();
         var id = g_NUMBER_OF_PLATFORMS+1;
-        entityManager.generatePlatform({
-            platID: id
-        });
+        entityManager.generatePlatform();
     }    
     //If the screen has been moved once
     if(g_GAME_HEIGHT > 0)
@@ -165,7 +160,7 @@ Platform.prototype.update = function (du) {
 };
 
 Platform.prototype.getID = function() {
-    return this.platID;
+    return this.id;
 }
 
 Platform.prototype.reset = function () {
