@@ -138,7 +138,7 @@ function requestPreloads() {
         character   : "res/spritesheet.png",
         character_rev  : "res/spritesheet-rev.png",
 	    platform : "res/platforms/platformspritesheet.png",
-        backgroundMenu : "res/backgrounds/backgroundPlaceholder.jpg",
+        backgroundMenu : "res/backgrounds/FlashFreeze.jpg",
         gameBackground : "res/backgrounds/gB7.png",
         logo : "res/backgrounds/logo.png",
         startGame : "res/backgrounds/start.png",
