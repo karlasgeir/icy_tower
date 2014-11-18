@@ -38,17 +38,8 @@ Clock.prototype.update = function (du) {
 	var jumpInfluence = 0.5;
 
 	if (this.rotation>circle) {
-		if (NOMINAL_VERTICAL_SPEED>1.5) {return;}
-
-		var platforms = entityManager._platforms;
-		var arrayLength = platforms.length;
-
-		for (var  i=0; i<arrayLength; i++) {
-			platforms[i].verticalSpeed += speedInfluence;
-			console.log(platforms.verticalSpeed);
-		};
-		NOMINAL_VERTICAL_SPEED +=speedInfluence;
-		Platform.prototype.verticalSpeed = NOMINAL_VERTICAL_SPEED;
+		if (g_VERTICAL_SPEED>1.5) {return;}
+		g_VERTICAL_SPEED +=speedInfluence;
 		Character.prototype.NOMINALS.THRUST += jumpInfluence;
 		this.rotation = 0;
 	}

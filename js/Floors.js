@@ -6,7 +6,6 @@
 // Platform constructor that creates a new platform in the
 // correct place
 var SPACE_BETWEEN_PLATFORMS = 80;
-var NOMINAL_VERTICAL_SPEED = 0.5;
 function Platform(descr) {
     /*
         Initial settings that can be overwritten
@@ -18,7 +17,6 @@ function Platform(descr) {
     this.platWidth = this.activeSprite.width;
     this.scale  = this.scale  || 1;
     this.id = g_NUMBER_OF_PLATFORMS+1;
-    this.verticalSpeed = NOMINAL_VERTICAL_SPEED;
 
     //Setup from descr (can override the above)
     this.setup(descr);
@@ -43,7 +41,6 @@ Platform.prototype = new Entity();
 Platform.prototype.cx = 0;
 Platform.prototype.cy = 0;
 Platform.prototype.margin = SPACE_BETWEEN_PLATFORMS;
-Platform.prototype.verticalSpeed = NOMINAL_VERTICAL_SPEED;
 Platform.prototype.scaleOne = 2;
 Platform.prototype.scaleTwo = 3;
 
@@ -151,7 +148,7 @@ Platform.prototype.update = function (du) {
     if(g_GAME_HEIGHT > 0)
     { 
         //Begin scrolling
-        this.cy += this.verticalSpeed*du;
+        this.cy += g_VERTICAL_SPEED*du;
     }
 
     //If game is over

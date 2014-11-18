@@ -52,3 +52,5 @@ var g_FIREBOLTS = 0;
 
 var powerSprite_is_alive =false;
 
+var g_VERTICAL_SPEED = 0.5;
+

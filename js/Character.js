@@ -23,6 +23,7 @@ function Character(descr) {
     this.currPlatform = false;  //True if the character is on a platform
     this.isBouncing = false;    //True if the character is bouncing of a wall
     this.isOnFire = false;      //True if the character is on fire
+    this.gravityPowerup = 0;
 
 
     // Common inherited setup logic from Entity
@@ -126,13 +127,16 @@ Character.prototype.update = function (du) {
     //Update game height
     this.gameHeight = g_canvas.height - this.cy - this.activeSprite.height/2 + g_GAME_HEIGHT;
 
-    //If the character is traveling down
-    
-        //He can collide
-        this.handleCollision();
-    
-        //Check if he's on a platform
-        this.checkPlatform();
+    //Increment gravity powerup if neccesary
+    if(this.gravityPowerup > 0){
+        this.gravityPowerup -= du;
+        if(this.gravityPowerup < 0) this.gravityPowerup = 0;
+    } 
+    //He can collide
+    this.handleCollision();
+
+    //Check if he's on a platform
+    this.checkPlatform();
 
     //If game is not over
     if(!gameOver){
@@ -183,7 +187,7 @@ Character.prototype.handleCollision = function(du){
     //Check if colliding
     if(isHit){
         if (isHit && isHit instanceof Platform && this._jumping && this.velY > 0) {
-            if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT ){ 
+            if(isHit.id > TOP_PADDLE_HIT_HIGHT ){ 
                 var score = (isHit.id - TOP_PADDLE_HIT_HIGHT);        
                 TOP_PADDLE_HIT_HIGHT = isHit.id;
                 g_SCORE.addToScore(score);
@@ -544,7 +548,7 @@ Character.prototype.applyAccelY = function(du){
     //If the character is on a platform it has the same y-velocity
     //as the platform
     if(this.currPlatform && g_GAME_HEIGHT > 0){
-        this.velY += Platform.prototype.verticalSpeed;
+        this.velY += g_VERTICAL_SPEED;
     }
 
     //Apply the velocity
@@ -572,8 +576,14 @@ Character.prototype.applyAccelX = function(du){
 */
 var NOMINAL_GRAVITY_MARGIN= 1;
 Character.prototype.computeGravity = function () {
+    var gravity = this.NOMINALS.GRAVITY
+    if(this.gravityPowerup > 0){
+
+        gravity = 0.5*this.NOMINALS.GRAVITY;
+        console.log("GRAVITY",gravity);
+    } 
     if(this.cy+this.activeSprite.height/2+NOMINAL_GRAVITY_MARGIN < g_canvas.height || g_GAME_HEIGHT !== 0 ){
-        return g_useGravity ? this.NOMINALS.GRAVITY : 0;
+        return g_useGravity ? gravity : 0;
     }
     else{
         this.velY = 0;

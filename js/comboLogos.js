@@ -25,59 +25,59 @@ g_comboLogos.checkCombos = function () {
 	if (plats>5 && plats<=14) {
 		currentNotification.name = "GOOD";
 		currentNotification.scale = 1;
-		g_SCORE_MULTIPLIER =1.2;
+		g_SCORE_MULTIPLIER =1.5;
 		shouldDraw = this.ifDoesntExist(1);
 	}
 	if (plats>14 && plats<=24) {
 		currentNotification.name = "SWEET";
 		currentNotification.scale = 1.3;
-		g_SCORE_MULTIPLIER =1.4;
+		g_SCORE_MULTIPLIER =1.75;
 		shouldDraw = this.ifDoesntExist(2);
 	}
 	if (plats>24 && plats<=34) {
 		currentNotification.name = "GREAT";
 		currentNotification.scale = 1.5;
-		g_SCORE_MULTIPLIER =1.6;
+		g_SCORE_MULTIPLIER =2;
 		shouldDraw = this.ifDoesntExist(3);
 	}
 	if (plats>34 && plats<=50) {
 		currentNotification.name = "SUPER";
 		currentNotification.scale = 1.8;
-		g_SCORE_MULTIPLIER =1.8;
+		g_SCORE_MULTIPLIER =2.5;
 		shouldDraw = this.ifDoesntExist(4);
 	}
 	if (plats>50 && plats<=70) {
 		currentNotification.name = "WOW";
 		currentNotification.scale = 2;
-		g_SCORE_MULTIPLIER =2.0;
+		g_SCORE_MULTIPLIER =3;
 		shouldDraw = this.ifDoesntExist(5);
 	}
 	if (plats>70 && plats<=100) {
 		currentNotification.name = "AMAZING";
 		currentNotification.scale = 2.5;
-		g_SCORE_MULTIPLIER =2.3;
+		g_SCORE_MULTIPLIER =4;
 		shouldDraw = this.ifDoesntExist(6);
 	}
 	if (plats>100 && plats<=140) {
 		currentNotification.name = "EXTREME";
 		currentNotification.scale = 2.8;
-		g_SCORE_MULTIPLIER =2.6;
+		g_SCORE_MULTIPLIER =6;
 		shouldDraw = this.ifDoesntExist(7);
 	}
 	if (plats>140 && plats<=180) {
 		currentNotification.name = "FANTASTIC";
 		currentNotification.scale = 3;
-		g_SCORE_MULTIPLIER =3;
+		g_SCORE_MULTIPLIER =8;
 		shouldDraw = this.ifDoesntExist(8);
 	}
 	if (plats>180 && plats<=250) {
 		currentNotification.name = "SPLENDID";
 		currentNotification.scale = 3.2;
-		g_SCORE_MULTIPLIER =3.5;
+		g_SCORE_MULTIPLIER =9;
 		shouldDraw = this.ifDoesntExist(9);
 	}
 	if (plats>200) {
-		g_SCORE_MULTIPLIER =4;
+		g_SCORE_MULTIPLIER =10;
 		currentNotification.name = "NOWAY";
 		currentNotification.scale = 3.5;
 		shouldDraw = this.ifDoesntExist(10);

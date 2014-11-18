@@ -60,7 +60,7 @@ Wall.prototype.update = function (du) {
     //If the screen has moved once, but isn't moving
     //We use the nominal move rate
     if (!screenIsMoving && g_GAME_HEIGHT>0) {
-        this.verticalSpeed = NOMINAL_MOVE_RATE;
+        this.verticalSpeed = g_VERTICAL_SPEED;
         this.cy +=this.verticalSpeed*du;
     }
     //Wrap around

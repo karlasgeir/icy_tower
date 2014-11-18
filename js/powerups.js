@@ -35,21 +35,20 @@ function Power(descr) {
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 */
 
-var NOMINAL_VERTICAL_SPEED = 0.5;
 // A generic contructor which accepts an arbitrary descriptor object
 function Power(descr) {
     this.sprite = this.sprite || g_sprites.power;
     var rand= util.randRange(1,20);
     switch(true){
-        case (rand <= 2):
+        case (rand <= 5):
             this.type="ruby";
             this.activeSprite = this.sprite.ruby;
             break;
-        case (rand <=4):
+        case (rand <=6):
             this.type="skull";
             this.activeSprite = this.sprite.skull;
             break;
-        case (rand <= 10):
+        case (rand <= 12):
             this.type = "crystal";
             this.activeSprite = this.sprite.crystal;
             break;
@@ -90,7 +89,6 @@ Power.prototype.cx = 0;
 Power.prototype.cy = 0;
 Power.prototype.Width=this.powerWidth;
 Power.prototype.Height= this.powerHeight;
-Power.prototype.verticalSpeed = NOMINAL_VERTICAL_SPEED;
 
 Power.prototype.update = function (du) {
     spatialManager.unregister(this);
@@ -107,7 +105,7 @@ Power.prototype.update = function (du) {
     if(g_GAME_HEIGHT > 0)
     { 
         //Begin scrolling
-        this.cy += this.verticalSpeed*du;
+        this.cy += g_VERTICAL_SPEED*du;
     }
     if(!gameOver){
          spatialManager.register(this);
@@ -137,6 +135,7 @@ Power.prototype.handleCollision = function(){
             g_SCORE.score += 20;
             break;
         case "ruby":
+            entityManager.turnOffGravity();
             break;
         case "skull":
             //gameOver = true;
@@ -160,7 +159,7 @@ Power.prototype.getID = function() {
     return this.powerID;
 }
 Power.prototype.checkForKill = function(){
-    if(this.cy>650){
+    if(this.cy>g_canvas.height + this.activeSprite[0].height){
         this.kill();
     }
 

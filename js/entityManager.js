@@ -104,12 +104,18 @@ deferredSetup : function () {
 generatePlatform : function(descr) {
     g_TOP_FLOOR = new Platform(descr);
     var rand = util.randRange(0,10);
-    if(rand < 5) entityManager.generatePower();
+    if(rand < 1) entityManager.generatePower();
     this._platforms.push(g_TOP_FLOOR);
 },
 
 generatePower : function(descr) {
     this._power.push(new Power(descr));
+},
+
+turnOffGravity: function(){
+    var timer = 30*NOMINAL_UPDATE_INTERVAL;
+    console.log(timer);
+    this._characters[0].gravityPowerup = timer;
 },
 
 generateCharacter : function(descr) {
