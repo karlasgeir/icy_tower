@@ -114,7 +114,6 @@ generatePower : function(descr) {
 
 turnOffGravity: function(){
     var timer = 30*NOMINAL_UPDATE_INTERVAL;
-    console.log(timer);
     this._characters[0].gravityPowerup = timer;
 },
 

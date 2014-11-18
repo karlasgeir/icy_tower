@@ -37,6 +37,15 @@ Sprite.prototype.drawAt = function (ctx, x, y, rotation) {
     ctx.restore();
 };
 
+Sprite.prototype.drawStretchedAt = function(ctx,x,y,w,h){
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.translate(-x,-y)
+    ctx.scale(this.scale, this.scale);
+    ctx.drawImage(this.image,this.x,this.y, this.width,this.height,x,y,w,h);
+    ctx.restore();
+};
+
 Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation) {
     if (rotation === undefined) rotation = 0;
     
