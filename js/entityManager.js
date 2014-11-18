@@ -32,6 +32,7 @@ _flame: [],
 _Explotions:[],
 _power: [],
 _Notifications:[],
+_clock: [],
 _bShowPlatforms: true,
 
 // "PRIVATE" METHODS
@@ -79,8 +80,25 @@ generateNotification: function(type,scale){
     this._Notifications.push(new Notification(type,scale));
 },
 
+_generateClock: function() {
+    this.generateClock();
+},
+
+generateClock: function(descr) {
+    this._clock.push(new Clock(descr));
+},
+
 deferredSetup : function () {
-    this._categories = [this._platforms,this._characters,this._Walls, this._flame, this._Explotions, this._power, this._Notifications];
+    this._categories = [
+                        this._platforms,
+                        this._characters,
+                        this._Walls,
+                        this._flame,
+                        this._Explotions,
+                        this._power,
+                        this._Notifications,
+                        this._clock
+                        ];
 },
 
 generatePlatform : function(descr) {
@@ -120,6 +138,9 @@ init: function() {
     this.killPowerups();
     //Generate the inital plaforms
     this._generateInitialPlatforms();
+    //Generate the clock
+    this._generateClock();
+    console.log(this._clock);
     //Generate the walls
     this.generateWalls();
     this.generateNotification("GO");
@@ -185,6 +206,7 @@ update: function(du) {
         while (i < aCategory.length) {
             var cat = aCategory[i];
             var status = cat.update(du);
+            if (cat instanceof Clock) {return;}
             var pos = cat.getPos();
             if (status === this.KILL_ME_NOW) {
                 aCategory.splice(i,1);

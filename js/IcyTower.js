@@ -152,6 +152,8 @@ function requestPreloads() {
         wallsprite : "res/walls/bigger/wallBig2.png",
         numbers: "res/scoreNumbers/numbersspritesheet.png",
         fire: "res/Ground/fire/firespritesheet.png",
+        clock: "res/clock/clock.png",
+        indicator: "res/clock/indicator.png",
         explotion: "res/explotion/explotionspritesheet.png"
     };
 
@@ -164,6 +166,11 @@ function preloadDone() {
     /*
         Loading all the sprites
     */
+
+    //Clock and its indicator
+    g_sprites.clock = new Sprite(g_images.clock,g_images.clock.width,g_images.clock.height,0,0);
+    g_sprites.indicator = new Sprite(g_images.indicator,g_images.indicator.width,g_images.indicator.height,0,0);
+
     //Explotions
     g_sprites.explotion = [
         new Sprite(g_images.explotion,17,15,49,90),

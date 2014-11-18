@@ -223,7 +223,6 @@ Character.prototype.handleCombo = function() {
         }
         g_COMBO_PLAT_IDS.push(isHit.id);
     }
-    console.log(g_COMBO_PLAT_IDS);
 };
 
 
