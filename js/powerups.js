@@ -78,6 +78,7 @@ function Power(descr) {
     this._animFrame=0;
     this._animTickRate=10;
     this._animTick=0;
+    this._animReverse=false;
 }
 
 Power.prototype = new Entity();
@@ -128,6 +129,21 @@ Power.prototype.incrementFrame = function() {
     }
 };
 
+Power.prototype.handleCollision = function(){
+    //TODO: make powerups do something
+    switch(this.type){
+        case "coin":
+            //TODO: change from magic number
+            g_SCORE.score += 20;
+            break;
+        case "ruby":
+            break;
+        case "skull":
+            break;
+        case "crystal":
+            break;
+    }
+}
 
 Power.prototype.render = function (ctx) {
 

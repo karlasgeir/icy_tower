@@ -198,8 +198,7 @@ Character.prototype.handleCollision = function(du){
         this.currPlatform = isHit;
     }
     else if(isHit && isHit instanceof Power){
-        //TODO: handle powerups
-        console.log("CHARACTER GETS IT");
+        isHit.handleCollision();
         isHit.kill();
 
     }
