@@ -29,13 +29,27 @@ Clock.prototype.render = function (ctx) {
 };
 
 Clock.prototype.update = function (du) {
-
+	
 	var tickRate = this.timer/18;
 	this.rotation +=tickRate*du;
 
 	var circle = 2*Math.PI;
+	var speedInfluence = 0.2;
+	var jumpInfluence = 0.5;
 
 	if (this.rotation>circle) {
+		if (NOMINAL_VERTICAL_SPEED>1.5) {return;}
+
+		var platforms = entityManager._platforms;
+		var arrayLength = platforms.length;
+
+		for (var  i=0; i<arrayLength; i++) {
+			platforms[i].verticalSpeed += speedInfluence;
+			console.log(platforms.verticalSpeed);
+		};
+		NOMINAL_VERTICAL_SPEED +=speedInfluence;
+		Platform.prototype.verticalSpeed = NOMINAL_VERTICAL_SPEED;
+		Character.prototype.NOMINALS.THRUST += jumpInfluence;
 		this.rotation = 0;
 	}
 };

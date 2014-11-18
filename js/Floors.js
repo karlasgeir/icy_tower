@@ -18,6 +18,7 @@ function Platform(descr) {
     this.platWidth = this.activeSprite.width;
     this.scale  = this.scale  || 1;
     this.id = g_NUMBER_OF_PLATFORMS+1;
+    this.verticalSpeed = NOMINAL_VERTICAL_SPEED;
 
     //Setup from descr (can override the above)
     this.setup(descr);
