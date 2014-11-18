@@ -6,125 +6,107 @@
 
 /* jshint browser: true, devel: true, globalstrict: true */
 
-var g_combo = {
-
-	cx: g_canvas.width,
+var g_comboLogos = {
+	cx: 0,
 	cy: g_canvas.height/2,
 	timeInMiddle: 600/NOMINAL_UPDATE_INTERVAL,
 	rotation: 0,
-	speed : 3
-}
+	speed : 3,
+	isOn : []
+};
 
-g_combo.logoPicker = function () {
+g_comboLogos.checkCombos = function () {
 
-	var currentNotification;
+	var arrayLength = this.isOn.length;
 	var plats = g_PLATS_GONE_IN_COMBO;
+	var currentNotification = {name:"",scale:1};
+	var shouldDraw = false;
 
-	if (plats>5 && plats<=10) {
-		g_combo.resetNotification();
-		currentNotification = g_sprites.notifications.good;
+	if (plats>5 && plats<=14) {
+		currentNotification.name = "GOOD";
 		currentNotification.scale = 1;
-		g_FIREBOLTS = 10;
+		g_SCORE_MULTIPLIER =1.2;
+		shouldDraw = this.ifDoesntExist(1);
 	}
-	if (plats>10 && plats<=15) {
-		g_combo.resetNotification();
-		currentNotification = g_sprites.notifications.sweet;
+	if (plats>14 && plats<=24) {
+		currentNotification.name = "SWEET";
 		currentNotification.scale = 1.3;
-		g_FIREBOLTS = 20;
+		g_SCORE_MULTIPLIER =1.4;
+		shouldDraw = this.ifDoesntExist(2);
 	}
-	if (plats>15 && plats<=25) {
-		g_combo.resetNotification();
-		currentNotification = g_sprites.notifications.great;
+	if (plats>24 && plats<=34) {
+		currentNotification.name = "GREAT";
 		currentNotification.scale = 1.5;
-		g_FIREBOLTS = 25;
+		g_SCORE_MULTIPLIER =1.6;
+		shouldDraw = this.ifDoesntExist(3);
 	}
-	if (plats>25 && plats<=35) {
-		g_combo.resetNotification();
-		currentNotification = g_sprites.notifications.super;
+	if (plats>34 && plats<=50) {
+		currentNotification.name = "SUPER";
 		currentNotification.scale = 1.8;
-		g_FIREBOLTS = 30;
-	}
-	if (plats>35 && plats<=50) {
-		g_combo.resetNotification();
-		currentNotification = g_sprites.notifications.wow;
-		currentNotification.scale = 2;
-		g_FIREBOLTS = 40;
+		g_SCORE_MULTIPLIER =1.8;
+		shouldDraw = this.ifDoesntExist(4);
 	}
 	if (plats>50 && plats<=70) {
-		g_combo.resetNotification();
-		currentNotification = g_sprites.notifications.amazing;
-		currentNotification.scale = 2.5;
+		currentNotification.name = "WOW";
+		currentNotification.scale = 2;
+		g_SCORE_MULTIPLIER =2.0;
+		shouldDraw = this.ifDoesntExist(5);
 	}
 	if (plats>70 && plats<=100) {
-		g_combo.resetNotification();
-		currentNotification = g_sprites.notifications.extreme;
-		currentNotification.scale = 2.8;
-		g_FIREBOLTS = 50;
+		currentNotification.name = "AMAZING";
+		currentNotification.scale = 2.5;
+		g_SCORE_MULTIPLIER =2.3;
+		shouldDraw = this.ifDoesntExist(6);
 	}
 	if (plats>100 && plats<=140) {
-		g_combo.resetNotification();
-		currentNotification = g_sprites.notifications.fantastic;
-		currentNotification.scale = 3;
+		currentNotification.name = "EXTREME";
+		currentNotification.scale = 2.8;
+		g_SCORE_MULTIPLIER =2.6;
+		shouldDraw = this.ifDoesntExist(7);
 	}
-	if (plats>140 && plats<=200) {
-		g_combo.resetNotification();
-		currentNotification = g_sprites.notifications.splendid;
+	if (plats>140 && plats<=180) {
+		currentNotification.name = "FANTASTIC";
+		currentNotification.scale = 3;
+		g_SCORE_MULTIPLIER =3;
+		shouldDraw = this.ifDoesntExist(8);
+	}
+	if (plats>180 && plats<=250) {
+		currentNotification.name = "SPLENDID";
 		currentNotification.scale = 3.2;
-		g_FIREBOLTS = 60;
+		g_SCORE_MULTIPLIER =3.5;
+		shouldDraw = this.ifDoesntExist(9);
 	}
 	if (plats>200) {
-		g_combo.resetNotification();
-		currentNotification = g_sprites.notifications.noway;
+		g_SCORE_MULTIPLIER =4;
+		currentNotification.name = "NOWAY";
 		currentNotification.scale = 3.5;
-		g_FIREBOLTS = 80;
+		shouldDraw = this.ifDoesntExist(10);
 	}
 
-	return currentNotification;
+	if (!g_COMBO) {
+		this.resetNotification();
+		g_SCORE_MULTIPLIER =1;
+	}
+	//return currentNotification;
+	if(shouldDraw) entityManager.generateNotification(currentNotification.name,currentNotification.scale);
 }
 
-g_combo.resetNotification = function() {
-	this.cx = g_canvas.width/2;
+g_comboLogos.ifDoesntExist = function (item) {
+	var arrayLength = this.isOn.length;
+	for (var i = 0; i<arrayLength; i++) {
+		if (this.isOn[i] === item) {
+			return false;
+		}
+	}
+	this.isOn.push(item);
+	return true;
+}
+
+g_comboLogos.resetNotification = function() {
+	this.cx = 0;
 	this.cy = g_canvas.height/2;
 	this.timeInMiddle = 600/NOMINAL_UPDATE_INTERVAL;
 	this.rotation = 0;
-	this.speed = 3;	
+	this.speed = 3;
+	this.isOn = [];
 };
-
-g_combo.render = function(ctx) {
-
-	var sprite = this.logoPicker();
-
-	if(typeof sprite === 'undefined'){
-		return;
- 	};
-
-	if (!gameOver) {
-		sprite.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
-	}
-}
-
-
-g_combo.update = function (du) {
-
-	if (gameOver || g_MENU_SCREEN) {
-		this.timeInMiddle = 600/NOMINAL_UPDATE_INTERVAL;
-		return;
-	}
-
-	if (this.cx < g_canvas.width/2) {
-		this.speed = 20;
-		this.cx +=this.speed*du;
-		this.rotation += 2;
-		return;
-	} 
-	
-	if (this.cx >= g_canvas.width/2 && this.timeInMiddle > 0) {
-		this.cx = g_canvas.width/2;
-		this.rotation = 0;
-		this.timeInMiddle -=du;
-	}
-	if (this.timeInMiddle <= 0 && this.cx<=g_canvas.width+g_sprites.notifications.go.width/2) {
-		this.speed = 50;
-		this.cx +=this.speed*du;
-	}
-}

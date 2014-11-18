@@ -57,8 +57,7 @@ function updateSimulation(du) {
     
     entityManager.update(du);
     g_background.update(du);
-    g_notification.update(du);
-    g_combo.update(du);
+    g_comboLogos.checkCombos();
 }
 
 // GAME-SPECIFIC DIAGNOSTICS
@@ -114,8 +113,6 @@ function renderSimulation(ctx) {
     if (!gameOver && !g_MENU_SCREEN) {
         entityManager.render(ctx);
         g_SCORE.render(ctx);
-        g_notification.render(ctx);
-        g_combo.render(ctx);
     }
 
     if (gameOver && g_MENU_SCREEN) {
@@ -151,10 +148,12 @@ function requestPreloads() {
         notifications : "res/comboLogos/combospritesheet.png",
         go : "res/comboLogos/go.png",
         fireball: "res/fireballz.png",
-        power: "res/powerUps/powerUpTest.png",
+        power: "res/powerUps/power_sheet1.png",
         wallsprite : "res/walls/bigger/wallBig2.png",
         numbers: "res/scoreNumbers/numbersspritesheet.png",
         fire: "res/Ground/fire/firespritesheet.png",
+        clock: "res/clock/clock.png",
+        indicator: "res/clock/indicator.png",
         explotion: "res/explotion/explotionspritesheet.png"
     };
 
@@ -167,6 +166,11 @@ function preloadDone() {
     /*
         Loading all the sprites
     */
+
+    //Clock and its indicator
+    g_sprites.clock = new Sprite(g_images.clock,g_images.clock.width,g_images.clock.height,0,0);
+    g_sprites.indicator = new Sprite(g_images.indicator,g_images.indicator.width,g_images.indicator.height,0,0);
+
     //Explotions
     g_sprites.explotion = [
         new Sprite(g_images.explotion,17,15,49,90),
@@ -348,7 +352,36 @@ function preloadDone() {
     };
 
     //Power sprite
-    g_sprites.power = new Sprite(g_images.power,g_images.power.width,g_images.power.height,0,0);
+     g_sprites.power = {
+        ruby:[
+            new Sprite(g_images.power,41,60,0,66),
+            new Sprite(g_images.power,42,60,49,66),
+            new Sprite(g_images.power,41,60,103,66),
+            new Sprite(g_images.power,38,60,155,66),
+            new Sprite(g_images.power,41,60,209,66),
+            new Sprite(g_images.power,40,60,264,66),
+            new Sprite(g_images.power,39,60,314,66)
+
+        ],
+        crystal:[
+            new Sprite(g_images.power,35,57,0,0),
+            new Sprite(g_images.power,36,57,51,0),
+            new Sprite(g_images.power,34,57,105,0),
+            new Sprite(g_images.power,34,57,157,0),
+            new Sprite(g_images.power,34,57,209,0),
+            new Sprite(g_images.power,34,57,261,0),
+            new Sprite(g_images.power,34,57,313,0),
+            new Sprite(g_images.power,35,57,365,0)
+        ],
+        coin:[
+            new Sprite(g_images.power,39,45,0,204),
+            new Sprite(g_images.power,34,45,0,250),
+            new Sprite(g_images.power,26,45,5,299),
+            new Sprite(g_images.power,6,45,15,347)
+        ],
+        skull: [new Sprite(g_images.power,55,59,345,341)]
+    };
+    
 
     //Sprites for the wall
     g_sprites.wallsprite = new Sprite(g_images.wallsprite,g_images.wallsprite.width,g_images.wallsprite.height,0,0);

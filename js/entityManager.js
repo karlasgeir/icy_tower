@@ -31,6 +31,8 @@ _Walls: [],
 _flame: [],
 _Explotions:[],
 _power: [],
+_Notifications:[],
+_clock: [],
 _bShowPlatforms: true,
 
 // "PRIVATE" METHODS
@@ -61,23 +63,6 @@ _generateInitialPlatforms : function() {
     }
 },
 
-_generateWall : function() {
-      
-    this.generateWalls({
-        cx: 0,
-        cy: 0
-    });
-},
-
-_generatePower: function() {
-      
-    this.generatePower({
-        cx: 200,
-        cy: 200
-    });
-},
-
-
 /*
     This function generates a flame
 */
@@ -91,12 +76,35 @@ generateFlame: function(cx, cy, velX, velY, rotation) {
     }));;
 },
 
+generateNotification: function(type,scale){
+    this._Notifications.push(new Notification(type,scale));
+},
+
+_generateClock: function() {
+    this.generateClock();
+},
+
+generateClock: function(descr) {
+    this._clock.push(new Clock(descr));
+},
+
 deferredSetup : function () {
-    this._categories = [this._platforms,this._characters,this._Walls, this._flame, this._Explotions, this._power];
+    this._categories = [
+                        this._platforms,
+                        this._characters,
+                        this._Walls,
+                        this._flame,
+                        this._Explotions,
+                        this._power,
+                        this._Notifications,
+                        this._clock
+                        ];
 },
 
 generatePlatform : function(descr) {
     g_TOP_FLOOR = new Platform(descr);
+    var rand = util.randRange(0,10);
+    if(rand < 5) entityManager.generatePower();
     this._platforms.push(g_TOP_FLOOR);
 },
 
@@ -111,30 +119,40 @@ generateWalls : function(descr) {
     this._Walls.push(new Wall(descr));
 },
 generateExplotion: function(cx,cy){
-    console.log("GENERATING EXPLOTION");
     this._Explotions.push(new Explotion(cx,cy));
-    console.log(this._Explotions);
 },
 
 init: function() {
     //Reset variables
-    g_SCORE = 0;
     g_COMBO_PLAT_IDS = [];
     g_PLATS_IN_COMBO = [];
     g_COMBO = false;
     g_GAME_HEIGHT  = 0;
     g_FIREBOLTS = 0;
     g_SCORE = new Score();
+    g_SCORE_MULTIPLIER = 1;
     //Reset things
     this.resetCharacters();
     this.resetWalls();
     this.resetPlatforms();
     this.killExplotions();
+    this.killPowerups();
     //Generate the inital plaforms
     this._generateInitialPlatforms();
+    //Generate the clock
+    this._generateClock();
+    console.log(this._clock);
     //Generate the walls
-    this._generateWall();
-    this._generatePower();
+    this.generateWalls();
+    this.generateNotification("GO");
+},
+
+killPowerups: function(){
+    var c = this._power.length-1;
+    while (c >= 0) {
+        this._power.splice(0, 1);
+        --c;
+    }
 },
 killExplotions: function(){
     var c = this._Explotions.length-1;
@@ -190,7 +208,6 @@ update: function(du) {
             var cat = aCategory[i];
             var status = cat.update(du);
             var pos = cat.getPos();
-
             if (status === this.KILL_ME_NOW) {
                 aCategory.splice(i,1);
             }
@@ -198,7 +215,9 @@ update: function(du) {
                 if(g_GAME_HEIGHT <0) {
                     g_GAME_HEIGHT = 0;
                 }
-                cat.setPos(pos.posX,pos.posY+g_MOVE_SCREEN*du);
+                if (!(cat instanceof Notification) && !(cat instanceof Clock)) {
+                    cat.setPos(pos.posX,pos.posY+g_MOVE_SCREEN*du);
+                }
                 ++i;
             }
         }

@@ -42,9 +42,13 @@ var g_TOP_FLOOR;
 
 var g_SCORE;
 
+var g_SCORE_MULTIPLIER = 1;
+
 var g_COMBO = false;
 
 var g_PLATS_GONE_IN_COMBO = 0;
 
 var g_FIREBOLTS = 0;
+
+var powerSprite_is_alive =false;
 

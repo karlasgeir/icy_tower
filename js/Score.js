@@ -13,26 +13,30 @@ function Score() {
 
 
 Score.prototype.addToScore = function(score){
-    this.score += score;
+    this.score += Math.round(score*g_SCORE_MULTIPLIER);
 };
 
 Score.prototype.getScore = function(){
     return this.score;
-}
+};
 
 Score.prototype.getComboMultiplier = function(){
     return this.comboMultiplier;
-}
+};
 Score.prototype.setComboMultiplier = function(combo){
     this.comboMultiplier = combo;
-}
+};
+
+Score.prototype.resetComboMultiplier = function(){
+    this.comboMultiplier = 1;
+};
 
 
 Score.prototype.render = function(ctx){
     var spritescore = this.createSpriteScore();
     var cx = g_canvas.width - this.rightDist - this.getWidth();
     this.draw(ctx,cx,this.cy,this.distbetween,spritescore,this.scale);
-}
+};
 
 Score.prototype.createSpriteScore = function(){
     var scoreArray = (""+this.score).split('');
@@ -42,12 +46,12 @@ Score.prototype.createSpriteScore = function(){
         spriteArray.push(sprite[int]);
     });
     return spriteArray;
-}
+};
 
 Score.prototype.renderFinalScore = function(ctx,x,cy){
     var cx = x+this.sprite[0].width/2;
     this.draw(ctx,cx,cy,this.distbetween,this.createSpriteScore());
-}
+};
 
 Score.prototype.draw = function(ctx,cx,cy,distbetween,sprites,scale){
     if(scale === undefined) scale = 1;
@@ -58,7 +62,7 @@ Score.prototype.draw = function(ctx,cx,cy,distbetween,sprites,scale){
         number.scale = oldscale;
         cx += number.width + distbetween
     });
-}
+};
 
 Score.prototype.getWidth = function(){
     var scoreArray = (""+this.score).split('');
@@ -68,4 +72,4 @@ Score.prototype.getWidth = function(){
         width += sprite[int].width;
     });
     return width + this.distbetween*(scoreArray.length);
-}
+};

@@ -18,8 +18,7 @@ function Platform(descr) {
     this.platWidth = this.activeSprite.width;
     this.scale  = this.scale  || 1;
     this.id = g_NUMBER_OF_PLATFORMS+1;
-
-    this.platID = 0;
+    this.verticalSpeed = NOMINAL_VERTICAL_SPEED;
 
     //Setup from descr (can override the above)
     this.setup(descr);
@@ -32,10 +31,8 @@ function Platform(descr) {
     this.halfHeight = this.platHeight/2
 
     g_NUMBER_OF_PLATFORMS += 1;         //Increment the number of platforms
-    console.log(g_TOP_FLOOR);
     if(g_TOP_FLOOR instanceof Platform){
         this.cy = g_TOP_FLOOR.cy - g_TOP_FLOOR.activeSprite.height/2 - SPACE_BETWEEN_PLATFORMS;
-        console.log(this.cy);
     }
     else this.cy = g_canvas.height - SPACE_BETWEEN_PLATFORMS;
     
@@ -64,26 +61,25 @@ Platform.prototype.platPosition = function() {
 Platform.prototype.platPicker = function() {
 
     var sprite_base = this.sprite;
-
-    if(this.platID<100) {
+    if(this.id<100) {
         this.activeSprite = sprite_base.normal.whole;
     }
-    if(this.platID>=100) {
+    if(this.id>=100) {
         this.activeSprite = sprite_base.snow;
         this.scaleOne = 2;
         this.scaleTwo = 2.5;
     }
-    if(this.platID>=200) {
+    if(this.id>=200) {
         this.activeSprite = sprite_base.wood.whole;
         this.scaleOne = 2;
         this.scaleTwo = 2.25;
     }
-    if(this.platID>=300) {
+    if(this.id>=300) {
         this.activeSprite = sprite_base.lava;
         this.scaleOne = 1.8;
         this.scaleTwo = 2.1;
     }
-    if(this.platID>=400) {
+    if(this.id>=400) {
         this.activeSprite = sprite_base.rainbow.whole;
         this.scaleOne = 1.5;
         this.scaleTwo = 2;
@@ -128,18 +124,11 @@ Platform.prototype.render = function (ctx) {
 /*
     This function updates the platform
 */
-var COMBO_THRESHOLD = 2;
+
 
 Platform.prototype.update = function (du) {
     //Unregister from spatial manager
-	spatialManager.unregister(this);
-
-    var isHit = this.isColliding();
-
-    if (isHit) {
-        var platID = this.getID();
-    }
-   
+	spatialManager.unregister(this);  
 
     //Check for death
 	if (this._isDeadNow) {
@@ -156,9 +145,7 @@ Platform.prototype.update = function (du) {
         //Kill it
     	this.kill();
         var id = g_NUMBER_OF_PLATFORMS+1;
-        entityManager.generatePlatform({
-            platID: id
-        });
+        entityManager.generatePlatform();
     }    
     //If the screen has been moved once
     if(g_GAME_HEIGHT > 0)
@@ -174,7 +161,7 @@ Platform.prototype.update = function (du) {
 };
 
 Platform.prototype.getID = function() {
-    return this.platID;
+    return this.id;
 }
 
 Platform.prototype.reset = function () {

@@ -17,7 +17,6 @@ function Character(descr) {
         Reverse: false,         //Used to know when to reverse through sprite array              
         FireFrame:0,            //Frame count for the fire
         FireTicker:0,
-        revFire:false
     };
     this.rotationJump = false;  //True if the character is doing a rotation jump
     this.currPlatform = false;  //True if the character is on a platform
@@ -52,7 +51,7 @@ Character.prototype.NOMINALS = {
     MAX_ACCELX: 0.8,                //Maximum x-acceleration of the character
     MAX_VELX:12,                    //Maximum x-velocity of the character
     JUMP_VEL: 1.25,                 //Nominal x-acceleration fraction when jumping
-    GRAVITY: 1.2,                   //Nominal acceleration do to gravity
+    GRAVITY: 1,                   //Nominal acceleration do to gravity
     ROTATION_JUMP_THRESHOLD: 10,    //the x velocity threshhold that determines
                                     //if the jump should be rottional
     THRUST: 13,                     //The nominal jump thrust
@@ -127,13 +126,14 @@ Character.prototype.update = function (du) {
     this.gameHeight = g_canvas.height - this.cy - this.activeSprite.height/2 + g_GAME_HEIGHT;
 
     //If the character is traveling down
-    
+    if(this._jumping && this.velY > 0){
         //He can collide
         this.handleCollision();
-    
+    }
+    else{
         //Check if he's on a platform
         this.checkPlatform();
-
+    }
     //If game is not over
     if(!gameOver){
         //Reregister in the spatial manager
@@ -181,32 +181,27 @@ Character.prototype.handleCollision = function(du){
     //Get the colliding platform if any
     var isHit = this.isColliding();
     //Check if colliding
-    if(isHit){
-        if (isHit && isHit instanceof Platform && this._jumping && this.velY > 0) {
-            if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT ){ 
-                var score = (isHit.id - TOP_PADDLE_HIT_HIGHT);        
-                TOP_PADDLE_HIT_HIGHT = isHit.id;
-                g_SCORE.addToScore(score);
-            }
-            //Make sure the characters position is on top of the platform
-            this.cy = isHit.getPos().posY - isHit.getSize().height/2 - this.activeSprite.height/2;
-            //Settings so the character doesn't fall throught
-            g_useGravity = false;
-            this._jumping = false;
-            this.velY = 0;
-
-            //Put the platform into currPlatform
-            this.currPlatform = isHit;
+    if (isHit && this.velY >0) {
+        if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT){ 
+            var score = ((isHit.id - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier());
+            score = Math.round(score);         
+            TOP_PADDLE_HIT_HIGHT = isHit.id;
+            g_SCORE.addToScore(score);
         }
-        else if(isHit && isHit instanceof Power){
-            isHit.handleCollision();
-            isHit.kill();
+        //Make sure the characters position is on top of the platform
+        this.cy = isHit.getPos().posY - isHit.getSize().height/2 - this.activeSprite.height/2;
+        //Settings so the character doesn't fall throught
+        g_useGravity = false;
+        this._jumping = false;
+        this.velY = 0;
 
-        }
-    }
+        //Put the platform into currPlatform
+        this.currPlatform = isHit;
+    }   
 };
  
 var g_COMBO_PLAT_IDS = [];
+
 Character.prototype.handleCombo = function() {
     
     var isHit = this.isColliding();
@@ -214,13 +209,13 @@ Character.prototype.handleCombo = function() {
 
     if (this.velY<0) {return;}
 
-    if (isHit && isHit instanceof Platform) {
+    if (isHit) {
         for (var i=0; i<arrayLength; i++) {
-            if (g_COMBO_PLAT_IDS[i] === isHit.id) {
+            if (g_COMBO_PLAT_IDS[i] === isHit.platID) {
                 return;
             }
         }
-        g_COMBO_PLAT_IDS.push(isHit.id);
+        g_COMBO_PLAT_IDS.push(isHit.platID);
     }
 };
 
@@ -252,22 +247,23 @@ Character.prototype.platsInCombo = function() {
     var isHit = this.isColliding();
     var arrayLength = g_PLATS_IN_COMBO.length;
 
+    if (isHit) {
 
-    if (isHit && isHit instanceof Platform) {
         var lowestPlat = g_PLATS_IN_COMBO[0];
         for (var i=0; i<arrayLength; i++) {
-            if (g_PLATS_IN_COMBO[i] === isHit.id) {
+            if (g_PLATS_IN_COMBO[i] === isHit.platID) {
                 return;
             }
         }
         if (g_COMBO) {
-            var highestPlat = isHit.id;
+            var highestPlat = isHit.platID;
             g_PLATS_IN_COMBO.push(highestPlat);
         }
         if (!g_COMBO) {
             g_PLATS_IN_COMBO = [];
         }
     }
+
     var numOfPlatsInCombo =g_PLATS_IN_COMBO[arrayLength-1]-g_PLATS_IN_COMBO[0];
     g_PLATS_GONE_IN_COMBO = numOfPlatsInCombo;
 
@@ -279,7 +275,6 @@ Character.prototype.platsInCombo = function() {
 Character.prototype.makeFlames = function () {
     //Flames are only created if the jump is rotational 
     if (!this._rotationJump) {return;}
-    if (!g_COMBO) { return;}
 
     //Get the rotational offset
     var dX = +Math.sin(this.rotation);
@@ -333,7 +328,6 @@ Character.prototype.computeRotation = function(du){
 */
 Character.prototype.computeSubStep = function (du) {
 
-
     //Register the position before change
     var prevX = this.cx;
     var prevY = this.cy;
@@ -343,9 +337,11 @@ Character.prototype.computeSubStep = function (du) {
 
     //Apply the x acceleration
     this.applyAccelX(du);
+  
     //Compute the y acceleration
     this.accelY = this.computeGravity();
-    this.velY -= this.computeThrustMag();   
+    this.velY -= this.computeThrustMag();
+   
     
     //Apply the y acceleration
     this.applyAccelY(du);
@@ -382,6 +378,7 @@ Character.prototype.computeSubStep = function (du) {
         this._animation.FireTicker += du;
     }
     else{
+        this.isOnFire = false;
         this._animation.FireTicker = 0;
     }
 
@@ -536,8 +533,10 @@ Character.prototype.moveScreen = function(du){
     acceleration (using average velocity)
 */
 Character.prototype.applyAccelY = function(du){
+    
     //Calculate final velocty
     var finalv = this.velY + this.accelY*du;
+
     //Calculate average velocity
     this.velY = (this.velY + finalv)/2;
     
@@ -570,9 +569,8 @@ Character.prototype.applyAccelX = function(du){
     This function calculates the gravity that
     should be returned
 */
-var NOMINAL_GRAVITY_MARGIN= 1;
 Character.prototype.computeGravity = function () {
-    if(this.cy+this.activeSprite.height/2+NOMINAL_GRAVITY_MARGIN < g_canvas.height || g_GAME_HEIGHT !== 0 ){
+    if(this.cy+this.activeSprite.height/2 < g_canvas.height || g_GAME_HEIGHT !== 0 ){
         return g_useGravity ? this.NOMINALS.GRAVITY : 0;
     }
     else{
@@ -614,6 +612,7 @@ Character.prototype.wallBounce = function () {
             return;
         }
         else this.isBouncing = false;
+
     }
 
     if(this.cx+this.activeSprite.width/2 >= g_right_side ||
@@ -679,21 +678,16 @@ Character.prototype.render = function (ctx) {
     this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation);
     //Reset the scale
     this.sprite.scale = origScale;
+
     if((this.velY === 0 || this.currPlatform) && this.isOnFire){
-        g_sprites.fire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.activeSprite.width/6,this.cy+this.activeSprite.height/6);
-        if(this._animation.FireFrame === 0 && this._animation.revFire){
-            this._animation.revFire = false;
+        if(this._animation.FireFrame < g_sprites.fire.length-1){
+            g_sprites.fire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.activeSprite.width/6,this.cy+this.activeSprite.height/6);
             this._animation.FireFrame += 1;
         }
-        else if(this._animation.FireFrame < g_sprites.fire.length-1 ){
-            if(this._animation.revFire) this._animation.FireFrame -= 1;
-            else this._animation.FireFrame += 1;
-        }
-        else if(this._animation.FireFrame === g_sprites.fire.length-1){
-            this._animation.revFire = true;
-            this._animation.FireFrame -= 1;
-        }
-        
+        else {
+            this.isOnFire = false;
+            this._animation.FireFrame = 0;
+        };
     }
     else {
         this.isOnFire = false;
