@@ -32,10 +32,8 @@ function Platform(descr) {
     this.halfHeight = this.platHeight/2
 
     g_NUMBER_OF_PLATFORMS += 1;         //Increment the number of platforms
-    console.log(g_TOP_FLOOR);
     if(g_TOP_FLOOR instanceof Platform){
         this.cy = g_TOP_FLOOR.cy - g_TOP_FLOOR.activeSprite.height/2 - SPACE_BETWEEN_PLATFORMS;
-        console.log(this.cy);
     }
     else this.cy = g_canvas.height - SPACE_BETWEEN_PLATFORMS;
     
@@ -128,18 +126,11 @@ Platform.prototype.render = function (ctx) {
 /*
     This function updates the platform
 */
-var COMBO_THRESHOLD = 2;
+
 
 Platform.prototype.update = function (du) {
     //Unregister from spatial manager
-	spatialManager.unregister(this);
-
-    var isHit = this.isColliding();
-
-    if (isHit) {
-        var platID = this.getID();
-    }
-   
+	spatialManager.unregister(this);  
 
     //Check for death
 	if (this._isDeadNow) {

@@ -99,7 +99,7 @@ Flame.prototype.getRadius = function () {
     //return (this.activeSprite.width / 2) * 0.9;       <----------
     //Þetta skilar stundum einhverju rugli yfir í
     //Fx og Fy í gegnum A
-    return 2;
+    return 1.5;
 };
 
 Flame.prototype.pickSprite = function() {

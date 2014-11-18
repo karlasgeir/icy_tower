@@ -51,10 +51,10 @@ Character.prototype.NOMINALS = {
     MAX_ACCELX: 0.8,                //Maximum x-acceleration of the character
     MAX_VELX:12,                    //Maximum x-velocity of the character
     JUMP_VEL: 1.25,                 //Nominal x-acceleration fraction when jumping
-    GRAVITY: 1,                   //Nominal acceleration do to gravity
+    GRAVITY: 1.3,                   //Nominal acceleration do to gravity
     ROTATION_JUMP_THRESHOLD: 10,    //the x velocity threshhold that determines
                                     //if the jump should be rottional
-    THRUST: 13,                     //The nominal jump thrust
+    THRUST: 30,                     //The nominal jump thrust
     FALL_LENGTH: 600,               //The lenght that the character has to fall to die
     BOUNCE_ROTATION: 1.5,           //The velocity multiplier when bouncing off the wall rotating
     BOUNCE:1,                       //The velocity multiplier when bouncing off the wall normally
@@ -181,7 +181,7 @@ Character.prototype.handleCollision = function(du){
     //Get the colliding platform if any
     var isHit = this.isColliding();
     //Check if colliding
-    if (isHit && this.velY >0) {
+    if (isHit) {
         if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT){ 
             var score = ((isHit.id - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier());
             score = Math.round(score);         
@@ -275,6 +275,7 @@ Character.prototype.platsInCombo = function() {
 Character.prototype.makeFlames = function () {
     //Flames are only created if the jump is rotational 
     if (!this._rotationJump) {return;}
+    if (!g_COMBO) { return;}
 
     //Get the rotational offset
     var dX = +Math.sin(this.rotation);
@@ -339,9 +340,8 @@ Character.prototype.computeSubStep = function (du) {
     this.applyAccelX(du);
   
     //Compute the y acceleration
-    this.accelY = this.computeGravity();
-    this.velY -= this.computeThrustMag();
-   
+    this.accelY = -this.computeThrustMag();
+    this.accelY += this.computeGravity();
     
     //Apply the y acceleration
     this.applyAccelY(du);
@@ -459,8 +459,7 @@ Character.prototype.computeAccelX = function(du){
 */
 Character.prototype.checkCases = function(){
     //If the character is landing 
-    if (this.activeSprite.height/2 + this.cy >= g_canvas.height 
-        && (g_GAME_HEIGHT === 0 || !this.currPlatform)) {
+    if (this.velY === 0 && (g_GAME_HEIGHT === 0 || !this.currPlatform)) {
         this._jumping = false;
         this._falling = false;
         this._roationJump = false;
@@ -481,8 +480,11 @@ Character.prototype.checkCases = function(){
         this._goingRight = false;
         this.isOnFire = false;
     }
-    if (this.velX !== 0) {
+    if (this.velX > 0 || this.velX <0) {
         this.isOnFire = true;
+    }
+    if(this.velY !==this.currPlatform.verticalSpeed) {
+        this.isOnFire = false;
     }
 }
 
@@ -533,10 +535,8 @@ Character.prototype.moveScreen = function(du){
     acceleration (using average velocity)
 */
 Character.prototype.applyAccelY = function(du){
-    
     //Calculate final velocty
     var finalv = this.velY + this.accelY*du;
-
     //Calculate average velocity
     this.velY = (this.velY + finalv)/2;
     
@@ -570,7 +570,7 @@ Character.prototype.applyAccelX = function(du){
     should be returned
 */
 Character.prototype.computeGravity = function () {
-    if(this.cy+this.activeSprite.height/2 < g_canvas.height || g_GAME_HEIGHT !== 0 ){
+    if(this.cy+this.activeSprite.height/2 < g_canvas.height || g_GAME_HEIGHT !== 0){
         return g_useGravity ? this.NOMINALS.GRAVITY : 0;
     }
     else{
@@ -589,6 +589,7 @@ Character.prototype.computeThrustMag = function () {
     //Needs more work
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
         //Reset the y velocity
+        //this.velY = 0;
         this._jumping = true;
         //generate power.
         entityManager._generatePower();
@@ -614,7 +615,6 @@ Character.prototype.wallBounce = function () {
             return;
         }
         else this.isBouncing = false;
-
     }
 
     if(this.cx+this.activeSprite.width/2 >= g_right_side ||
@@ -681,7 +681,7 @@ Character.prototype.render = function (ctx) {
     //Reset the scale
     this.sprite.scale = origScale;
 
-    if((this.velY === 0 || this.currPlatform) && this.isOnFire){
+    if((this.velY ===0 || this.currPlatform) && this.isOnFire){
         if(this._animation.FireFrame < g_sprites.fire.length-1){
             g_sprites.fire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.activeSprite.width/6,this.cy+this.activeSprite.height/6);
             this._animation.FireFrame += 1;
