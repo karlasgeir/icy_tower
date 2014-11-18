@@ -214,9 +214,9 @@ update: function(du) {
                 if(g_GAME_HEIGHT <0) {
                     g_GAME_HEIGHT = 0;
                 }
-                if(cat instanceof Notification) {return;}
-                if(cat instanceof Clock) {return;}
-                cat.setPos(pos.posX,pos.posY+g_MOVE_SCREEN*du);
+                if (!(cat instanceof Notification) && !(cat instanceof Clock)) {
+                    cat.setPos(pos.posX,pos.posY+g_MOVE_SCREEN*du);
+                }
                 ++i;
             }
         }
