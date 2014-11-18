@@ -116,10 +116,19 @@ init: function() {
     this.resetWalls();
     this.resetPlatforms();
     this.killExplotions();
+    this.killPowerups();
     //Generate the inital plaforms
     this._generateInitialPlatforms();
     //Generate the walls
     this.generateWalls();
+},
+
+killPowerups: function(){
+    var c = this._power.length-1;
+    while (c >= 0) {
+        this._power.splice(0, 1);
+        --c;
+    }
 },
 killExplotions: function(){
     var c = this._Explotions.length-1;

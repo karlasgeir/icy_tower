@@ -130,6 +130,7 @@ Power.prototype.incrementFrame = function() {
 };
 
 Power.prototype.handleCollision = function(){
+    console.log("HIT",this.type);
     //TODO: make powerups do something
     switch(this.type){
         case "coin":
@@ -139,6 +140,7 @@ Power.prototype.handleCollision = function(){
         case "ruby":
             break;
         case "skull":
+            gameOver = true;
             break;
         case "crystal":
             break;

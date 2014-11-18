@@ -68,7 +68,7 @@ findEntityInRange: function(posX, posY, width,height, gameHeight) {
             if(posX < pos.posX + size.width
                 && posX + width > pos.posX
                 && posY < pos.posY + size.height
-                && height + posY > posY){
+                && height + posY > pos.posY){
                 return e;
             }
             
