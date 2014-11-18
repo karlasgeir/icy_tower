@@ -31,6 +31,7 @@ _Walls: [],
 _flame: [],
 _Explotions:[],
 _power: [],
+_Notifications:[],
 _bShowPlatforms: true,
 
 // "PRIVATE" METHODS
@@ -74,8 +75,12 @@ generateFlame: function(cx, cy, velX, velY, rotation) {
     }));;
 },
 
+generateNotification: function(type){
+    this._Notifications.push(new Notification(type));
+},
+
 deferredSetup : function () {
-    this._categories = [this._platforms,this._characters,this._Walls, this._flame, this._Explotions, this._power];
+    this._categories = [this._platforms,this._characters,this._Walls, this._flame, this._Explotions, this._power, this._Notifications];
 },
 
 generatePlatform : function(descr) {
@@ -121,6 +126,7 @@ init: function() {
     this._generateInitialPlatforms();
     //Generate the walls
     this.generateWalls();
+    this.generateNotification("GO");
 },
 
 killPowerups: function(){
@@ -183,6 +189,7 @@ update: function(du) {
         while (i < aCategory.length) {
             var cat = aCategory[i];
             var status = cat.update(du);
+            console.log(cat);
             var pos = cat.getPos();
 
             if (status === this.KILL_ME_NOW) {

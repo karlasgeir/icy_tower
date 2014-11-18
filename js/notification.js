@@ -5,26 +5,31 @@
 "use strict";
 
 /* jshint browser: true, devel: true, globalstrict: true */
-
-var g_notification = {
-
-	cx: g_canvas.width,
-	cy: g_canvas.height/2,
-	timeInMiddle: 600/NOMINAL_UPDATE_INTERVAL,
-	rotation: 0,
-	speed : 3
+var NOMINAL_START_POS = -180;
+function Notification(type){
+	this.cx = NOMINAL_START_POS,
+	this.cy = g_canvas.height/2,
+	this.timeInMiddle = 600/NOMINAL_UPDATE_INTERVAL,
+	this.rotation = 0,
+	this.speed = 3
+	this.sprite = g_sprites.notifications;
+	switch(type){
+		case "GO":
+			this.activeSprite = this.sprite.go;
+			break;
+	}
 }
 
-g_notification.render = function(ctx) {
+Notification.prototype = new Entity();
 
+Notification.prototype.render = function(ctx) {
 	if (!gameOver) {
 		g_sprites.notifications.go.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
 	}
 }
 
 
-g_notification.update = function (du) {
-
+Notification.prototype.update = function (du) {
 	if (gameOver || g_MENU_SCREEN) {
 		this.timeInMiddle = 600/NOMINAL_UPDATE_INTERVAL;
 		return;

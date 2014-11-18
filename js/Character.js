@@ -207,7 +207,6 @@ Character.prototype.handleCollision = function(du){
 };
  
 var g_COMBO_PLAT_IDS = [];
-
 Character.prototype.handleCombo = function() {
     
     var isHit = this.isColliding();
@@ -254,7 +253,6 @@ Character.prototype.platsInCombo = function() {
     var arrayLength = g_PLATS_IN_COMBO.length;
 
     if (isHit) {
-
         var lowestPlat = g_PLATS_IN_COMBO[0];
         for (var i=0; i<arrayLength; i++) {
             if (g_PLATS_IN_COMBO[i] === isHit.platID) {

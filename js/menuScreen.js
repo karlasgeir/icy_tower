@@ -12,7 +12,7 @@ g_menu.render = function(ctx) {
 
 	if (gameOver) {
 
-		g_notification.cx = -180; 
+		//g_notification.cx = -180; 
 
 		var startGamePosX = g_canvas.width/2 - g_sprites.startGame.width/2;
 		var startGamePosY = g_canvas.height/2 - g_sprites.startGame.height/2;

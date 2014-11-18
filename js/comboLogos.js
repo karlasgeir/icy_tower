@@ -7,7 +7,6 @@
 /* jshint browser: true, devel: true, globalstrict: true */
 
 var g_comboLogos = {
-
 	cx: 0,
 	cy: g_canvas.height/2,
 	timeInMiddle: 600/NOMINAL_UPDATE_INTERVAL,
