@@ -167,8 +167,6 @@ g_comboLogos.update = function (du) {
 
 		return;
 	}
-
-
 	
 	if (this.cx >= g_canvas.width/2 && this.timeInMiddle > 0) {
 		this.cx = g_canvas.width/2;

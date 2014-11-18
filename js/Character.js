@@ -216,12 +216,13 @@ Character.prototype.handleCombo = function() {
 
     if (isHit instanceof Platform) {
         for (var i=0; i<arrayLength; i++) {
-            if (g_COMBO_PLAT_IDS[i] === isHit.platID) {
+            if (g_COMBO_PLAT_IDS[i] === isHit.id) {
                 return;
             }
         }
-        g_COMBO_PLAT_IDS.push(isHit.platID);
+        g_COMBO_PLAT_IDS.push(isHit.id);
     }
+    console.log(g_COMBO_PLAT_IDS);
 };
 
 
@@ -255,12 +256,12 @@ Character.prototype.platsInCombo = function() {
     if (isHit instanceof Platform) {
         var lowestPlat = g_PLATS_IN_COMBO[0];
         for (var i=0; i<arrayLength; i++) {
-            if (g_PLATS_IN_COMBO[i] === isHit.platID) {
+            if (g_PLATS_IN_COMBO[i] === isHit.id) {
                 return;
             }
         }
         if (g_COMBO) {
-            var highestPlat = isHit.platID;
+            var highestPlat = isHit.id;
             g_PLATS_IN_COMBO.push(highestPlat);
         }
         if (!g_COMBO) {
