@@ -51,7 +51,7 @@ Character.prototype.NOMINALS = {
     MAX_ACCELX: 0.8,                //Maximum x-acceleration of the character
     MAX_VELX:12,                    //Maximum x-velocity of the character
     JUMP_VEL: 1.25,                 //Nominal x-acceleration fraction when jumping
-    GRAVITY: 1.3,                   //Nominal acceleration do to gravity
+    GRAVITY: 1,                   //Nominal acceleration do to gravity
     ROTATION_JUMP_THRESHOLD: 10,    //the x velocity threshhold that determines
                                     //if the jump should be rottional
     THRUST: 13,                     //The nominal jump thrust
@@ -126,13 +126,14 @@ Character.prototype.update = function (du) {
     this.gameHeight = g_canvas.height - this.cy - this.activeSprite.height/2 + g_GAME_HEIGHT;
 
     //If the character is traveling down
-    
+    if(this._jumping && this.velY > 0){
         //He can collide
         this.handleCollision();
-    
+    }
+    else{
         //Check if he's on a platform
         this.checkPlatform();
-
+    }
     //If game is not over
     if(!gameOver){
         //Reregister in the spatial manager
@@ -180,30 +181,23 @@ Character.prototype.handleCollision = function(du){
     //Get the colliding platform if any
     var isHit = this.isColliding();
     //Check if colliding
-    if(isHit){
-        if (isHit && isHit instanceof Platform && this._jumping && this.velY > 0) {
-            if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT ){ 
-                var score = ((isHit.id - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier());
-                score = Math.round(score);         
-                TOP_PADDLE_HIT_HIGHT = isHit.id;
-                g_SCORE.addToScore(score);
-            }
-            //Make sure the characters position is on top of the platform
-            this.cy = isHit.getPos().posY - isHit.getSize().height/2 - this.activeSprite.height/2;
-            //Settings so the character doesn't fall throught
-            g_useGravity = false;
-            this._jumping = false;
-            this.velY = 0;
-
-            //Put the platform into currPlatform
-            this.currPlatform = isHit;
+    if (isHit && this.velY >0) {
+        if(isHit.getGameHeight() > TOP_PADDLE_HIT_HIGHT){ 
+            var score = ((isHit.id - TOP_PADDLE_HIT_HIGHT)*g_SCORE.getComboMultiplier());
+            score = Math.round(score);         
+            TOP_PADDLE_HIT_HIGHT = isHit.id;
+            g_SCORE.addToScore(score);
         }
-        else if(isHit && isHit instanceof Power){
-            isHit.handleCollision();
-            isHit.kill();
+        //Make sure the characters position is on top of the platform
+        this.cy = isHit.getPos().posY - isHit.getSize().height/2 - this.activeSprite.height/2;
+        //Settings so the character doesn't fall throught
+        g_useGravity = false;
+        this._jumping = false;
+        this.velY = 0;
 
-        }
-    }
+        //Put the platform into currPlatform
+        this.currPlatform = isHit;
+    }   
 };
  
 var g_COMBO_PLAT_IDS = [];
@@ -281,7 +275,6 @@ Character.prototype.platsInCombo = function() {
 Character.prototype.makeFlames = function () {
     //Flames are only created if the jump is rotational 
     if (!this._rotationJump) {return;}
-    if (!g_COMBO) { return;}
 
     //Get the rotational offset
     var dX = +Math.sin(this.rotation);
@@ -540,8 +533,10 @@ Character.prototype.moveScreen = function(du){
     acceleration (using average velocity)
 */
 Character.prototype.applyAccelY = function(du){
+    
     //Calculate final velocty
     var finalv = this.velY + this.accelY*du;
+
     //Calculate average velocity
     this.velY = (this.velY + finalv)/2;
     
@@ -617,6 +612,7 @@ Character.prototype.wallBounce = function () {
             return;
         }
         else this.isBouncing = false;
+
     }
 
     if(this.cx+this.activeSprite.width/2 >= g_right_side ||
