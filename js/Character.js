@@ -27,6 +27,7 @@ function Character(descr) {
     this.speedPowerup = 0;
     this.prevX = 0;
     this.prevY=0;
+    this.jumpInfluence = 0;
 
 
     // Common inherited setup logic from Entity
@@ -640,6 +641,9 @@ Character.prototype.computeGravity = function () {
     acceleration
 */
 Character.prototype.computeThrustMag = function () {
+
+    var jumpThrust = this.NOMINALS.THRUST + this.jumpInfluence;
+    console.log(jumpThrust);
     //influence from the x velocity
     var speedInfluence = 0.1*Math.abs(this.velX);
     //Needs more work
@@ -651,14 +655,14 @@ Character.prototype.computeThrustMag = function () {
             if (this.gravityPowerup <= 0) {
             this.jumpSoundLow.play();
             }
-            return this.NOMINALS.THRUST;
+            return jumpThrust;
         }
         //x-velocity can increase jump height
         else {
             if (this.gravityPowerup <= 0) {
             this.jumpSoundHigh.play();
             }
-            return this.NOMINALS.THRUST*speedInfluence;
+            return jumpThrust*speedInfluence;
         }
     }
     return 0;

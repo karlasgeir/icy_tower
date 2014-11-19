@@ -58,7 +58,7 @@ Clock.prototype.update = function (du) {
 		this.indicatorRotation = 0;
 		if (g_VERTICAL_SPEED>2.5) {return;}
 		g_VERTICAL_SPEED +=speedInfluence;
-		Character.prototype.NOMINALS.THRUST += jumpInfluence;
+		entityManager.increaseJumpHeight(jumpInfluence);
 	}
 
 	// =============

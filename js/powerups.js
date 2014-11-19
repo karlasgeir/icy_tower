@@ -11,31 +11,6 @@
 12345678901234567890123456789012345678901234567890123456789012345678901234567890
 */
 
-
-// A generic contructor which accepts an arbitrary descriptor object
-function Power(descr) {
-
-
-    this.sprite = g_sprites.power;
-    this.powerWidth = this.sprite.height;
-    this.powerHeight = this.sprite.width;
-    this.scale  = this.scale  || 1;
-    // Common inherited setup logic from Entity
-    this.setup(descr);
-}
-// ======
-// POWERUPS
-// ======
-
-"use strict";
-
-/* jshint browser: true, devel: true, globalstrict: true */
-
-/*
-0        1         2         3         4         5         6         7         8
-12345678901234567890123456789012345678901234567890123456789012345678901234567890
-*/
-
 // A generic contructor which accepts an arbitrary descriptor object
 function Power(descr) {
     this.sprite = this.sprite || g_sprites.power;
@@ -46,7 +21,8 @@ function Power(descr) {
             this.activeSprite = this.sprite.spaceSuit.idle;
             this.scale = 1;
             break;
-        case (rand <=20):
+        //case (rand <=20):
+        case (rand <=39):
             this.type="skull";
             this.activeSprite = this.sprite.reaper;
             this.scale =1;
@@ -64,7 +40,8 @@ function Power(descr) {
         default:
             this.type = false;
             this.activeSprite = false;
-    } 
+    }
+    this.velX = 0.5;
     this.width = this.activeSprite[0].height*this.scale;
     this.height = this.activeSprite[0].width*this.scale;
     this.Platform = g_TOP_FLOOR;
@@ -113,6 +90,8 @@ Power.prototype.update = function (du) {
 
     this.incrementFrame();
 
+    if(this.type === "skull") this.moveReaper(du);
+
     if(g_GAME_HEIGHT > 0)
     { 
         //Begin scrolling
@@ -120,11 +99,29 @@ Power.prototype.update = function (du) {
         this.cy += g_VERTICAL_SPEED*du;
     }
 
+    //Make sure it sticks to the platform
     this.cy = this.Platform.cy - this.Platform.halfHeight - this.getSize().height/2;
+
+
     if(!gameOver){
          spatialManager.register(this);
     } 
 };
+
+
+Power.prototype.moveReaper = function(du){
+    if(this.velX >0
+        && this.cx + this.velX*du > this.Platform.cx + this.Platform.halfWidth){
+        this.velX *= -1;
+    }
+    else if(this.velX < 0
+        &&this.cx - this.velX*du < this.Platform.cx - this.Platform.halfWidth){
+        this.velX *= -1;
+    }
+    
+    this.cx += this.velX*du;
+
+}
 
 Power.prototype.incrementFrame = function() {
     if(this._animTick < this._animTickRate){

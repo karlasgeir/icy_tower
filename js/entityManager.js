@@ -135,6 +135,9 @@ speedUp: function(){
     var timer = 30*NOMINAL_UPDATE_INTERVAL;
     this._characters[0].speedPowerup = timer;
 },
+increaseJumpHeight:function(jumpInfluence){
+    this._characters[0].jumpInfluence += jumpInfluence;
+},
 generateCharacter : function(descr) {
     this._characters.push(new Character(descr));
 },
