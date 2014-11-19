@@ -126,10 +126,12 @@ generatePower : function(descr) {
 },
 
 turnOffGravity: function(){
+    this._characters[0].speedPowerup = 0;
     var timer = 30*NOMINAL_UPDATE_INTERVAL;
     this._characters[0].gravityPowerup = timer;
 },
 speedUp: function(){
+    this._characters[0].gravityPowerup =0;
     var timer = 30*NOMINAL_UPDATE_INTERVAL;
     this._characters[0].speedPowerup = timer;
 },
