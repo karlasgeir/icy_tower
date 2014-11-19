@@ -36,6 +36,19 @@ Score.prototype.render = function(ctx){
     var spritescore = this.createSpriteScore();
     var cx = g_canvas.width - this.rightDist - this.getWidth();
     this.draw(ctx,cx,this.cy,this.distbetween,spritescore,this.scale);
+
+    if(g_SCORE_MULTIPLIER > 1){
+        ctx.save();
+        ctx.fillStyle="#FFCC00";
+        ctx.font = "bold 20px Symbol";
+        ctx.textAlign = 'center';
+        ctx.textBaseline = "middle";
+        //ctx.fillText("x " + g_SCORE_MULTIPLIER,g_canvas.width-200,g_canvas.height+this.sprite[0].height);
+        ctx.fillText("COMBO!", g_sprites.wallsprite.width/4,g_sprites.clock.height+20);
+        ctx.fillText("X " + g_SCORE_MULTIPLIER, g_sprites.wallsprite.width/4,g_sprites.clock.height + 40);
+
+        ctx.restore();
+    }
 };
 
 Score.prototype.createSpriteScore = function(){
