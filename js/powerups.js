@@ -40,7 +40,7 @@ function Power(descr) {
     this.sprite = this.sprite || g_sprites.power;
     var rand= util.randRange(1,20);
     switch(true){
-        case (rand <= 5):
+        case (rand <= 4):
             this.type="ruby";
             this.activeSprite = this.sprite.ruby;
             break;
@@ -48,7 +48,7 @@ function Power(descr) {
             this.type="skull";
             this.activeSprite = this.sprite.skull;
             break;
-        case (rand <= 12):
+        case (rand <= 10):
             this.type = "fire";
             this.activeSprite = this.sprite.fire;
             break;
@@ -151,12 +151,14 @@ Power.prototype.handleCollision = function(){
             break;
         case "ruby":
             entityManager.turnOffGravity();
+            entityManager.generateNotification("SUPERJUMP",2);
             break;
         case "skull":
             //gameOver = true;
             break;
         case "fire":
             entityManager.speedUp();
+            entityManager.generateNotification("SUPERBOOST",2);
             break;
     }
 }
