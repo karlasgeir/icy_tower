@@ -108,6 +108,7 @@ Character.prototype.jumpSound = new Audio("res/sounds/jump_01.wav");
 Character.prototype.jumpSound2 = new Audio("res/sounds/jump_02.wav");
 Character.prototype.bounce = new Audio("res/sounds/sprengja.wav");
 Character.prototype.dead = new Audio("res/sounds/dead.wav");
+Character.prototype.fail = new Audio("res/sounds/fail.wav");
 
 
 /*
@@ -691,6 +692,7 @@ Character.prototype.gameOver = function () {
             //GAME IS OVER
             if (gameOver!=true) {
                 this.dead.play();
+                this.fail.play();
             }
             gameOver = true;
     }
