@@ -154,6 +154,7 @@ init: function() {
     g_FIREBOLTS = 0;
     g_SCORE = new Score();
     g_SCORE_MULTIPLIER = 1;
+    g_VERTICAL_SPEED = 0.5;
     //Reset things
     this.resetCharacters();
     this.resetWalls();
