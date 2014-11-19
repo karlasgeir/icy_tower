@@ -142,7 +142,7 @@ function requestPreloads() {
         notifications : "res/comboLogos/combospritesheet.png",
         go : "res/comboLogos/go.png",
         fireball: "res/fireballz.png",
-        power: "res/powerUps/power_sheet1.png",
+        power: "res/powerUps/power_sheet.png",
         wallsprite : "res/walls/bigger/wallBig2.png",
         numbers: "res/scoreNumbers/numbersspritesheet.png",
         fire: "res/Ground/fire/firespritesheet.png",
@@ -372,15 +372,13 @@ function preloadDone() {
             new Sprite(g_images.power,39,60,314,66)
 
         ],
-        crystal:[
-            new Sprite(g_images.power,35,57,0,0),
-            new Sprite(g_images.power,36,57,51,0),
-            new Sprite(g_images.power,34,57,105,0),
-            new Sprite(g_images.power,34,57,157,0),
-            new Sprite(g_images.power,34,57,209,0),
-            new Sprite(g_images.power,34,57,261,0),
-            new Sprite(g_images.power,34,57,313,0),
-            new Sprite(g_images.power,35,57,365,0)
+        fire:[
+            new Sprite(g_images.power,49,72,1,422),
+            new Sprite(g_images.power,49,67,128,426),
+            new Sprite(g_images.power,42,77,256,418),
+            new Sprite(g_images.power,43,79,0,542),
+            new Sprite(g_images.power,45,79,129,542),
+            new Sprite(g_images.power,43,70,257,551)
         ],
         coin:[
             new Sprite(g_images.power,39,45,0,204),

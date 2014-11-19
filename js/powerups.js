@@ -49,8 +49,8 @@ function Power(descr) {
             this.activeSprite = this.sprite.skull;
             break;
         case (rand <= 12):
-            this.type = "crystal";
-            this.activeSprite = this.sprite.crystal;
+            this.type = "fire";
+            this.activeSprite = this.sprite.fire;
             break;
         case (rand <= 20):
             this.type = "coin";
@@ -156,7 +156,7 @@ Power.prototype.handleCollision = function(){
         case "skull":
             //gameOver = true;
             break;
-        case "crystal":
+        case "fire":
             entityManager.speedUp();
             entityManager.generateNotification("SUPERBOOST",3);
             break;
