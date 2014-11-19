@@ -78,6 +78,7 @@ generateFlame: function(cx, cy, velX, velY, gravity, rotation) {
 },
 
 generateNotification: function(type,scale){
+    if(scale === undefined) scale = 1;
     this._Notifications.push(new Notification(type,scale));
 },
 
@@ -153,11 +154,7 @@ init: function() {
     this._generateClock();
     //Generate the walls
     this.generateWalls();
-    this.generateCharacter({
-        cx :g_canvas.width/2,
-        cy :g_canvas.height,
-        _scale:5
-    });
+    this.generateCharacter();
     this.generateNotification("GO");
 },
 

@@ -52,6 +52,15 @@ function Notification(type,scale){
 		case "NOWAY":
 			this.activeSprite = this.sprite.noway;
 			break;
+		case "SUPERJUMP":
+			this.activeSprite = this.sprite.superjump;
+			break;
+		case "SUPERBOOST":
+			this.activeSprite = this.sprite.superboost;
+			break;
+		case "HURRYUP":
+			this.activeSprite = this.sprite.hurryup;
+			break;
 	}
 	this.scale = scale;
 }

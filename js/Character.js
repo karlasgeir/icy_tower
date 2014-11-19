@@ -5,7 +5,7 @@
 /* jshint browser: true, devel: true, globalstrict: true */
 // A generic contructor which accepts an arbitrary descriptor object
 function Character(descr) {
-    this._scale = 1;            //The scale that the sprite is drawn in
+    this._scale = 5;            //The scale that the sprite is drawn in
     this.rememberResets();      //Sets the reset positions
     this._jumping = false;      //True if character is jumping
     this._falling = false;      //True if character is falling
@@ -35,6 +35,9 @@ function Character(descr) {
     this.sprite = this.sprite || g_sprites.character; //This is an object of sprites
     //This is an active sprite (the sprite that is beeing drawn)
     this.activeSprite = this.activeSprite || g_sprites.character.idle[0];
+    this.cx = g_canvas.width/2;
+    this.cy = g_canvas.height - this.activeSprite.height/2;
+
 };
 
 //Create an Entity
@@ -107,6 +110,8 @@ Character.prototype.jumpSound = new Audio(
 Character.prototype.jumpSound = new Audio("res/sounds/jump_01.wav");
 Character.prototype.jumpSound2 = new Audio("res/sounds/jump_02.wav");
 Character.prototype.bounce = new Audio("res/sounds/sprengja.wav");
+Character.prototype.dead = new Audio("res/sounds/dead.wav");
+Character.prototype.fail = new Audio("res/sounds/fail.wav");
 
 
 /*
@@ -691,6 +696,10 @@ Character.prototype.gameOver = function () {
         //If the player has the fallength or fallen below the canvas
         if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.activeSprite.height/2 > g_canvas.height) {
             //GAME IS OVER
+            if (gameOver!=true) {
+                this.dead.play();
+                this.fail.play();
+            }
             gameOver = true;
     }
 };
