@@ -115,6 +115,7 @@ Character.prototype.bounce = new Audio("res/sounds/thud.wav");
 Character.prototype.dead = new Audio("res/sounds/dead.wav");
 Character.prototype.moonJump = new Audio("res/sounds/Heartbeat.wav");
 Character.prototype.comboBreaker = new Audio("res/sounds/ccBr.wav");
+Character.prototype.speedB = new Audio("res/sounds/speedBoost.wav");
 
 /*
     This function updates everything about
@@ -125,7 +126,6 @@ Character.prototype.comboBreaker = new Audio("res/sounds/ccBr.wav");
 Character.prototype.update = function (du) {    
     //Unregister from spatial manager
     spatialManager.unregister(this);
-
 
     //Check for death
     if(this._isDeadNow){return entityManager.KILL_ME_NOW;}
@@ -139,24 +139,28 @@ Character.prototype.update = function (du) {
 
     //Do rotation in jump
     this.computeRotation(du);
-    if (!gameOver) {
-        g_sound.gameplaySong.muted = false;
-        g_sound.gameplaySong.play();
-    } else if (gameOver) {g_sound.gameplaySong.muted = true}
 
     //Update game height
     this.gameHeight = g_canvas.height - this.cy - this.getHeight()/2 + g_GAME_HEIGHT;
-    if (this.gravityPowerup<=0) {
+    if (this.gravityPowerup<=0 && this.speedPowerup<=0) {
         g_sound.gameplaySong.muted = false;
-        this.moonJump.muted = true;
-    } else {
+        g_sound.gameplaySong.play();
+    } else if (this.gravityPowerup>0 || this.speedPowerup>0){
         g_sound.gameplaySong.muted = true;
-        this.moonJump.muted = false;
     }
+
+    if (this.gravityPowerup>0) {
+        this.moonJump.muted = false;
+        this.moonJump.play();
+    } else {this.moonJump.muted = true;}
+
+    if (this.speedPowerup>0) {
+        this.speedB.muted = false;
+        this.speedB.play();
+    } else {this.speedB.muted = true;}
 
     //Increment powerup if neccesary
     if(this.gravityPowerup > 0){
-        this.moonJump.play();
         this.gravityPowerup -= du;
         if(this.gravityPowerup < 0) this.gravityPowerup = 0;
     } 
@@ -176,6 +180,12 @@ Character.prototype.update = function (du) {
     if(!gameOver){
         //Reregister in the spatial manager
         spatialManager.register(this);
+    }
+
+    if (gameOver) {
+        g_sound.gameplaySong.muted = true;
+        this.speedB.muted = true;
+        this.moonJump.muted = true;
     }
 };
 

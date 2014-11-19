@@ -157,7 +157,8 @@ function requestPreloads() {
         space: "res/backgrounds/starsBackgr.jpg",
         spacePlatform: "res/platforms/spacePlatform.png",
         spaceSuit: "res/powerUps/spaceSuit.png",
-        spaceSuitReversed:"res/powerUps/spaceSuit-reverse.png"
+        spaceSuitReversed:"res/powerUps/spaceSuit-reverse.png",
+        redBricks: "res/backgrounds/gBfire.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -169,6 +170,9 @@ function preloadDone() {
     /*
         Loading all the sprites
     */
+    //Firebackr.
+    g_sprites.redBricks = new Sprite(g_images.redBricks,g_images.redBricks.width,g_images.redBricks.height,0,0);
+
     //Space backgr and platf.
     g_sprites.space = new Sprite(g_images.space,g_images.space.width,g_images.space.height,0,0);
     g_sprites.spacePlatform = new Sprite(g_images.spacePlatform,g_images.spacePlatform.width,g_images.spacePlatform.height,0,0);

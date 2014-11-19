@@ -18,9 +18,12 @@ backgroundPic = function() {
 	}
     if (!gameOver) {
         var gravPowerup = entityManager._characters[0].gravityPowerup;
+        var speedPowerup = entityManager._characters[0].speedPowerup;
        // console.log(entityManager._characters[0].gravityPowerup);
         if (gravPowerup>0) {
             currentSprite = g_sprites.space;
+        } else if (speedPowerup>0) {
+            currentSprite = g_sprites.redBricks;
         } else {
             currentSprite = g_sprites.gameBackground;
         }
