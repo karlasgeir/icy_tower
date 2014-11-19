@@ -5,6 +5,7 @@
 "use strict";
 
 /* jshint browser: true, devel: true, globalstrict: true */
+
 var NOMINAL_START_POS = -180;
 function Notification(type,scale){
 	this.timeInMiddle = 600/NOMINAL_UPDATE_INTERVAL;
@@ -68,6 +69,8 @@ function Notification(type,scale){
 	}
 	this.scale = scale;
 }
+
+Notification.prototype.comboSFX = new Audio("res/sounds/comboLOW.wav");
 
 Notification.prototype.scale = 1;
 

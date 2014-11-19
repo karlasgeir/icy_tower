@@ -107,12 +107,12 @@ Character.prototype.jumpSound = new Audio(
 */
 
 //Hljóðprufa
-Character.prototype.jumpSound = new Audio("res/sounds/jump_01.wav");
-Character.prototype.jumpSound2 = new Audio("res/sounds/jump_02.wav");
-Character.prototype.superjumpSound = new Audio("res/sounds/jump_04.wav");
-Character.prototype.bounce = new Audio("res/sounds/sprengja.wav");
+Character.prototype.jumpSoundHigh = new Audio("res/sounds/jump_hi.wav");
+Character.prototype.jumpSoundLow = new Audio("res/sounds/jump_lo.wav");
+Character.prototype.jumpSoundMid = new Audio("res/sounds/jump_mid.wav");
+Character.prototype.bounce = new Audio("res/sounds/thud.wav");
 Character.prototype.dead = new Audio("res/sounds/dead.wav");
-Character.prototype.fail = new Audio("res/sounds/fail.wav");
+Character.prototype.moonJump = new Audio("res/sounds/Heartbeat.wav");
 
 
 /*
@@ -143,7 +143,7 @@ Character.prototype.update = function (du) {
 
     //Increment powerup if neccesary
     if(this.gravityPowerup > 0){
-
+        this.moonJump.play();
         this.gravityPowerup -= du;
         if(this.gravityPowerup < 0) this.gravityPowerup = 0;
     } 
@@ -304,7 +304,7 @@ Character.prototype.platsInCombo = function() {
 */
 Character.prototype.makeFlames = function () {
     //Flames are only created if the jump is rotational 
-    if (!this._rotationJump || !g_COMBO || this.gravityPowerup) {return;}
+    if (!this._rotationJump || !g_COMBO || this.gravityPowerup || this.speedPowerup) {return;}
 
     //Get the rotational offset
     var dX = +Math.sin(this.rotation);
@@ -622,7 +622,6 @@ Character.prototype.computeGravity = function () {
     return 0;
 };
 
-var toggle = 0;
 /*
     This computes the magnitude of the jump
     acceleration
@@ -634,24 +633,20 @@ Character.prototype.computeThrustMag = function () {
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
         //Reset the y velocity
         this._jumping = true;
-       if (this.speedPowerup>0) {
-        this.superjumpSound.play();
-       }else{
-        if (toggle ===4) {
-            this.jumpSound2.play();
-            toggle = 0;
-        }
-        else{
-        this.jumpSound.play();
-        toggle += 1;
-        }
-       }
         //We don't want x-velocity to decrease jump height
         if (speedInfluence<1) {
+            if (this.gravityPowerup <= 0) {
+            this.jumpSoundLow.play();
+            }
             return this.NOMINALS.THRUST;
         }
         //x-velocity can increase jump height
-        else return this.NOMINALS.THRUST*speedInfluence;
+        else {
+            if (this.gravityPowerup <= 0) {
+            this.jumpSoundHigh.play();
+            }
+            return this.NOMINALS.THRUST*speedInfluence;
+        }
     }
     return 0;
 
@@ -704,7 +699,6 @@ Character.prototype.gameOver = function () {
             //GAME IS OVER
             if (gameOver!=true) {
                 this.dead.play();
-                this.fail.play();
             }
             gameOver = true;
     }
