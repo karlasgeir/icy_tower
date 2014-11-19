@@ -670,9 +670,9 @@ Character.prototype.wallBounce = function () {
             var expX = this.cx + influencePos*this.getWidth()/2;
         }
         else {
-            var expX = this.cx - influencePos*this.getWidth().width/2;
+            var expX = this.cx - influencePos*this.getWidth()/2;
         }
-        entityManager.generateEffect(expX,this.cy,"FLASH");
+        if(this.gameHeight > 0 && !this.currPlatform)entityManager.generateEffect(expX,this.cy,"FLASH");
         this._goingRight = !this._goingRight;
         this._goingLeft = !this._goingLeft;
         this.isBouncing = true;
