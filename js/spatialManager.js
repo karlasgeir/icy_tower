@@ -104,7 +104,6 @@ render: function(ctx) {
             util.strokeCenteredBox(ctx,pos.posX-size.width/2,pos.posY-size.height/2,size.width,size.height,this.rotation);
         }
         else if(e instanceof Platform || e instanceof Power){
-            console.log(e,size);
             util.strokeCenteredBox(ctx, pos.posX-size.width/2, pos.posY-size.height/2, size.width,size.height,0);
         }
        

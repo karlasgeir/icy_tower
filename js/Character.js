@@ -184,7 +184,7 @@ Character.prototype.checkPlatform = function(){
         //Check if the character is still on the platform
         if(this.cx - this.getWidth()/2 < pos.posX+size.width/2
             && this.cx + this.getWidth()/2 > pos.posX - size.width/2
-            && util.isBetween(this.getGameHeight(),gameHeight-3,gameHeight+5)){
+            && util.isBetween(this.getGameHeight(),0,gameHeight+5)){
             //Set settings accordingly
             g_useGravity = false;
             this._jumping = false;
@@ -229,6 +229,7 @@ Character.prototype.handleCollision = function(du){
         }
         else if(isHit && isHit instanceof Power){
             isHit.handleCollision();
+
             isHit.kill();
 
         }
@@ -368,7 +369,7 @@ Character.prototype.computeRotation = function(du){
     update function
 */
 Character.prototype.computeSubStep = function (du) {
-    
+
 
     //Register the position before change
     this.prevX = this.cx;
