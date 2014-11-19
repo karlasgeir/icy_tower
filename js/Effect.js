@@ -25,12 +25,14 @@ function Effect(cx,cy,type) {
 Effect.prototype = new Entity();
 
 Effect.prototype.render = function(ctx){
-    console.log(this.activeSprite,this.animFrame);
+
+    var wallWidth = entityManager._Walls[0].wallWidth;
+
     if(this.shouldDraw){
-        if(this.type === "FLASH" && this.cx < 50){
-            this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy,Math.PI);
-        }
-        else this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy);
+        if(this.type === "FLASH" && this.cx <= wallWidth){
+            this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy);
+        } 
+        else this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy,Math.PI);
     }
 };
 

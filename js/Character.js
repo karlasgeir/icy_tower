@@ -142,7 +142,6 @@ Character.prototype.update = function (du) {
         if(this.gravityPowerup < 0) this.gravityPowerup = 0;
     } 
     if (this.speedPowerup > 0){
-        console.log("I have powerup");
         this.speedPowerup -= du;
         if(this.speedPowerup < 0) this.speedPowerup = 0;
     }
@@ -587,7 +586,6 @@ Character.prototype.applyAccelY = function(du){
 Character.prototype.applyAccelX = function(du){
     var speedup = 1;
     if(this.speedPowerup > 0) speedup = this.NOMINALS.SPEEDUP;
-    console.log(speedup);
     var maxVelX = this.NOMINALS.MAX_VELX * speedup;
     //Calculate the final velocity
     var final_velX = this.velX + this.accelX*du;
@@ -667,8 +665,13 @@ Character.prototype.wallBounce = function () {
 
     if(this.cx+this.activeSprite.width/2 >= g_right_side ||
         (this.cx-this.activeSprite.width/2 <= g_left_side)) {
-        if(this._goingLeft) var expX = this.cx-this.activeSprite.width/2;
-        else var expX = this.cx + this.activeSprite.width/2; 
+        var influencePos = 0.4;
+        if(this._goingLeft) {
+            var expX = this.cx + influencePos*this.activeSprite.width/2;
+        }
+        else {
+            var expX = this.cx - influencePos*this.activeSprite.width/2;
+        }
         entityManager.generateEffect(expX,this.cy,"FLASH");
         this._goingRight = !this._goingRight;
         this._goingLeft = !this._goingLeft;

@@ -38,21 +38,21 @@ function Power(descr) {
 // A generic contructor which accepts an arbitrary descriptor object
 function Power(descr) {
     this.sprite = this.sprite || g_sprites.power;
-    var rand= util.randRange(1,20);
+    var rand= util.randRange(1,100);
     switch(true){
-        case (rand <= 5):
+        case (rand <= 15):
             this.type="ruby";
             this.activeSprite = this.sprite.ruby;
             break;
-        case (rand <=6):
+        case (rand <=20):
             this.type="skull";
             this.activeSprite = this.sprite.skull;
             break;
-        case (rand <= 12):
+        case (rand <= 35):
             this.type = "fire";
             this.activeSprite = this.sprite.fire;
             break;
-        case (rand <= 20):
+        case (rand <= 100):
             this.type = "coin";
             this.activeSprite = this.sprite.coin;
             break;
