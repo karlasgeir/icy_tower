@@ -107,6 +107,7 @@ Character.prototype.jumpSound = new Audio(
 Character.prototype.jumpSound = new Audio("res/sounds/jump_01.wav");
 Character.prototype.jumpSound2 = new Audio("res/sounds/jump_02.wav");
 Character.prototype.bounce = new Audio("res/sounds/sprengja.wav");
+Character.prototype.dead = new Audio("res/sounds/dead.wav");
 
 
 /*
@@ -688,6 +689,9 @@ Character.prototype.gameOver = function () {
         //If the player has the fallength or fallen below the canvas
         if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.activeSprite.height/2 > g_canvas.height) {
             //GAME IS OVER
+            if (gameOver!=true) {
+                this.dead.play();
+            }
             gameOver = true;
     }
 };
