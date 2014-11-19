@@ -155,6 +155,7 @@ function requestPreloads() {
         reaper: "res/powerUps/reaper.png",
         fireGonzales: "res/effects/fireball.png",
         space: "res/backgrounds/starsBackgr.jpg",
+        spacePlatform: "res/platforms/spacePlatform.png",
         spaceSuit: "res/powerUps/spaceSuit.png"
     };
 
@@ -167,8 +168,9 @@ function preloadDone() {
     /*
         Loading all the sprites
     */
-    //Space backgr.
+    //Space backgr and platf.
     g_sprites.space = new Sprite(g_images.space,g_images.space.width,g_images.space.height,0,0);
+    g_sprites.spacePlatform = new Sprite(g_images.spacePlatform,g_images.spacePlatform.width,g_images.spacePlatform.height,0,0);
 
     //Clock and its indicator
     g_sprites.clock = new Sprite(g_images.clock,g_images.clock.width,g_images.clock.height,0,0);
