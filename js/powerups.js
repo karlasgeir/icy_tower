@@ -19,6 +19,7 @@ function Power(descr) {
     this.sprite = g_sprites.power;
     this.powerWidth = this.sprite.height;
     this.powerHeight = this.sprite.width;
+    this.scale  = this.scale  || 1;
     // Common inherited setup logic from Entity
     this.setup(descr);
 }
@@ -42,11 +43,11 @@ function Power(descr) {
     switch(true){
         case (rand <= 15):
             this.type="ruby";
-            this.activeSprite = this.sprite.ruby;
+            this.activeSprite = this.sprite.spaceSuit;
             break;
         case (rand <=20):
             this.type="skull";
-            this.activeSprite = this.sprite.skull;
+            this.activeSprite = this.sprite.reaper;
             break;
         case (rand <= 35):
             this.type = "fire";
@@ -170,6 +171,9 @@ Power.prototype.render = function (ctx) {
     
    // var origScale = this.sprite.scale;
     this.sprite.scale = this._scale;
+    if (this.sprite === this.sprite.coin) {
+        this.sprite.scale = 0.5;
+    }
     this.activeSprite[this._animFrame].drawCentredAt(ctx, this.cx, this.cy);
     
 };

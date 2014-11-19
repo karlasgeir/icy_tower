@@ -58,9 +58,7 @@ KILL_ME_NOW : -1,
 _generateInitialPlatforms : function() {
     var INITIAL_PLATFORMS = 12;
     for (var i = 1; i<INITIAL_PLATFORMS; i++) {
-        this.generatePlatform({
-            platID: i
-            });
+        this.generatePlatform();
     }
 },
 

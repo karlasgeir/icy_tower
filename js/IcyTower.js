@@ -152,7 +152,9 @@ function requestPreloads() {
         explotion: "res/explotion/explotionspritesheet.png",
         flash: "res/effects/flash_a.png",
         fireBlast: "res/effects/fireball_hit.png",
-        fireGonzales: "res/effects/fireball.png"
+        reaper: "res/powerUps/reaper.png",
+        fireGonzales: "res/effects/fireball.png",
+        spaceSuit: "res/powerUps/spaceSuit.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -436,6 +438,33 @@ function preloadDone() {
             new Sprite(g_images.power,34,45,0,250),
             new Sprite(g_images.power,26,45,5,299),
             new Sprite(g_images.power,6,45,15,347)
+        ],
+        reaper:[
+            new Sprite(g_images.reaper,60,65,7,349),
+            new Sprite(g_images.reaper,67,64,79,349),
+            new Sprite(g_images.reaper,62,64,160,350),
+            new Sprite(g_images.reaper,48,65,236,349),
+            new Sprite(g_images.reaper,48,65,251,425),
+            new Sprite(g_images.reaper,78,65,160,425),
+            new Sprite(g_images.reaper,67,66,84,424),
+            new Sprite(g_images.reaper,65,64,9,426)
+        ],
+        spaceSuit:[
+            new Sprite(g_images.spaceSuit,30,39,5,15),
+            new Sprite(g_images.spaceSuit,27,37,39,17),
+            new Sprite(g_images.spaceSuit,27,37,72,17),
+            new Sprite(g_images.spaceSuit,26,35,108,19),
+            new Sprite(g_images.spaceSuit,29,37,139,16),
+            new Sprite(g_images.spaceSuit,29,45,173,9),
+            new Sprite(g_images.spaceSuit,29,45,207,9),
+            new Sprite(g_images.spaceSuit,27,38,242,16),
+            new Sprite(g_images.spaceSuit,25,35,279,25),
+            new Sprite(g_images.spaceSuit,30,39,309,15),
+            new Sprite(g_images.spaceSuit,30,39,342,15),
+            new Sprite(g_images.spaceSuit,29,39,375,15),
+            new Sprite(g_images.spaceSuit,36,45,411,12),
+            new Sprite(g_images.spaceSuit,37,34,458,19),
+            new Sprite(g_images.spaceSuit,37,34,500,19)
         ],
         skull: [new Sprite(g_images.power,55,59,345,341)]
     };
