@@ -50,8 +50,7 @@ Character.prototype.NOMINALS = {
     ROTATION_RATE: 15,              //Rate of rotation in rotation jump
     ANIM_FRAME_RATE: 12,            //Rate of sprite changes actually lower is faster
     SCREEN_MOVE_RATE: 8,            //Rate of screen movement 
-    SCREEN_TOP_LIMIT: 200,          //If the character goes above this position the screen moves up
-    SCREEN_BOTTOM_LIMIT: 570,       //If the character goes below this position the screen moves down
+    SCREEN_TOP_LIMIT: 250,          //If the character goes above this position the screen moves up
     ACCELX: 0.2,                    //Nominal x-acceleration of the character
     SLOW: 1,                      //Nominal slowdown acceleration of the character
     MAX_ACCELX: 0.8,                //Maximum x-acceleration of the character
@@ -526,36 +525,20 @@ Character.prototype.checkCases = function(){
 
 /*
 This function moves the screen when the
-character is getting close to the bottom or the top
+character is getting close to the top
 of the canvas
 */
 var screenIsMoving = false;
 Character.prototype.moveScreen = function(du){
-    var SCREEN_BOTTOM_LIMIT = this.NOMINALS.SCREEN_BOTTOM_LIMIT;
     //Screen should not move when the menu screen is up
     if (g_MENU_SCREEN) {
         screenIsMoving = false;
     }
-    //If we are on a platform we need to be able to travel with it under the canvas
-    if (this.currPlatform) {
-        //TODO: Change from magic number
-        SCREEN_BOTTOM_LIMIT = 700;
-        //SCREEN_BOTTOM_LIMIT = this.NOMINALS.SCREEN_BOTTOM_LIMIT + this.activeSprite.height;
-    }
-    //If we are not on a platform we use the nominal bottom limit
-    else SCREEN_BOTTOM_LIMIT = this.NOMINALS.SCREEN_BOTTOM_LIMIT;
 
     //If player is closer to the top then the limit allows
     if(this.cy + this.activeSprite.height/2 <  this.NOMINALS.SCREEN_TOP_LIMIT){
         //Move the screen up
         g_MOVE_SCREEN = this.NOMINALS.SCREEN_MOVE_RATE;
-        screenIsMoving = true;
-    }
-    //If the player is closer to the bottom then the limit allows
-    //And not at the bottom
-    else if(this.cy + this.activeSprite.height/2 > SCREEN_BOTTOM_LIMIT && g_GAME_HEIGHT > 0){
-        //Move the screen down
-        g_MOVE_SCREEN = - this.NOMINALS.SCREEN_MOVE_RATE;
         screenIsMoving = true;
     }
     //Else we don't move the screen
