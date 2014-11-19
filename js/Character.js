@@ -24,7 +24,9 @@ function Character(descr) {
     this.isBouncing = false;    //True if the character is bouncing of a wall
     this.isOnFire = false;      //True if the character is on fire
     this.gravityPowerup = 0;
-    this.speedPowerup = -1;
+    this.speedPowerup = 0;
+    this.prevX = 0;
+    this.prevY=0;
 
 
     // Common inherited setup logic from Entity
@@ -124,7 +126,6 @@ Character.prototype.update = function (du) {
     //Unregister from spatial manager
     spatialManager.unregister(this);
 
-    console.log(g_MOVE_SCREEN);
 
     //Check for death
     if(this._isDeadNow){return entityManager.KILL_ME_NOW;}
@@ -305,7 +306,7 @@ Character.prototype.platsInCombo = function() {
 */
 Character.prototype.makeFlames = function () {
     //Flames are only created if the jump is rotational 
-    if (!this._rotationJump || !g_COMBO || this.gravityPowerup) {return;}
+    if (!this._rotationJump || !g_COMBO || this.gravityPowerup>0) {return;}
 
     //Get the rotational offset
     var dX = +Math.sin(this.rotation);
@@ -342,8 +343,15 @@ Character.prototype.makeFlames = function () {
     rotated, and performs the rotation
 */
 Character.prototype.computeRotation = function(du){
+    //If the character has speed powerup
+    if(this.speedPowerup>0){
+        var deltaY = this.cy - this.prevY;
+        var deltaX = this.cx - this.prevX;
+        if(this.currPlatform && this.velY > 0) deltaY = 0;  
+        this.rotation = Math.atan2(deltaY,deltaX);
+    }
     //If character is jumping, and it should be rotational
-    if(this._rotationJump && this._jumping){
+    else if(this._rotationJump && this._jumping){
         var speedInfluence = 0.125*Math.abs(this.velX);
         //If he's moving right the rotation is to the right
         if (this._goingRight) this.rotation += speedInfluence*(Math.PI/this.NOMINALS.ROTATION_RATE)*du;
@@ -360,11 +368,11 @@ Character.prototype.computeRotation = function(du){
     update function
 */
 Character.prototype.computeSubStep = function (du) {
-
+    
 
     //Register the position before change
-    var prevX = this.cx;
-    var prevY = this.cy;
+    this.prevX = this.cx;
+    this.prevY = this.cy;
    
     //Compute the x acceleration
     this.computeAccelX(du);
@@ -394,8 +402,8 @@ Character.prototype.computeSubStep = function (du) {
     this.checkCases();
    
     //Used to deside which sprite to use
-    var nextX = prevX + this.velX * du;
-    var nextY = prevY + this.velY * du;
+    var nextX = this.prevX + this.velX * du;
+    var nextY = this.prevY + this.velY * du;
     
     //Increment the animTicker
     if(this._animation.Ticker < Math.abs(this.NOMINALS.ANIM_FRAME_RATE-Math.abs(this.velX))){
@@ -497,7 +505,7 @@ Character.prototype.computeAccelX = function(du){
 Character.prototype.checkCases = function(){
     //If the character is landing 
     if (this.activeSprite.height/2 + this.cy >= g_canvas.height 
-        && (g_GAME_HEIGHT === 0 && !this.currPlatform)) {
+        && (g_GAME_HEIGHT === 0 || !this.currPlatform)) {
         this._jumping = false;
         this._falling = false;
         this._roationJump = false;
@@ -733,7 +741,7 @@ Character.prototype.render = function (ctx) {
     //Reset the scale
     this.sprite.scale = origScale;
     if((this.velY === 0 || this.currPlatform) && this.isOnFire){
-        if (this.speedPowerup>0 || this.gravityPowerup) {
+        if (this.speedPowerup>0 || this.gravityPowerup>0) {
             return;
         }
         g_sprites.fire.demonFire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.activeSprite.width/6,this.cy+this.activeSprite.height/10);
