@@ -24,7 +24,9 @@ function Character(descr) {
     this.isBouncing = false;    //True if the character is bouncing of a wall
     this.isOnFire = false;      //True if the character is on fire
     this.gravityPowerup = 0;
-    this.speedPowerup = -1;
+    this.speedPowerup = 0;
+    this.prevX = 0;
+    this.prevY=0;
 
 
     // Common inherited setup logic from Entity
@@ -50,8 +52,7 @@ Character.prototype.NOMINALS = {
     ROTATION_RATE: 15,              //Rate of rotation in rotation jump
     ANIM_FRAME_RATE: 12,            //Rate of sprite changes actually lower is faster
     SCREEN_MOVE_RATE: 8,            //Rate of screen movement 
-    SCREEN_TOP_LIMIT: 200,          //If the character goes above this position the screen moves up
-    SCREEN_BOTTOM_LIMIT: 570,       //If the character goes below this position the screen moves down
+    SCREEN_TOP_LIMIT: 250,          //If the character goes above this position the screen moves up
     ACCELX: 0.2,                    //Nominal x-acceleration of the character
     SLOW: 1,                      //Nominal slowdown acceleration of the character
     MAX_ACCELX: 0.8,                //Maximum x-acceleration of the character
@@ -124,6 +125,7 @@ Character.prototype.moonJump = new Audio("res/sounds/Heartbeat.wav");
 Character.prototype.update = function (du) {    
     //Unregister from spatial manager
     spatialManager.unregister(this);
+
 
     //Check for death
     if(this._isDeadNow){return entityManager.KILL_ME_NOW;}
@@ -304,7 +306,7 @@ Character.prototype.platsInCombo = function() {
 */
 Character.prototype.makeFlames = function () {
     //Flames are only created if the jump is rotational 
-    if (!this._rotationJump || !g_COMBO || this.gravityPowerup || this.speedPowerup) {return;}
+    if (!this._rotationJump || !g_COMBO || this.gravityPowerup>0 || this.speedPowerup>0) {return;}
 
     //Get the rotational offset
     var dX = +Math.sin(this.rotation);
@@ -341,8 +343,15 @@ Character.prototype.makeFlames = function () {
     rotated, and performs the rotation
 */
 Character.prototype.computeRotation = function(du){
+    //If the character has speed powerup
+    if(this.speedPowerup>0){
+        var deltaY = this.cy - this.prevY;
+        var deltaX = this.cx - this.prevX;
+        if(this.currPlatform && this.velY > 0) deltaY = 0;  
+        this.rotation = Math.atan2(deltaY,deltaX);
+    }
     //If character is jumping, and it should be rotational
-    if(this._rotationJump && this._jumping){
+    else if(this._rotationJump && this._jumping){
         var speedInfluence = 0.125*Math.abs(this.velX);
         //If he's moving right the rotation is to the right
         if (this._goingRight) this.rotation += speedInfluence*(Math.PI/this.NOMINALS.ROTATION_RATE)*du;
@@ -359,11 +368,11 @@ Character.prototype.computeRotation = function(du){
     update function
 */
 Character.prototype.computeSubStep = function (du) {
-
+    
 
     //Register the position before change
-    var prevX = this.cx;
-    var prevY = this.cy;
+    this.prevX = this.cx;
+    this.prevY = this.cy;
    
     //Compute the x acceleration
     this.computeAccelX(du);
@@ -393,8 +402,8 @@ Character.prototype.computeSubStep = function (du) {
     this.checkCases();
    
     //Used to deside which sprite to use
-    var nextX = prevX + this.velX * du;
-    var nextY = prevY + this.velY * du;
+    var nextX = this.prevX + this.velX * du;
+    var nextY = this.prevY + this.velY * du;
     
     //Increment the animTicker
     if(this._animation.Ticker < Math.abs(this.NOMINALS.ANIM_FRAME_RATE-Math.abs(this.velX))){
@@ -524,36 +533,20 @@ Character.prototype.checkCases = function(){
 
 /*
 This function moves the screen when the
-character is getting close to the bottom or the top
+character is getting close to the top
 of the canvas
 */
 var screenIsMoving = false;
 Character.prototype.moveScreen = function(du){
-    var SCREEN_BOTTOM_LIMIT = this.NOMINALS.SCREEN_BOTTOM_LIMIT;
     //Screen should not move when the menu screen is up
     if (g_MENU_SCREEN) {
         screenIsMoving = false;
     }
-    //If we are on a platform we need to be able to travel with it under the canvas
-    if (this.currPlatform) {
-        //TODO: Change from magic number
-        SCREEN_BOTTOM_LIMIT = 700;
-        //SCREEN_BOTTOM_LIMIT = this.NOMINALS.SCREEN_BOTTOM_LIMIT + this.activeSprite.height;
-    }
-    //If we are not on a platform we use the nominal bottom limit
-    else SCREEN_BOTTOM_LIMIT = this.NOMINALS.SCREEN_BOTTOM_LIMIT;
 
     //If player is closer to the top then the limit allows
     if(this.cy + this.activeSprite.height/2 <  this.NOMINALS.SCREEN_TOP_LIMIT){
         //Move the screen up
         g_MOVE_SCREEN = this.NOMINALS.SCREEN_MOVE_RATE;
-        screenIsMoving = true;
-    }
-    //If the player is closer to the bottom then the limit allows
-    //And not at the bottom
-    else if(this.cy + this.activeSprite.height/2 > SCREEN_BOTTOM_LIMIT && g_GAME_HEIGHT > 0){
-        //Move the screen down
-        g_MOVE_SCREEN = - this.NOMINALS.SCREEN_MOVE_RATE;
         screenIsMoving = true;
     }
     //Else we don't move the screen
@@ -742,7 +735,7 @@ Character.prototype.render = function (ctx) {
     //Reset the scale
     this.sprite.scale = origScale;
     if((this.velY === 0 || this.currPlatform) && this.isOnFire){
-        if (this.speedPowerup>0 || this.gravityPowerup) {
+        if (this.speedPowerup>0 || this.gravityPowerup>0) {
             return;
         }
         g_sprites.fire.demonFire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.activeSprite.width/6,this.cy+this.activeSprite.height/10);
@@ -785,19 +778,6 @@ Character.prototype.checkForRotation = function(velX,velY) {
 /*
     This function chosses which sprite to render
 
-    if (this.speedPowerup>0 && this._goingLeft) {
-        this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,Math.PI+this.rotation);
-    } else if (this.speedPowerup>0 && this._goingRight) {
-        this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation);
-    } else {
-
-        if (this._goingLeft && !this._jumping && !this._falling) {
-            this.rotation = 0;
-        } else if (this._goingRight && !this._jumping && !this._falling)  {
-            this.rotation = Math.PI;
-        } else if (this._jumping || this._falling) {
-            this.NOMINALS.ROTATION_RATE = 2;
-        }
 */
 Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
 
@@ -807,16 +787,20 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
         };
         this.activeSprite = g_sprites.fireGonzales[this._animation.Frame];
         this._animation.Frame +=1;
+        this.NOMINALS.SCREEN_MOVE_RATE=12;
         return;
     }
     if (this.gravityPowerup>0) {
         if (this._animation.Frame>=g_sprites.power.spaceSuit.length) {
             this._animation.Frame = 0;
+            
         };
         this.activeSprite = g_sprites.power.spaceSuit[this._animation.Frame];
         this._animation.Frame +=1;
+        this.NOMINALS.SCREEN_MOVE_RATE=12;
         return;
     }
+    this.NOMINALS.SCREEN_MOVE_RATE=8;
 
     var sprite_base = this.sprite;
     //Check if the jump is rotational
@@ -905,7 +889,6 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
             if(this._animation.Reverse) this._animation.Frame -=1;
             else this._animation.Frame +=1;
         }
-
     } 
 };
 
