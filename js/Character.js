@@ -497,7 +497,7 @@ Character.prototype.computeAccelX = function(du){
 Character.prototype.checkCases = function(){
     //If the character is landing 
     if (this.activeSprite.height/2 + this.cy >= g_canvas.height 
-        && (g_GAME_HEIGHT === 0 || !this.currPlatform)) {
+        && (g_GAME_HEIGHT === 0 && !this.currPlatform)) {
         this._jumping = false;
         this._falling = false;
         this._roationJump = false;
