@@ -26,6 +26,8 @@ function Clock(descr) {
 
 Clock.prototype = new Entity();
 
+Clock.prototype.alarmClock = new Audio("res/sounds/alarmClock.wav");
+
 Clock.prototype.render = function (ctx) {
 
 	this.sprite.drawCentredAt(ctx, this.cx, this.cy, this.clockRotation);
@@ -48,6 +50,7 @@ Clock.prototype.update = function (du) {
 	var jumpInfluence = 0.5;
 
 	if (this.indicatorRotation>=circle) {
+		this.alarmClock.play();
 		this.rotateClock = true;
         entityManager.generateNotification("HURRYUP",2);
 		this.indicatorRotation = 0;

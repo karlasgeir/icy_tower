@@ -6,7 +6,7 @@
 
 /* jshint browser: true, devel: true, globalstrict: true */
 
-var NOMINAL_START_POS = -180;
+var NOMINAL_START_POS = -100;
 function Notification(type,scale){
 	this.timeInMiddle = 600/NOMINAL_UPDATE_INTERVAL;
 	this.rotation = 0;
@@ -75,6 +75,12 @@ Notification.prototype.scale = 1;
 Notification.prototype = new Entity();
 
 Notification.prototype.comboFW = new Audio("res/sounds/flameWind.wav");
+Notification.prototype.rotationSFX = new Audio("res/sounds/rotationSFX.wav");
+Notification.prototype.spinSFXOne = new Audio("res/sounds/spinsAndWooshes/spinOne.wav");
+Notification.prototype.spinSFXTwo = new Audio("res/sounds/spinsAndWooshes/spinTwo.wav");
+Notification.prototype.wooshSFXOne = new Audio("res/sounds/spinsAndWooshes/wooshOne.wav");
+Notification.prototype.wooshSFXTwo = new Audio("res/sounds/spinsAndWooshes/wooshTwo.wav");
+Notification.prototype.wooshSFXThree = new Audio("res/sounds/spinsAndWooshes/wooshThree.wav");
 
 Notification.prototype.render = function(ctx) {
 	if (!gameOver) {
@@ -88,15 +94,33 @@ Notification.prototype.render = function(ctx) {
 
 Notification.prototype.update = function (du) {
 
-	if (this.activeSprite === this.sprite.hurryup) {
-		this.cy -= this.hurryUpSpeed*du;
-	}
+	
+	
 
 	if(this._isDeadNow){return entityManager.KILL_ME_NOW;}
 
 	if (gameOver || g_MENU_SCREEN) {
 		this.timeInMiddle = 600/NOMINAL_UPDATE_INTERVAL;
 		return;
+	}
+
+	var randWooshSFX = util.randRange(0,3);
+	var randspinSFX = util.randRange(0,2);
+	var pickedWooshSFX = this.wooshSFXOne;
+	var pickedSpinSFX = this.spinSFXOne;
+
+	if (randWooshSFX<=3) {
+		pickedWooshSFX = this.wooshSFXThree;
+	} else if (randWooshSFX<=2) {
+		pickedWooshSFX = this.wooshSFXTwo;
+		pickedSpinSFX = this.spinSFXTwo;
+	} else if (randWooshSFX<=1) {
+		pickedWooshSFX = this.wooshSFXOne;
+		pickedSpinSFX = this.spinSFXOne;
+	}
+	if (this.activeSprite === this.sprite.hurryup) {
+		this.cy -= this.hurryUpSpeed*du;
+		pickedSpinSFX.play();
 	}
 
 	var randomFactor = util.randRange(-3,3);
@@ -112,6 +136,7 @@ Notification.prototype.update = function (du) {
 		this.speed = 20;
 		this.cx +=this.speed*du;
 		this.rotation += 2;
+		pickedSpinSFX.play();
 
 		if(this.doExplotion)entityManager.generateFlame(
         this.cx+dX, 
@@ -129,7 +154,11 @@ Notification.prototype.update = function (du) {
 		this.timeInMiddle -=du;
 	}
 	if (this.timeInMiddle <= 0 && this.cx<=g_canvas.width+this.activeSprite.width/2) {
-		this.comboFW.play();
+		if (this.activeSprite === this.sprite.go) {
+			pickedWooshSFX.play();
+		} else {
+			this.comboFW.play();
+		}
 		this.speed = 50;
 		this.cx +=this.speed*du;
 		if(this.doExplotion) entityManager.generateEffect(this.cx,this.cy,"FIREBLAST");
