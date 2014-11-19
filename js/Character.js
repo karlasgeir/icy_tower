@@ -321,15 +321,13 @@ Character.prototype.makeFlames = function () {
     var flameGrav = 1;
 
     //Generate the flame
-    for (var i=0; i<g_FIREBOLTS; i++) {
-        entityManager.generateFlame(
-            this.cx + dX * launchDist,
-            this.cy + dY * launchDist,
-            flameVelX, 
-            flameVelY,
-            flameGrav,
-            this.rotation);
-    }  
+    entityManager.generateFlame(
+        this.cx + dX * launchDist,
+        this.cy + dY * launchDist,
+        flameVelX, 
+        flameVelY,
+        flameGrav,
+        this.rotation);  
 }
 
 
