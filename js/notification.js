@@ -70,11 +70,11 @@ function Notification(type,scale){
 	this.scale = scale;
 }
 
-Notification.prototype.comboSFX = new Audio("res/sounds/comboLOW.wav");
-
 Notification.prototype.scale = 1;
 
 Notification.prototype = new Entity();
+
+Notification.prototype.comboFW = new Audio("res/sounds/flameWind.wav");
 
 Notification.prototype.render = function(ctx) {
 	if (!gameOver) {
@@ -83,7 +83,7 @@ Notification.prototype.render = function(ctx) {
 		this.activeSprite.drawCentredAt(ctx, this.cx, this.cy, this.rotation);
 		this.activeSprite.scale = oldscale;
 	}
-}
+};
 
 
 Notification.prototype.update = function (du) {
@@ -129,6 +129,7 @@ Notification.prototype.update = function (du) {
 		this.timeInMiddle -=du;
 	}
 	if (this.timeInMiddle <= 0 && this.cx<=g_canvas.width+this.activeSprite.width/2) {
+		this.comboFW.play();
 		this.speed = 50;
 		this.cx +=this.speed*du;
 		if(this.doExplotion) entityManager.generateEffect(this.cx,this.cy,"FIREBLAST");
