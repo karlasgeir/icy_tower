@@ -209,12 +209,25 @@ Character.prototype.handleCollision = function(du){
             this.currPlatform = isHit;
         }
         else if(isHit && isHit instanceof Power){
+            if (isHit.type=="crystal") {
+                this.NOMINALS.ACCELX = 0.4;
+                this.NOMINALS.MAX_ACCELX = 1.8;
+                this.NOMINALS.MAX_VELX=14;
+                setTimeout(this.resetxvel,2000);
+            };
             isHit.handleCollision();
             isHit.kill();
 
         }
     }
 };
+Character.prototype.resetxvel = function(){
+    this.NOMINALS.ACCELX = 0.2;
+    this.NOMINALS.MAX_ACCELX = 0.8;
+    this.NOMINALS.MAX_VELX=12;
+
+
+}
  
 var g_COMBO_PLAT_IDS = [];
 Character.prototype.handleCombo = function() {
