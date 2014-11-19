@@ -685,7 +685,7 @@ Character.prototype.wallBounce = function () {
         (this.cx-this.getWidth()/2 <= g_left_side)) {
         var influencePos = 0.4;
         if (this.speedPowerup>0) {
-            influencePos = 0.4;
+            influencePos = -0.4;
         }
         if(this._goingLeft) {
             var expX = this.cx + influencePos*this.getWidth()/2;
