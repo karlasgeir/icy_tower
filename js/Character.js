@@ -58,10 +58,10 @@ Character.prototype.NOMINALS = {
     MAX_ACCELX: 0.8,                //Maximum x-acceleration of the character
     MAX_VELX:12,                    //Maximum x-velocity of the character
     JUMP_VEL: 1.25,                 //Nominal x-acceleration fraction when jumping
-    GRAVITY: 1.2,                   //Nominal acceleration do to gravity
+    GRAVITY: 1.6,                   //Nominal acceleration do to gravity
     ROTATION_JUMP_THRESHOLD: 10,    //the x velocity threshhold that determines
                                     //if the jump should be rottional
-    THRUST: 13,                     //The nominal jump thrust
+    THRUST: 16,                     //The nominal jump thrust
     FALL_LENGTH: 600,               //The lenght that the character has to fall to die
     BOUNCE_ROTATION: 1.5,           //The velocity multiplier when bouncing off the wall rotating
     BOUNCE:1,                       //The velocity multiplier when bouncing off the wall normally
@@ -114,6 +114,7 @@ Character.prototype.jumpSoundMid = new Audio("res/sounds/jump_mid.wav");
 Character.prototype.bounce = new Audio("res/sounds/thud.wav");
 Character.prototype.dead = new Audio("res/sounds/dead.wav");
 Character.prototype.moonJump = new Audio("res/sounds/Heartbeat.wav");
+Character.prototype.comboBreaker = new Audio("res/sounds/ccBr.wav");
 
 /*
     This function updates everything about
@@ -138,12 +139,20 @@ Character.prototype.update = function (du) {
 
     //Do rotation in jump
     this.computeRotation(du);
-    
+    if (!gameOver) {
+        g_sound.gameplaySong.muted = false;
+        g_sound.gameplaySong.play();
+    } else if (gameOver) {g_sound.gameplaySong.muted = true}
+
     //Update game height
     this.gameHeight = g_canvas.height - this.cy - this.getHeight()/2 + g_GAME_HEIGHT;
     if (this.gravityPowerup<=0) {
+        g_sound.gameplaySong.muted = false;
         this.moonJump.muted = true;
-    } else {this.moonJump.muted = false;}
+    } else {
+        g_sound.gameplaySong.muted = true;
+        this.moonJump.muted = false;
+    }
 
     //Increment powerup if neccesary
     if(this.gravityPowerup > 0){
@@ -268,6 +277,7 @@ Character.prototype.setCombo = function() {
     if (comboBreaker >= 2) {
         g_COMBO = true;
     } else {
+        console.log(g_GAME_HEIGHT);
         g_PLATS_GONE_IN_COMBO = 0;
         g_PLATS_IN_COMBO = [];
         g_FIREBOLTS = 0;
@@ -651,6 +661,7 @@ Character.prototype.computeThrustMag = function () {
 var REBOUNCE_LIMIT = 200;
 Character.prototype.wallBounce = function () {
     if(this.isBouncing){
+        if (gameOver) { return;}
         this.bounce.play();
         if(this.cx+this.getWidth()/2 + REBOUNCE_LIMIT >= g_right_side ||
         (this.cx-this.getWidth()/2 - REBOUNCE_LIMIT <= g_left_side)){
@@ -663,7 +674,7 @@ Character.prototype.wallBounce = function () {
         (this.cx-this.getWidth()/2 <= g_left_side)) {
         var influencePos = 0.4;
         if (this.speedPowerup>0) {
-            influencePos = -0.4;
+            influencePos = 0.4;
         }
         if(this._goingLeft) {
             var expX = this.cx + influencePos*this.getWidth()/2;

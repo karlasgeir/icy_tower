@@ -46,15 +46,17 @@ Clock.prototype.update = function (du) {
 	this.indicatorRotation +=tickRate*du;
 
 	var circle = 2*Math.PI;
-	var speedInfluence = 0.3;
+	var speedInfluence = 0.5;
 	var jumpInfluence = 0.5;
 
 	if (this.indicatorRotation>=circle) {
-		this.alarmClock.play();
+		if (!gameOver) {
+			this.alarmClock.play();
+		}
 		this.rotateClock = true;
         entityManager.generateNotification("HURRYUP",2);
 		this.indicatorRotation = 0;
-		if (g_VERTICAL_SPEED>1.8) {return;}
+		if (g_VERTICAL_SPEED>2.5) {return;}
 		g_VERTICAL_SPEED +=speedInfluence;
 		Character.prototype.NOMINALS.THRUST += jumpInfluence;
 	}

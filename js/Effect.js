@@ -32,7 +32,7 @@ Effect.prototype.render = function(ctx){
     var wallWidth = entityManager._Walls[0].wallWidth;
 
     if(this.shouldDraw){
-        if(this.type === "FLASH" && this.cx <= wallWidth){
+        if(this.type === "FLASH" && this.cx <= wallWidth*2){
             this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy);
         } 
         else this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy,Math.PI);
