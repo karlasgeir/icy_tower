@@ -18,7 +18,7 @@ backgroundPic = function() {
 	}
     if (!gameOver) {
         var gravPowerup = entityManager._characters[0].gravityPowerup;
-        console.log(entityManager._characters[0].gravityPowerup);
+       // console.log(entityManager._characters[0].gravityPowerup);
         if (gravPowerup>0) {
             currentSprite = g_sprites.space;
         } else {

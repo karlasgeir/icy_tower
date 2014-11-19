@@ -125,6 +125,8 @@ Character.prototype.update = function (du) {
     //Unregister from spatial manager
     spatialManager.unregister(this);
 
+    console.log(g_MOVE_SCREEN);
+
     //Check for death
     if(this._isDeadNow){return entityManager.KILL_ME_NOW;}
 
@@ -813,16 +815,20 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
         };
         this.activeSprite = g_sprites.fireGonzales[this._animation.Frame];
         this._animation.Frame +=1;
+        this.NOMINALS.SCREEN_MOVE_RATE=12;
         return;
     }
     if (this.gravityPowerup>0) {
         if (this._animation.Frame>=g_sprites.power.spaceSuit.length) {
             this._animation.Frame = 0;
+            
         };
         this.activeSprite = g_sprites.power.spaceSuit[this._animation.Frame];
         this._animation.Frame +=1;
+        this.NOMINALS.SCREEN_MOVE_RATE=12;
         return;
     }
+    this.NOMINALS.SCREEN_MOVE_RATE=8;
 
     var sprite_base = this.sprite;
     //Check if the jump is rotational
