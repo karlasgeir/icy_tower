@@ -193,7 +193,7 @@ Character.prototype.checkPlatform = function(){
         //Check if the character is still on the platform
         if(this.cx - this.getWidth()/2 < pos.posX+size.width/2
             && this.cx + this.getWidth()/2 > pos.posX - size.width/2
-            && util.isBetween(this.getGameHeight(),gameHeight-3,gameHeight+5)){
+            && util.isBetween(this.getGameHeight(),0,gameHeight+5)){
             //Set settings accordingly
             g_useGravity = false;
             this._jumping = false;
@@ -238,6 +238,7 @@ Character.prototype.handleCollision = function(du){
         }
         else if(isHit && isHit instanceof Power){
             isHit.handleCollision();
+
             isHit.kill();
 
         }
@@ -378,7 +379,7 @@ Character.prototype.computeRotation = function(du){
     update function
 */
 Character.prototype.computeSubStep = function (du) {
-    
+
 
     //Register the position before change
     this.prevX = this.cx;
@@ -680,9 +681,9 @@ Character.prototype.wallBounce = function () {
             var expX = this.cx + influencePos*this.getWidth()/2;
         }
         else {
-            var expX = this.cx - influencePos*this.getWidth().width/2;
+            var expX = this.cx - influencePos*this.getWidth()/2;
         }
-        entityManager.generateEffect(expX,this.cy,"FLASH");
+        if(this.gameHeight > 0 && !this.currPlatform)entityManager.generateEffect(expX,this.cy,"FLASH");
         this._goingRight = !this._goingRight;
         this._goingLeft = !this._goingLeft;
         this.isBouncing = true;

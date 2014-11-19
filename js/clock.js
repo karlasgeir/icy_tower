@@ -47,7 +47,7 @@ Clock.prototype.update = function (du) {
 
 	var circle = 2*Math.PI;
 	var speedInfluence = 0.5;
-	var jumpInfluence = 0.5;
+	var jumpInfluence = 0.75;
 
 	if (this.indicatorRotation>=circle) {
 		if (!gameOver) {

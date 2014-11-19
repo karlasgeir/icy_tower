@@ -65,8 +65,9 @@ function Power(descr) {
             this.type = false;
             this.activeSprite = false
     } 
-    this.width = this.activeSprite[0].height;
-    this.height = this.activeSprite[0].width;
+    this.width = this.activeSprite[0].height*this.scale;
+    this.height = this.activeSprite[0].width*this.scale;
+    this.Platform = g_TOP_FLOOR;
     this.cy= g_TOP_FLOOR.cy - g_TOP_FLOOR.halfHeight - this.height/2;
     this.cx= util.randRange(g_TOP_FLOOR.cx - g_TOP_FLOOR.halfWidth,g_TOP_FLOOR.cx + g_TOP_FLOOR.halfWidth);
     
@@ -126,6 +127,8 @@ Power.prototype.update = function (du) {
         
         this.cy += g_VERTICAL_SPEED*du;
     }
+
+    this.cy = this.Platform.cy - this.Platform.halfHeight - this.getSize().height/2;
     if(!gameOver){
          spatialManager.register(this);
     } 
@@ -193,7 +196,7 @@ Power.prototype.getRadius = function(){
 }
 
 Power.prototype.getSize = function(){
-    return {width:this.activeSprite[this._animFrame].width,height:this.activeSprite[this._animFrame].height};
+    return {width:this.activeSprite[this._animFrame].width*this.scale,height:this.activeSprite[this._animFrame].height*this.scale};
 }
 
 };
