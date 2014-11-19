@@ -104,7 +104,7 @@ Character.prototype.jumpSound = new Audio(
 //Hljóðprufa
 Character.prototype.jumpSound = new Audio("res/sounds/jump_01.wav");
 Character.prototype.jumpSound2 = new Audio("res/sounds/jump_02.wav");
-Character.prototype.bounce = new Audio("res/sounds/spreng.wav");
+Character.prototype.bounce = new Audio("res/sounds/sprengja.wav");
 
 
 /*
@@ -209,12 +209,25 @@ Character.prototype.handleCollision = function(du){
             this.currPlatform = isHit;
         }
         else if(isHit && isHit instanceof Power){
+            if (isHit.type=="crystal") {
+                this.NOMINALS.ACCELX = 0.4;
+                this.NOMINALS.MAX_ACCELX = 1.8;
+                this.NOMINALS.MAX_VELX=14;
+                setTimeout(this.resetxvel,2000);
+            };
             isHit.handleCollision();
             isHit.kill();
 
         }
     }
 };
+Character.prototype.resetxvel = function(){
+    this.NOMINALS.ACCELX = 0.2;
+    this.NOMINALS.MAX_ACCELX = 0.8;
+    this.NOMINALS.MAX_VELX=12;
+
+
+}
  
 var g_COMBO_PLAT_IDS = [];
 Character.prototype.handleCombo = function() {
@@ -240,6 +253,7 @@ Character.prototype.setCombo = function() {
     var arrayLength = g_COMBO_PLAT_IDS.length;
     var currentID = g_COMBO_PLAT_IDS[arrayLength-1];
     var lastID = g_COMBO_PLAT_IDS[arrayLength-2];
+    console.log(g_FIREBOLTS);
 
     var comboBreaker = currentID - lastID;
 
@@ -302,20 +316,23 @@ Character.prototype.makeFlames = function () {
     var relVelX = dX * relVel;
     var relVelY = dY * relVel;
 
-    var randomFactor = util.randRange(-3,3);
+    var randomXFactor = util.randRange(-3,3);
+    var randomYFactor = util.randRange(-6,6);
 
-    var flameVelX = randomFactor*(+this.velX + relVelX); 
-    var flameVelY = randomFactor*(this.velY + relVelY);
+    var flameVelX = randomXFactor*(+this.velX + relVelX); 
+    var flameVelY = randomYFactor*(this.velY + relVelY);
+    var flameGrav = 1;
 
     //Generate the flame
-
-    if(entityManager._flame.length>g_FIREBOLTS) {return;}      
-    entityManager.generateFlame(
-        this.cx + dX * launchDist, 
-        this.cy + dY * launchDist,
-        flameVelX, 
-        flameVelY,
-        this.rotation);  
+    for (var i=0; i<g_FIREBOLTS; i++) {
+        entityManager.generateFlame(
+            this.cx + dX * launchDist,
+            this.cy + dY * launchDist,
+            flameVelX, 
+            flameVelY,
+            flameGrav,
+            this.rotation);
+    }  
 }
 
 
