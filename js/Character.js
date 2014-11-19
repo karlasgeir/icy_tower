@@ -53,7 +53,7 @@ Character.prototype.NOMINALS = {
     SCREEN_TOP_LIMIT: 200,          //If the character goes above this position the screen moves up
     SCREEN_BOTTOM_LIMIT: 570,       //If the character goes below this position the screen moves down
     ACCELX: 0.2,                    //Nominal x-acceleration of the character
-    SLOW: 0.5,                      //Nominal slowdown acceleration of the character
+    SLOW: 1,                      //Nominal slowdown acceleration of the character
     MAX_ACCELX: 0.8,                //Maximum x-acceleration of the character
     MAX_VELX:12,                    //Maximum x-velocity of the character
     JUMP_VEL: 1.25,                 //Nominal x-acceleration fraction when jumping
@@ -675,6 +675,9 @@ Character.prototype.wallBounce = function () {
     if(this.cx+this.activeSprite.width/2 >= g_right_side ||
         (this.cx-this.activeSprite.width/2 <= g_left_side)) {
         var influencePos = 0.4;
+        if (this.speedPowerup>0) {
+            influencePos = -0.4;
+        }
         if(this._goingLeft) {
             var expX = this.cx + influencePos*this.activeSprite.width/2;
         }
@@ -741,20 +744,24 @@ Character.prototype.render = function (ctx) {
     //Set scale
     this.sprite.scale = this._scale;
     //Draw the sprite
+    
     this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation);
     //Reset the scale
     this.sprite.scale = origScale;
     if((this.velY === 0 || this.currPlatform) && this.isOnFire){
-        g_sprites.fire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.activeSprite.width/6,this.cy+this.activeSprite.height/6);
+        if (this.speedPowerup>0) {
+            return;
+        }
+        g_sprites.fire.demonFire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.activeSprite.width/6,this.cy+this.activeSprite.height/10);
         if(this._animation.FireFrame === 0 && this._animation.revFire){
             this._animation.revFire = false;
             this._animation.FireFrame += 1;
         }
-        else if(this._animation.FireFrame < g_sprites.fire.length-1 ){
+        else if(this._animation.FireFrame < g_sprites.fire.demonFire.length-1 ){
             if(this._animation.revFire) this._animation.FireFrame -= 1;
             else this._animation.FireFrame += 1;
         }
-        else if(this._animation.FireFrame === g_sprites.fire.length-1){
+        else if(this._animation.FireFrame === g_sprites.fire.demonFire.length-1){
             this._animation.revFire = true;
             this._animation.FireFrame -= 1;
         }
@@ -784,8 +791,35 @@ Character.prototype.checkForRotation = function(velX,velY) {
 
 /*
     This function chosses which sprite to render
+
+    if (this.speedPowerup>0 && this._goingLeft) {
+        this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,Math.PI+this.rotation);
+    } else if (this.speedPowerup>0 && this._goingRight) {
+        this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation);
+    } else {
+
+        if (this._goingLeft && !this._jumping && !this._falling) {
+            this.rotation = 0;
+        } else if (this._goingRight && !this._jumping && !this._falling)  {
+            this.rotation = Math.PI;
+        } else if (this._jumping || this._falling) {
+            this.NOMINALS.ROTATION_RATE = 2;
+        }
 */
 Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
+
+    console.log(this._goingLeft);
+
+    //console.log(g_sprites.fireGonzales[this._animation.Frame]);
+    if (this.speedPowerup>0) {
+        if (this._animation.Frame>=g_sprites.fireGonzales.length) {
+            this._animation.Frame = 0;
+        };
+        this.activeSprite = g_sprites.fireGonzales[this._animation.Frame];
+        this._animation.Frame +=1;
+        return;
+    }
+    
     var sprite_base = this.sprite;
     //Check if the jump is rotational
     this.checkForRotation(velX,velY);

@@ -128,7 +128,7 @@ Notification.prototype.update = function (du) {
 	if (this.timeInMiddle <= 0 && this.cx<=g_canvas.width+this.activeSprite.width/2) {
 		this.speed = 50;
 		this.cx +=this.speed*du;
-		if(this.doExplotion) entityManager.generateEffect(this.cx,this.cy,"EXPLOTION");
+		if(this.doExplotion) entityManager.generateEffect(this.cx,this.cy,"FIREBLAST");
 	}
 	if(this.cx > g_canvas.width+this.activeSprite.width/2){
 		this.kill();

@@ -158,6 +158,7 @@ Power.prototype.handleCollision = function(){
             break;
         case "fire":
             entityManager.speedUp();
+            entityManager.generateEffect(this.cx,this.cy,"FIREBLAST");
             entityManager.generateNotification("SUPERBOOST",2);
             break;
     }

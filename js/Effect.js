@@ -9,6 +9,9 @@ function Effect(cx,cy,type) {
         case "FLASH":
             this.activeSprite = this.sprite.flash;
             break;
+        case "FIREBLAST":
+            this.activeSprite = this.sprite.fireBlast;
+            break;
     }
     this.type = type;
     this.width = this.sprite.width;
