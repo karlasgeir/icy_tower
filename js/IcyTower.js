@@ -154,6 +154,7 @@ function requestPreloads() {
         fireBlast: "res/effects/fireball_hit.png",
         reaper: "res/powerUps/reaper.png",
         fireGonzales: "res/effects/fireball.png",
+        space: "res/backgrounds/starsBackgr.jpg",
         spaceSuit: "res/powerUps/spaceSuit.png"
     };
 
@@ -166,6 +167,8 @@ function preloadDone() {
     /*
         Loading all the sprites
     */
+    //Space backgr.
+    g_sprites.space = new Sprite(g_images.space,g_images.space.width,g_images.space.height,0,0);
 
     //Clock and its indicator
     g_sprites.clock = new Sprite(g_images.clock,g_images.clock.width,g_images.clock.height,0,0);

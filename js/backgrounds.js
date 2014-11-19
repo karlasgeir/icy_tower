@@ -17,8 +17,15 @@ backgroundPic = function() {
 		currentSprite = g_sprites.backgroundMenu;
 	}
     if (!gameOver) {
-        currentSprite = g_sprites.gameBackground;
+        var gravPowerup = entityManager._characters[0].gravityPowerup;
+        console.log(entityManager._characters[0].gravityPowerup);
+        if (gravPowerup>0) {
+            currentSprite = g_sprites.space;
+        } else {
+            currentSprite = g_sprites.gameBackground;
+        }
     }
+    
     return currentSprite; 
 };
 

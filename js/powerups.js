@@ -112,7 +112,6 @@ Power.prototype.update = function (du) {
         }
         return entityManager.KILL_ME_NOW;
     }
-
     this.checkForKill();
 
     this.incrementFrame();
@@ -166,15 +165,14 @@ Power.prototype.handleCollision = function(){
 }
 
 Power.prototype.render = function (ctx) {
-
-    //this.sprite.drawWrappedCentredAt(ctx, this.cx, this.cy, 0);
-    
-   // var origScale = this.sprite.scale;
-    this.sprite.scale = this._scale;
-    if (this.sprite === this.sprite.coin) {
-        this.sprite.scale = 0.5;
-    }
+    //save the original scale
+    var origScale = this.activeSprite.scale;
+    // pass my scale into the sprite, for drawing
+    this.activeSprite.scale = this.scale;
+    //var origScale = this.sprite.scale;
     this.activeSprite[this._animFrame].drawCentredAt(ctx, this.cx, this.cy);
+    //reset the scale
+    this.sprite.scale = origScale;
     
 };
 

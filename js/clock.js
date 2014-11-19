@@ -38,6 +38,7 @@ Clock.prototype.update = function (du) {
 	// ===============
 	// INDICATOR STUFF
 	// ===============
+	if (g_GAME_HEIGHT === 0) { return;}
 
 	var tickRate = this.timer/18;
 	this.indicatorRotation +=tickRate*du;

@@ -304,8 +304,7 @@ Character.prototype.platsInCombo = function() {
 */
 Character.prototype.makeFlames = function () {
     //Flames are only created if the jump is rotational 
-    if (!this._rotationJump) {return;}
-    if (!g_COMBO) { return;}
+    if (!this._rotationJump || !g_COMBO || this.gravityPowerup) {return;}
 
     //Get the rotational offset
     var dX = +Math.sin(this.rotation);
@@ -749,7 +748,7 @@ Character.prototype.render = function (ctx) {
     //Reset the scale
     this.sprite.scale = origScale;
     if((this.velY === 0 || this.currPlatform) && this.isOnFire){
-        if (this.speedPowerup>0) {
+        if (this.speedPowerup>0 || this.gravityPowerup) {
             return;
         }
         g_sprites.fire.demonFire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.activeSprite.width/6,this.cy+this.activeSprite.height/10);
@@ -808,9 +807,6 @@ Character.prototype.checkForRotation = function(velX,velY) {
 */
 Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
 
-    console.log(this._goingLeft);
-
-    //console.log(g_sprites.fireGonzales[this._animation.Frame]);
     if (this.speedPowerup>0) {
         if (this._animation.Frame>=g_sprites.fireGonzales.length) {
             this._animation.Frame = 0;
@@ -819,7 +815,15 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
         this._animation.Frame +=1;
         return;
     }
-    
+    if (this.gravityPowerup>0) {
+        if (this._animation.Frame>=g_sprites.power.spaceSuit.length) {
+            this._animation.Frame = 0;
+        };
+        this.activeSprite = g_sprites.power.spaceSuit[this._animation.Frame];
+        this._animation.Frame +=1;
+        return;
+    }
+
     var sprite_base = this.sprite;
     //Check if the jump is rotational
     this.checkForRotation(velX,velY);
