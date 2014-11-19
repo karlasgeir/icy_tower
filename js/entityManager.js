@@ -159,6 +159,7 @@ init: function() {
     this.killEffects();
     this.killPowerups();
     this.killCharacter();
+    this.killNotifications();
     //Generate the inital plaforms
     this._generateInitialPlatforms();
     //Generate the clock
@@ -189,6 +190,13 @@ killPlatforms: function () {
     while (c >= 0) {
         spatialManager.unregister(this._platforms[c]);
         this._platforms.splice(0, 1);
+        --c;
+    }
+},
+killNotifications: function () {
+    var c = this._Notifications.length-1;
+    while (c >= 0) {
+        this._Notifications.splice(0, 1);
         --c;
     }
 },
