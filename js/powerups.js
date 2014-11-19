@@ -99,7 +99,12 @@ Power.prototype.update = function (du) {
      
     //Check for death
     if (this._isDeadNow) {
+        if(this.activeSprite === this.sprite.coin){
         this.coinsound.play();
+        }
+        else{
+            this.diamondsound.play();
+        }
         return entityManager.KILL_ME_NOW;
     }
 
