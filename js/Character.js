@@ -49,7 +49,7 @@ Character.prototype = new Entity();
     These are various nominal values
 */
 Character.prototype.NOMINALS = {
-    ROTATION_RATE: 15,              //Rate of rotation in rotation jump
+    ROTATION_RATE: 30,              //Rate of rotation in rotation jump
     ANIM_FRAME_RATE: 12,            //Rate of sprite changes actually lower is faster
     SCREEN_MOVE_RATE: 8,            //Rate of screen movement 
     SCREEN_TOP_LIMIT: 250,          //If the character goes above this position the screen moves up
@@ -505,7 +505,7 @@ Character.prototype.computeAccelX = function(du){
 Character.prototype.checkCases = function(){
     //If the character is landing 
     if (this.activeSprite.height/2 + this.cy >= g_canvas.height 
-        && (g_GAME_HEIGHT === 0 || !this.currPlatform)) {
+        && (g_GAME_HEIGHT === 0 && !this.currPlatform)) {
         this._jumping = false;
         this._falling = false;
         this._roationJump = false;
