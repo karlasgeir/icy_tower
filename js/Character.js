@@ -240,6 +240,7 @@ Character.prototype.setCombo = function() {
     var arrayLength = g_COMBO_PLAT_IDS.length;
     var currentID = g_COMBO_PLAT_IDS[arrayLength-1];
     var lastID = g_COMBO_PLAT_IDS[arrayLength-2];
+    console.log(g_FIREBOLTS);
 
     var comboBreaker = currentID - lastID;
 
@@ -302,20 +303,23 @@ Character.prototype.makeFlames = function () {
     var relVelX = dX * relVel;
     var relVelY = dY * relVel;
 
-    var randomFactor = util.randRange(-3,3);
+    var randomXFactor = util.randRange(-3,3);
+    var randomYFactor = util.randRange(-6,6);
 
-    var flameVelX = randomFactor*(+this.velX + relVelX); 
-    var flameVelY = randomFactor*(this.velY + relVelY);
+    var flameVelX = randomXFactor*(+this.velX + relVelX); 
+    var flameVelY = randomYFactor*(this.velY + relVelY);
+    var flameGrav = 1;
 
     //Generate the flame
-
-    if(entityManager._flame.length>g_FIREBOLTS) {return;}      
-    entityManager.generateFlame(
-        this.cx + dX * launchDist, 
-        this.cy + dY * launchDist,
-        flameVelX, 
-        flameVelY,
-        this.rotation);  
+    for (var i=0; i<g_FIREBOLTS; i++) {
+        entityManager.generateFlame(
+            this.cx + dX * launchDist,
+            this.cy + dY * launchDist,
+            flameVelX, 
+            flameVelY,
+            flameGrav,
+            this.rotation);
+    }  
 }
 
 

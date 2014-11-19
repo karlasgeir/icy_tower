@@ -66,12 +66,13 @@ _generateInitialPlatforms : function() {
 /*
     This function generates a flame
 */
-generateFlame: function(cx, cy, velX, velY, rotation) {
+generateFlame: function(cx, cy, velX, velY, gravity, rotation) {
     this._flame.push(new Flame({
         cx   : cx,
         cy   : cy,
         velX : velX,
         velY : velY,
+        ag   : gravity,
         rotation : rotation
     }));;
 },
