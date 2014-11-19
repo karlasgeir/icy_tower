@@ -16,7 +16,7 @@ function Clock(descr) {
     this.timer = 1/NOMINAL_UPDATE_INTERVAL;
     this.indicatorRotation = 0;
     this.clockRotation = 0;
-    this.speed = 10;
+    this.speed = 30;
 
     this.cx = this.clockWidth;
     this.cy = this.clockHeight;
@@ -59,7 +59,7 @@ Clock.prototype.update = function (du) {
 
 	var dX = +Math.sin(this.clockRotation);
     var dY = -Math.cos(this.clockRotation);
-    var launchDist = this.clockWidth/2;
+    var launchDist = this.clockWidth;
 
     //Calculate the x and y velocities
     var relVel = this.speed;
@@ -70,7 +70,7 @@ Clock.prototype.update = function (du) {
 
     var flameVelX = randomFactor*(relVelX); 
     var flameVelY = randomFactor*(relVelY);
-    var flameGrav = 0;
+    var flameGrav = 0.1;
 
 	if (this.rotateClock) {
 
