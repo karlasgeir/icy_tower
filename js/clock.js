@@ -47,6 +47,7 @@ Clock.prototype.update = function (du) {
 
 	if (this.indicatorRotation>=circle) {
 		this.rotateClock = true;
+        entityManager.generateNotification("HURRYUP",3);
 		this.indicatorRotation = 0;
 		if (g_VERTICAL_SPEED>1.5) {return;}
 		g_VERTICAL_SPEED +=speedInfluence;

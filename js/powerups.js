@@ -151,12 +151,14 @@ Power.prototype.handleCollision = function(){
             break;
         case "ruby":
             entityManager.turnOffGravity();
+            entityManager.generateNotification("SUPERJUMP",3);
             break;
         case "skull":
             //gameOver = true;
             break;
         case "crystal":
             entityManager.speedUp();
+            entityManager.generateNotification("SUPERBOOST",3);
             break;
     }
 }

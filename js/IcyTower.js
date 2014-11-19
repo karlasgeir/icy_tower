@@ -418,8 +418,12 @@ function preloadDone() {
         noway: new Sprite(g_images.notifications,120,26,132,176),
         splendid: new Sprite(g_images.notifications,120,24,260,177),
         super: new Sprite(g_images.notifications,120,32,388,173),
-        sweet: new Sprite(g_images.notifications,120,31,4,300),
-        wow: new Sprite(g_images.notifications,120,38,132,296),
+        sweet: new Sprite(g_images.notifications,120,31,516,174),
+        wow: new Sprite(g_images.notifications,120,38,4,296),
+        go2: new Sprite(g_images.notifications,119,70,133,280),
+        hurryup: new Sprite(g_images.notifications,120,28,260,301),
+        superboost: new Sprite(g_images.notifications,120,23,388,304),
+        superjump: new Sprite(g_images.notifications,120,24,516,303),
     }
 
     //Sprites for numbers

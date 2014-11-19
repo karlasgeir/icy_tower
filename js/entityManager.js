@@ -78,6 +78,7 @@ generateFlame: function(cx, cy, velX, velY, gravity, rotation) {
 },
 
 generateNotification: function(type,scale){
+    if(scale === undefined) scale = 1;
     this._Notifications.push(new Notification(type,scale));
 },
 
