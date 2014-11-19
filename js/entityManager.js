@@ -29,7 +29,7 @@ _characters: [],
 _platforms: [],
 _Walls: [],
 _flame: [],
-_Explotions:[],
+_Effects:[],
 _power: [],
 _Notifications:[],
 _clock: [],
@@ -94,7 +94,7 @@ deferredSetup : function () {
                         this._characters,
                         this._Walls,
                         this._flame,
-                        this._Explotions,
+                        this._Effects,
                         this._power,
                         this._Notifications,
                         this._clock
@@ -123,8 +123,8 @@ generateCharacter : function(descr) {
 generateWalls : function(descr) {
     this._Walls.push(new Wall(descr));
 },
-generateExplotion: function(cx,cy){
-    this._Explotions.push(new Explotion(cx,cy));
+generateEffect: function(cx,cy,type){
+    this._Effects.push(new Effect(cx,cy,type));
 },
 
 init: function() {
@@ -140,7 +140,7 @@ init: function() {
     this.resetCharacters();
     this.resetWalls();
     this.resetPlatforms();
-    this.killExplotions();
+    this.killEffects();
     this.killPowerups();
     //Generate the inital plaforms
     this._generateInitialPlatforms();
@@ -159,10 +159,10 @@ killPowerups: function(){
         --c;
     }
 },
-killExplotions: function(){
-    var c = this._Explotions.length-1;
+killEffects: function(){
+    var c = this._Effects.length-1;
     while (c >= 0) {
-        this._Explotions.splice(0, 1);
+        this._Effects.splice(0, 1);
         --c;
     }
 },

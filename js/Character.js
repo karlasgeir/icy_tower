@@ -648,7 +648,7 @@ Character.prototype.wallBounce = function () {
         (this.cx-this.activeSprite.width/2 <= g_left_side)) {
         if(this._goingLeft) var expX = this.cx-this.activeSprite.width/2;
         else var expX = this.cx + this.activeSprite.width/2; 
-        entityManager.generateExplotion(expX,this.cy);
+        entityManager.generateEffect(expX,this.cy,"FLASH");
         this._goingRight = !this._goingRight;
         this._goingLeft = !this._goingLeft;
         this.isBouncing = true;
