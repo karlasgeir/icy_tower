@@ -104,7 +104,7 @@ Character.prototype.jumpSound = new Audio(
 //Hljóðprufa
 Character.prototype.jumpSound = new Audio("res/sounds/jump_01.wav");
 Character.prototype.jumpSound2 = new Audio("res/sounds/jump_02.wav");
-Character.prototype.bounce = new Audio("res/sounds/spreng.wav");
+Character.prototype.bounce = new Audio("res/sounds/sprengja.wav");
 
 
 /*
