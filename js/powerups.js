@@ -21,8 +21,7 @@ function Power(descr) {
             this.activeSprite = this.sprite.spaceSuit.idle;
             this.scale = 1;
             break;
-        //case (rand <=20):
-        case (rand <=39):
+        case (rand <=20):
             this.type="skull";
             this.activeSprite = this.sprite.reaper;
             this.scale =1;
