@@ -107,14 +107,6 @@ Power.prototype.update = function (du) {
     //Check for death
     if (this._isDeadNow) {
         if (gameOver) { return;}
-        if(this.activeSprite === this.sprite.coin){
-            this.coinsound.play();
-        }
-        else if (this.activeSprite === this.sprite.fire) {
-            this.speedPU.play();
-        } else if (this.activeSprite === this.sprite.reaper) {
-            this.dead.play();
-        }
         return entityManager.KILL_ME_NOW;
     }
     this.checkForKill();
@@ -154,6 +146,7 @@ Power.prototype.handleCollision = function(){
     switch(this.type){
         case "coin":
             //TODO: change from magic number
+            this.coinsound.play();
             g_SCORE.score += 20;
             break;
         case "ruby":
@@ -161,9 +154,11 @@ Power.prototype.handleCollision = function(){
             entityManager.generateNotification("SUPERJUMP",2);
             break;
         case "skull":
+            this.dead.play();
             gameOver = true;
             break;
         case "fire":
+            this.speedPU.play();
             entityManager.speedUp();
             entityManager.generateEffect(this.cx,this.cy,"FIREBLAST");
             entityManager.generateNotification("SUPERBOOST",2);
