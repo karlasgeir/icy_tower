@@ -353,9 +353,7 @@ Character.prototype.computeRotation = function(du){
     else if(this._rotationJump && this._jumping){
         var speedInfluence = 0.125*Math.abs(this.velX);
         //If he's moving right the rotation is to the right
-        if (this._goingRight) this.rotation += speedInfluence*(Math.PI/this.NOMINALS.ROTATION_RATE)*du;
-        //If he's moving left the rotation is to the left
-        else this.rotation -= speedInfluence*(Math.PI/this.NOMINALS.ROTATION_RATE)*du;
+        this.rotation += speedInfluence*(Math.PI/this.NOMINALS.ROTATION_RATE)*du;
     }
     else this.rotation = 0;
 };
@@ -791,7 +789,7 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     }
     if (this.gravityPowerup>0) {
         sprite_base = g_sprites.power.spaceSuit;
-        this._scale = 1.5;
+        this._scale = 1.3;
         this.NOMINALS.SCREEN_MOVE_RATE=12;
     }
     else{

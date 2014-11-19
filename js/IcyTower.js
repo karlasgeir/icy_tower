@@ -481,27 +481,27 @@ function preloadDone() {
             ],
             rev:{
                 idle:[
-                    new Sprite(g_images.spaceSuit,30,39,505,15),
-                    new Sprite(g_images.spaceSuit,30,39,201,15),
-                    new Sprite(g_images.spaceSuit,30,39,168,15)
+                    new Sprite(g_images.spaceSuitReversed,30,39,505,15),
+                    new Sprite(g_images.spaceSuitReversed,30,39,201,15),
+                    new Sprite(g_images.spaceSuitReversed,30,39,168,15)
                 ],
                 walk:[
-                    new Sprite(g_images.spaceSuit,27,37,474,17),
-                    new Sprite(g_images.spaceSuit,27,37,441,17),
-                    new Sprite(g_images.spaceSuit,26,35,406,19),
-                    new Sprite(g_images.spaceSuit,29,37,372,16)
+                    new Sprite(g_images.spaceSuitReversed,27,37,474,17),
+                    new Sprite(g_images.spaceSuitReversed,27,37,441,17),
+                    new Sprite(g_images.spaceSuitReversed,26,35,406,19),
+                    new Sprite(g_images.spaceSuitReversed,29,37,372,16)
                 ],
                 jump:[
-                    new Sprite(g_images.spaceSuit,29,45,338,9),
-                    new Sprite(g_images.spaceSuit,29,45,304,9),
-                    new Sprite(g_images.spaceSuit,27,38,271,16),
-                    new Sprite(g_images.spaceSuit,25,35,236,25)
+                    new Sprite(g_images.spaceSuitReversed,29,45,338,9),
+                    new Sprite(g_images.spaceSuitReversed,29,45,304,9),
+                    new Sprite(g_images.spaceSuitReversed,27,38,271,16),
+                    new Sprite(g_images.spaceSuitReversed,25,35,236,25)
                 ],
-                chock :new Sprite(g_images.spaceSuit,29,39,136,15),
-                rotate: new Sprite(g_images.spaceSuit,36,45,93,12),
+                chock :new Sprite(g_images.spaceSuitReversed,29,39,136,15),
+                rotate: new Sprite(g_images.spaceSuitReversed,36,45,93,12),
                 edge:[
-                    new Sprite(g_images.spaceSuit,37,34,45,19),
-                    new Sprite(g_images.spaceSuit,37,34,3,19)
+                    new Sprite(g_images.spaceSuitReversed,37,34,45,19),
+                    new Sprite(g_images.spaceSuitReversed,37,34,3,19)
                 ]
             }
         },

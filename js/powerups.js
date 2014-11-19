@@ -170,13 +170,13 @@ Power.prototype.handleCollision = function(){
 
 Power.prototype.render = function (ctx) {
     //save the original scale
-    var origScale = this.activeSprite.scale;
+    var origScale = this.activeSprite[this._animFrame].scale;
     // pass my scale into the sprite, for drawing
-    this.activeSprite.scale = this.scale;
+    this.activeSprite[this._animFrame].scale = this.scale;
     //var origScale = this.sprite.scale;
     this.activeSprite[this._animFrame].drawCentredAt(ctx, this.cx, this.cy);
     //reset the scale
-    this.sprite.scale = origScale;
+    this.activeSprite[this._animFrame].scale = origScale;
     
 };
 
