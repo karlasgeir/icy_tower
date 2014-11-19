@@ -109,6 +109,7 @@ Character.prototype.jumpSound = new Audio(
 //Hljóðprufa
 Character.prototype.jumpSound = new Audio("res/sounds/jump_01.wav");
 Character.prototype.jumpSound2 = new Audio("res/sounds/jump_02.wav");
+Character.prototype.superjumpSound = new Audio("res/sounds/jump_04.wav");
 Character.prototype.bounce = new Audio("res/sounds/sprengja.wav");
 Character.prototype.dead = new Audio("res/sounds/dead.wav");
 Character.prototype.fail = new Audio("res/sounds/fail.wav");
@@ -634,7 +635,9 @@ Character.prototype.computeThrustMag = function () {
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
         //Reset the y velocity
         this._jumping = true;
-       
+       if (this.speedPowerup>0) {
+        this.superjumpSound.play();
+       }else{
         if (toggle ===4) {
             this.jumpSound2.play();
             toggle = 0;
@@ -643,6 +646,7 @@ Character.prototype.computeThrustMag = function () {
         this.jumpSound.play();
         toggle += 1;
         }
+       }
         //We don't want x-velocity to decrease jump height
         if (speedInfluence<1) {
             return this.NOMINALS.THRUST;
