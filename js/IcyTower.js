@@ -156,7 +156,8 @@ function requestPreloads() {
         fireGonzales: "res/effects/fireball.png",
         space: "res/backgrounds/starsBackgr.jpg",
         spacePlatform: "res/platforms/spacePlatform.png",
-        spaceSuit: "res/powerUps/spaceSuit.png"
+        spaceSuit: "res/powerUps/spaceSuit.png",
+        spaceSuitReversed:"res/powerUps/spaceSuit-reverse.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -454,25 +455,59 @@ function preloadDone() {
             new Sprite(g_images.reaper,67,66,84,424),
             new Sprite(g_images.reaper,65,64,9,426)
         ],
-        spaceSuit:[
-            new Sprite(g_images.spaceSuit,30,39,5,15),
-            new Sprite(g_images.spaceSuit,27,37,39,17),
-            new Sprite(g_images.spaceSuit,27,37,72,17),
-            new Sprite(g_images.spaceSuit,26,35,108,19),
-            new Sprite(g_images.spaceSuit,29,37,139,16),
-            new Sprite(g_images.spaceSuit,29,45,173,9),
-            new Sprite(g_images.spaceSuit,29,45,207,9),
-            new Sprite(g_images.spaceSuit,27,38,242,16),
-            new Sprite(g_images.spaceSuit,25,35,279,25),
-            new Sprite(g_images.spaceSuit,30,39,309,15),
-            new Sprite(g_images.spaceSuit,30,39,342,15),
-            new Sprite(g_images.spaceSuit,29,39,375,15),
-            new Sprite(g_images.spaceSuit,36,45,411,12),
-            new Sprite(g_images.spaceSuit,37,34,458,19),
-            new Sprite(g_images.spaceSuit,37,34,500,19)
-        ],
+        spaceSuit:{
+            idle:[
+                new Sprite(g_images.spaceSuit,30,39,5,15),
+                new Sprite(g_images.spaceSuit,30,39,309,15),
+                new Sprite(g_images.spaceSuit,30,39,342,15)
+            ],
+            walk:[
+                new Sprite(g_images.spaceSuit,27,37,39,17),
+                new Sprite(g_images.spaceSuit,27,37,72,17),
+                new Sprite(g_images.spaceSuit,26,35,108,19),
+                new Sprite(g_images.spaceSuit,29,37,139,16)
+            ],
+            jump:[
+                new Sprite(g_images.spaceSuit,29,45,173,9),
+                new Sprite(g_images.spaceSuit,29,45,207,9),
+                new Sprite(g_images.spaceSuit,27,38,242,16),
+                new Sprite(g_images.spaceSuit,25,35,279,25)
+            ],
+            chock :new Sprite(g_images.spaceSuit,29,39,375,15),
+            rotate: new Sprite(g_images.spaceSuit,36,45,411,12),
+            edge:[
+                new Sprite(g_images.spaceSuit,37,34,458,19),
+                new Sprite(g_images.spaceSuit,37,34,500,19)
+            ],
+            rev:{
+                idle:[
+                    new Sprite(g_images.spaceSuit,30,39,505,15),
+                    new Sprite(g_images.spaceSuit,30,39,201,15),
+                    new Sprite(g_images.spaceSuit,30,39,168,15)
+                ],
+                walk:[
+                    new Sprite(g_images.spaceSuit,27,37,474,17),
+                    new Sprite(g_images.spaceSuit,27,37,441,17),
+                    new Sprite(g_images.spaceSuit,26,35,406,19),
+                    new Sprite(g_images.spaceSuit,29,37,372,16)
+                ],
+                jump:[
+                    new Sprite(g_images.spaceSuit,29,45,338,9),
+                    new Sprite(g_images.spaceSuit,29,45,304,9),
+                    new Sprite(g_images.spaceSuit,27,38,271,16),
+                    new Sprite(g_images.spaceSuit,25,35,236,25)
+                ],
+                chock :new Sprite(g_images.spaceSuit,29,39,136,15),
+                rotate: new Sprite(g_images.spaceSuit,36,45,93,12),
+                edge:[
+                    new Sprite(g_images.spaceSuit,37,34,45,19),
+                    new Sprite(g_images.spaceSuit,37,34,3,19)
+                ]
+            }
+        },
         skull: [new Sprite(g_images.power,55,59,345,341)]
     };
+   
     
 
     //Sprites for the wall

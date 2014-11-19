@@ -5,7 +5,7 @@
 /* jshint browser: true, devel: true, globalstrict: true */
 // A generic contructor which accepts an arbitrary descriptor object
 function Character(descr) {
-    this._scale = 5;            //The scale that the sprite is drawn in
+    this._scale = 1;            //The scale that the sprite is drawn in
     this.rememberResets();      //Sets the reset positions
     this._jumping = false;      //True if character is jumping
     this._falling = false;      //True if character is falling
@@ -49,7 +49,7 @@ Character.prototype = new Entity();
     These are various nominal values
 */
 Character.prototype.NOMINALS = {
-    ROTATION_RATE: 30,              //Rate of rotation in rotation jump
+    ROTATION_RATE: 20,              //Rate of rotation in rotation jump
     ANIM_FRAME_RATE: 12,            //Rate of sprite changes actually lower is faster
     SCREEN_MOVE_RATE: 8,            //Rate of screen movement 
     SCREEN_TOP_LIMIT: 250,          //If the character goes above this position the screen moves up
@@ -728,12 +728,12 @@ Character.prototype.render = function (ctx) {
     //Remember the original scale
     var origScale = this.sprite.scale;
     //Set scale
-    this.sprite.scale = this._scale;
+    this.activeSprite.scale = this._scale;
     //Draw the sprite
     
     this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation);
     //Reset the scale
-    this.sprite.scale = origScale;
+    this.activeSprite.scale = origScale;
     if((this.velY === 0 || this.currPlatform) && this.isOnFire){
         if (this.speedPowerup>0 || this.gravityPowerup>0) {
             return;
@@ -780,7 +780,7 @@ Character.prototype.checkForRotation = function(velX,velY) {
 
 */
 Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
-
+    var sprite_base = this.sprite;
     if (this.speedPowerup>0) {
         if (this._animation.Frame>=g_sprites.fireGonzales.length) {
             this._animation.Frame = 0;
@@ -791,19 +791,16 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
         return;
     }
     if (this.gravityPowerup>0) {
-        if (this._animation.Frame>=g_sprites.power.spaceSuit.length) {
-            this._animation.Frame = 0;
-            
-        };
-        this.activeSprite = g_sprites.power.spaceSuit[this._animation.Frame];
-        this._animation.Frame +=1;
+        sprite_base = g_sprites.power.spaceSuit;
+        this._scale = 1.5;
         this.NOMINALS.SCREEN_MOVE_RATE=12;
-        return;
     }
-    this.NOMINALS.SCREEN_MOVE_RATE=8;
+    else{
+        this._scale = 1;
+        this.NOMINALS.SCREEN_MOVE_RATE=8;
+    }
 
-    var sprite_base = this.sprite;
-    //Check if the jump is rotational
+        //Check if the jump is rotational
     this.checkForRotation(velX,velY);
     
     //Check if in transition
@@ -822,32 +819,21 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
     //If we are going to the left
     if(this._goingLeft){
         //Use left sprite
-        sprite_base = this.sprite.rev;
+        sprite_base = sprite_base.rev;
     }
 
     //If jumping
     if(this._jumping && !this.currPlatform){
         //If we are bouncing of the wall
-        if(this.isBouncing){
-            if(this._animation.Frame > 1) this._animation.Frame = 0;
-            this.activeSprite = sprite_base.edge[this._animation.Frame];
-            if(this._animation.Frame === 0){
-                this._animation.Frame =1;
-            }
-            else{
-                this._animation.Frame = 0;
-            }  
-        }
-        //If we are moving and should do a rotation jump
-        else if(this._rotationJump){
+        if(this._rotationJump){
             //We choose the rotation jum sprite
-            this.activeSprite = this.sprite.rotate;
+            this.activeSprite = sprite_base.rotate;
             this._animation.Frame = 0;
         }
         //If we are not moving in x direction we jump straight up
         else if(velX === 0){
             //We choose the jump straight sprite
-            this.activeSprite = this.sprite.jump[3];
+            this.activeSprite = sprite_base.jump[3];
             this._animation.Frame = 0;
         }
         //We loop through the jump sprites
@@ -865,7 +851,7 @@ Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
         if(velX === 0){
             //loop through the idle sprites
             if(this._animation.Frame > 2) this._animation.Frame = 0;
-            this.activeSprite = this.sprite.idle[this._animation.Frame];
+            this.activeSprite = sprite_base.idle[this._animation.Frame];
             if(this._animation.Frame === 0 && this._animation.Reverse){
                 this._animation.Reverse = false;
             }

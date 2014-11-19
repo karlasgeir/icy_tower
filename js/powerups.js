@@ -43,19 +43,23 @@ function Power(descr) {
     switch(true){
         case (rand <= 15):
             this.type="ruby";
-            this.activeSprite = this.sprite.spaceSuit;
+            this.activeSprite = this.sprite.spaceSuit.idle;
+            this.scale = 1;
             break;
         case (rand <=20):
             this.type="skull";
             this.activeSprite = this.sprite.reaper;
+            this.scale =1;
             break;
         case (rand <= 40):
             this.type = "fire";
             this.activeSprite = this.sprite.fire;
+            this.scale = 1;
             break;
         case (rand <= 100):
             this.type = "coin";
             this.activeSprite = this.sprite.coin;
+            this.scale = 0.8;
             break;
         default:
             this.type = false;
