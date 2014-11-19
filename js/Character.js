@@ -115,7 +115,6 @@ Character.prototype.bounce = new Audio("res/sounds/thud.wav");
 Character.prototype.dead = new Audio("res/sounds/dead.wav");
 Character.prototype.moonJump = new Audio("res/sounds/Heartbeat.wav");
 
-
 /*
     This function updates everything about
     the character including it's position, 
