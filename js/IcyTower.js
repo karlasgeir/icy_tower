@@ -149,7 +149,8 @@ function requestPreloads() {
         clock: "res/clock/clock.png",
         indicator: "res/clock/indicator.png",
         explotion: "res/explotion/explotionspritesheet.png",
-        flash: "res/effects/flash_a.png"
+        flash: "res/effects/flash_a.png",
+        fireBlast: "res/effects/fireball_hit.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -505,6 +506,18 @@ function preloadDone() {
                 1: new Sprite(g_images.character_rev,30,52,560,36)
             }
         }
+    }
+
+    g_sprites.fireBlast = {
+        new Sprite(g_images.fireBlast,67,70,33,53),
+        new Sprite(g_images.fireBlast,67,70,33,53),
+        new Sprite(g_images.fireBlast,67,70,33,53),
+        new Sprite(g_images.fireBlast,67,70,33,53),
+        new Sprite(g_images.fireBlast,67,70,33,53),
+        new Sprite(g_images.fireBlast,67,70,33,53),
+        new Sprite(g_images.fireBlast,67,70,33,53),
+        new Sprite(g_images.fireBlast,67,70,33,53),
+        new Sprite(g_images.fireBlast,67,70,33,53)
     }
 
 

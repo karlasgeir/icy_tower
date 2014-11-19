@@ -39,7 +39,7 @@ Flame.prototype.rho = 1.22; //density of what the ball is in, in this case air
 Flame.prototype.ag = 1; //grav
 Flame.prototype.mass = 0.1; //mass of the ball
 
-Flame.prototype.lifeSpan = 2000 / NOMINAL_UPDATE_INTERVAL;
+Flame.prototype.lifeSpan = 500 / NOMINAL_UPDATE_INTERVAL;
 
 Flame.prototype.update = function (du) {
 

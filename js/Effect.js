@@ -33,6 +33,9 @@ Effect.prototype.render = function(ctx){
             this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy);
         } 
         else this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy,Math.PI);
+        if(this.type === "EXPLOTION") {
+            this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy);
+        }
     }
 };
 

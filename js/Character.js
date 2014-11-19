@@ -321,12 +321,13 @@ Character.prototype.makeFlames = function () {
     var randomXFactor = util.randRange(-3,3);
     var randomYFactor = util.randRange(-6,6);
 
-    var flameVelX = randomXFactor*(+this.velX + relVelX); 
+    var flameVelX = randomXFactor*(this.velX + relVelX); 
     var flameVelY = randomYFactor*(this.velY + relVelY);
     var flameGrav = 1;
 
     //Generate the flame
-    entityManager.generateFlame(
+    if (entityManager._flameChar.length>=g_FIREBOLTS) { return;}
+    entityManager.generateFlameChar(
         this.cx + dX * launchDist,
         this.cy + dY * launchDist,
         flameVelX, 
@@ -488,7 +489,6 @@ Character.prototype.computeAccelX = function(du){
     //Make sure the acceleration is in the correct range
     this.accelX = util.clampRange(this.accelX,-maxaccX,maxaccX);
 };
-
 
 /*
     This function checks some special cases and

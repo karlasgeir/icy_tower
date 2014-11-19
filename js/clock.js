@@ -17,9 +17,10 @@ function Clock(descr) {
     this.indicatorRotation = 0;
     this.clockRotation = 0;
     this.speed = 30;
+    this.topDist = 10;
 
     this.cx = this.clockWidth;
-    this.cy = this.clockHeight;
+    this.cy = this.topDist + this.clockHeight/2;
     this.rotateClock = false;
 };
 
@@ -92,7 +93,7 @@ Clock.prototype.update = function (du) {
 		    this.clockRotation);
 	    } else {
 	    	this.cx = this.clockWidth;
-	    	this.cy = this.clockHeight;
+	    	this.cy = this.topDist + this.clockHeight/2;
 	    	this.rotateClock = false;
 			this.clockRotation = 0;
 			this.sprite.drawCentredAt(ctx, this.cx, this.cy, 0);

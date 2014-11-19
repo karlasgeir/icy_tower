@@ -7,19 +7,20 @@
 /* jshint browser: true, devel: true, globalstrict: true */
 var NOMINAL_START_POS = -180;
 function Notification(type,scale){
-	this.cx = NOMINAL_START_POS;
-	this.cy = g_canvas.height/2;
 	this.timeInMiddle = 600/NOMINAL_UPDATE_INTERVAL;
 	this.rotation = 0;
 	this.speed = 3;
 	this.doExplotion = true;
+	this.hurryUpSpeed = 8;
 	this.sprite = g_sprites.notifications;
-	if (!g_COMBO) {
-		g_FIREBOLTS = 0;
-	}
+
+	this.cy =  util.randRange(200, 400);
+	this.cx = NOMINAL_START_POS;
+
 	switch(type){
 		case "GO":
 			this.activeSprite = this.sprite.go;
+			this.cy = g_canvas.height/2;
 			this.doExplotion = false;
 			break;
 		case "GOOD":
@@ -53,13 +54,16 @@ function Notification(type,scale){
 			this.activeSprite = this.sprite.noway;
 			break;
 		case "SUPERJUMP":
+			this.cy = g_canvas.height/4;
 			this.activeSprite = this.sprite.superjump;
 			break;
 		case "SUPERBOOST":
+			this.cy = g_canvas.height/4;
 			this.activeSprite = this.sprite.superboost;
 			break;
 		case "HURRYUP":
 			this.activeSprite = this.sprite.hurryup;
+			this.cy = g_canvas.height+this.activeSprite.height;
 			break;
 	}
 	this.scale = scale;
@@ -80,6 +84,11 @@ Notification.prototype.render = function(ctx) {
 
 
 Notification.prototype.update = function (du) {
+
+	if (this.activeSprite === this.sprite.hurryup) {
+		this.cy -= this.hurryUpSpeed*du;
+	}
+
 	if(this._isDeadNow){return entityManager.KILL_ME_NOW;}
 
 	if (gameOver || g_MENU_SCREEN) {

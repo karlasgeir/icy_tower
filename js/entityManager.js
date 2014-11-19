@@ -29,6 +29,7 @@ _characters: [],
 _platforms: [],
 _Walls: [],
 _flame: [],
+_flameChar:[],
 _Effects:[],
 _power: [],
 _Notifications:[],
@@ -77,6 +78,17 @@ generateFlame: function(cx, cy, velX, velY, gravity, rotation) {
     }));;
 },
 
+generateFlameChar: function(cx, cy, velX, velY, gravity, rotation) {
+    this._flameChar.push(new Flame({
+        cx   : cx,
+        cy   : cy,
+        velX : velX,
+        velY : velY,
+        ag   : gravity,
+        rotation : rotation
+    }));;
+},
+
 generateNotification: function(type,scale){
     if(scale === undefined) scale = 1;
     this._Notifications.push(new Notification(type,scale));
@@ -96,6 +108,7 @@ deferredSetup : function () {
                         this._characters,
                         this._Walls,
                         this._flame,
+                        this._flameChar,
                         this._Effects,
                         this._power,
                         this._Notifications,
