@@ -14,9 +14,6 @@ function Notification(type,scale){
 	this.speed = 3;
 	this.doExplotion = true;
 	this.sprite = g_sprites.notifications;
-	if (!g_COMBO) {
-		g_FIREBOLTS = 0;
-	}
 	switch(type){
 		case "GO":
 			this.activeSprite = this.sprite.go;
@@ -24,37 +21,37 @@ function Notification(type,scale){
 			break;
 		case "GOOD":
 			this.activeSprite = this.sprite.good;
-			g_FIREBOLTS = 3;
+			g_FIREBOLTS = 5;
 			break;
 		case "SWEET":
 			this.activeSprite = this.sprite.sweet;
-			g_FIREBOLTS = 5;
+			g_FIREBOLTS = 10;
 			break;
 		case "GREAT":
 			this.activeSprite = this.sprite.great;
-			g_FIREBOLTS = 8;
+			g_FIREBOLTS = 15;
 			break;
 		case "SUPER":
 			this.activeSprite = this.sprite.super;
-			g_FIREBOLTS = 10;
+			g_FIREBOLTS = 20;
 			break;
 		case "WOW":
 			this.activeSprite = this.sprite.wow;
-			g_FIREBOLTS = 15;
+			g_FIREBOLTS = 25;
 			break;
 		case "AMAZING":
 			this.activeSprite = this.sprite.amazing;
 			break;
 		case "EXTREME":
 			this.activeSprite = this.sprite.extreme;
-			g_FIREBOLTS = 20;
+			g_FIREBOLTS = 30;
 			break;
 		case "FANTASTIC":
 			this.activeSprite = this.sprite.fantastic;
 			break;
 		case "SPLENDID":
 			this.activeSprite = this.sprite.splendid;
-			g_FIREBOLTS = 25;
+			g_FIREBOLTS = 35;
 			break;
 		case "NOWAY":
 			this.activeSprite = this.sprite.noway;
