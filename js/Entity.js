@@ -79,7 +79,7 @@ Entity.prototype.getRadius = function () {
 */
 Entity.prototype.getSize = function(){
     if(this instanceof Character){
-        return{width: this.activeSprite.width, height: this.activeSprite.height};
+        return{width: this.getWidth(), height: this.getHeight()};
     }
     else if(this instanceof Platform){
         return {width: this.platWidth*this.scale, height:this.platHeight};

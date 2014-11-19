@@ -140,7 +140,7 @@ Character.prototype.update = function (du) {
     this.computeRotation(du);
     
     //Update game height
-    this.gameHeight = g_canvas.height - this.cy - this.activeSprite.height/2 + g_GAME_HEIGHT;
+    this.gameHeight = g_canvas.height - this.cy - this.getHeight()/2 + g_GAME_HEIGHT;
     if (this.gravityPowerup<=0) {
         this.moonJump.muted = true;
     } else {this.moonJump.muted = false;}
@@ -182,8 +182,8 @@ Character.prototype.checkPlatform = function(){
         var size = this.currPlatform.getSize();
         var gameHeight = this.currPlatform.getGameHeight();
         //Check if the character is still on the platform
-        if(this.cx - this.activeSprite.width/2 < pos.posX+size.width/2
-            && this.cx + this.activeSprite.width/2 > pos.posX - size.width/2
+        if(this.cx - this.getWidth()/2 < pos.posX+size.width/2
+            && this.cx + this.getWidth()/2 > pos.posX - size.width/2
             && util.isBetween(this.getGameHeight(),gameHeight-3,gameHeight+5)){
             //Set settings accordingly
             g_useGravity = false;
@@ -218,7 +218,7 @@ Character.prototype.handleCollision = function(du){
                 g_SCORE.addToScore(score);
             }
             //Make sure the characters position is on top of the platform
-            this.cy = isHit.getPos().posY - isHit.getSize().height/2 - this.activeSprite.height/2;
+            this.cy = isHit.getPos().posY - isHit.getSize().height/2 - this.getHeight()/2;
             //Settings so the character doesn't fall throught
             g_useGravity = false;
             this._jumping = false;
@@ -504,7 +504,7 @@ Character.prototype.computeAccelX = function(du){
 */
 Character.prototype.checkCases = function(){
     //If the character is landing 
-    if (this.activeSprite.height/2 + this.cy >= g_canvas.height 
+    if (this.getHeight()/2 + this.cy >= g_canvas.height 
         && (g_GAME_HEIGHT === 0 && !this.currPlatform)) {
         this._jumping = false;
         this._falling = false;
@@ -544,7 +544,7 @@ Character.prototype.moveScreen = function(du){
     }
 
     //If player is closer to the top then the limit allows
-    if(this.cy + this.activeSprite.height/2 <  this.NOMINALS.SCREEN_TOP_LIMIT){
+    if(this.cy + this.getHeight()/2 <  this.NOMINALS.SCREEN_TOP_LIMIT){
         //Move the screen up
         g_MOVE_SCREEN = this.NOMINALS.SCREEN_MOVE_RATE;
         screenIsMoving = true;
@@ -606,7 +606,7 @@ Character.prototype.computeGravity = function () {
 
         gravity = 0.5*this.NOMINALS.GRAVITY;
     } 
-    if(this.cy+this.activeSprite.height/2+NOMINAL_GRAVITY_MARGIN < g_canvas.height || g_GAME_HEIGHT !== 0 ){
+    if(this.cy+this.getHeight()/2+NOMINAL_GRAVITY_MARGIN < g_canvas.height || g_GAME_HEIGHT !== 0 ){
         return g_useGravity ? gravity : 0;
     }
     else{
@@ -652,24 +652,24 @@ var REBOUNCE_LIMIT = 200;
 Character.prototype.wallBounce = function () {
     if(this.isBouncing){
         this.bounce.play();
-        if(this.cx+this.activeSprite.width/2 + REBOUNCE_LIMIT >= g_right_side ||
-        (this.cx-this.activeSprite.width/2 - REBOUNCE_LIMIT <= g_left_side)){
+        if(this.cx+this.getWidth()/2 + REBOUNCE_LIMIT >= g_right_side ||
+        (this.cx-this.getWidth()/2 - REBOUNCE_LIMIT <= g_left_side)){
             return;
         }
         else this.isBouncing = false;
     }
 
-    if(this.cx+this.activeSprite.width/2 >= g_right_side ||
-        (this.cx-this.activeSprite.width/2 <= g_left_side)) {
+    if(this.cx+this.getWidth()/2 >= g_right_side ||
+        (this.cx-this.getWidth()/2 <= g_left_side)) {
         var influencePos = 0.4;
         if (this.speedPowerup>0) {
             influencePos = -0.4;
         }
         if(this._goingLeft) {
-            var expX = this.cx + influencePos*this.activeSprite.width/2;
+            var expX = this.cx + influencePos*this.getWidth()/2;
         }
         else {
-            var expX = this.cx - influencePos*this.activeSprite.width/2;
+            var expX = this.cx - influencePos*this.getWidth().width/2;
         }
         entityManager.generateEffect(expX,this.cy,"FLASH");
         this._goingRight = !this._goingRight;
@@ -688,7 +688,7 @@ Character.prototype.wallBounce = function () {
 Character.prototype.gameOver = function () {
         var fallLength = this.NOMINALS.FALL_LENGTH;
         //If the player has the fallength or fallen below the canvas
-        if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.activeSprite.height/2 > g_canvas.height) {
+        if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.getHeight()/2 > g_canvas.height) {
             //GAME IS OVER
             if (gameOver!=true) {
                 this.dead.play();
@@ -701,7 +701,7 @@ Character.prototype.gameOver = function () {
     Function to get the radius
 */
 Character.prototype.getRadius = function () {
-    return (this.activeSprite.width / 2) * 0.9;
+    return (this.getWidth() / 2);
 };
 
 /*
@@ -712,6 +712,15 @@ Character.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
     this.halt();
 };
+
+Character.prototype.getWidth = function(){
+    return this.activeSprite.width*this._scale;
+};
+
+Character.prototype.getHeight = function(){
+    return this.activeSprite.height*this._scale;
+}
+
 
 /*
     Function to halt the character
@@ -738,7 +747,7 @@ Character.prototype.render = function (ctx) {
         if (this.speedPowerup>0 || this.gravityPowerup>0) {
             return;
         }
-        g_sprites.fire.demonFire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.activeSprite.width/6,this.cy+this.activeSprite.height/10);
+        g_sprites.fire.demonFire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.getWidth()/6,this.cy+this.getHeight()/10);
         if(this._animation.FireFrame === 0 && this._animation.revFire){
             this._animation.revFire = false;
             this._animation.FireFrame += 1;
