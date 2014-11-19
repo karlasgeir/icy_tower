@@ -97,8 +97,8 @@ Power.prototype.Height= this.powerHeight;
 
 //Hljod fyrir powerup
 Power.prototype.coinsound = new Audio("res/sounds/smw_coin.wav");
-Power.prototype.diamondsound = new Audio("res/sounds/demant.wav");
-Power.prototype.rubysound = new Audio("res/sounds/ruby.wav");
+Power.prototype.speedPU = new Audio("res/sounds/speedPU.wav");
+Power.prototype.dead = new Audio("res/sounds/dead.wav");
 
 Power.prototype.update = function (du) {
     spatialManager.unregister(this);
@@ -106,13 +106,12 @@ Power.prototype.update = function (du) {
     //Check for death
     if (this._isDeadNow) {
         if(this.activeSprite === this.sprite.coin){
-        this.coinsound.play();
+            this.coinsound.play();
         }
-        else if (this.activeSprite === this.sprite.ruby) {
-            this.rubysound.play();
-        }
-        else{
-            this.diamondsound.play();
+        else if (this.activeSprite === this.sprite.fire) {
+            this.speedPU.play();
+        } else if (this.activeSprite === this.sprite.reaper) {
+            this.dead.play();
         }
         return entityManager.KILL_ME_NOW;
     }
@@ -158,7 +157,7 @@ Power.prototype.handleCollision = function(){
             entityManager.generateNotification("SUPERJUMP",2);
             break;
         case "skull":
-            //gameOver = true;
+            gameOver = true;
             break;
         case "fire":
             entityManager.speedUp();
