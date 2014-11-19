@@ -147,6 +147,7 @@ Power.prototype.handleCollision = function(){
             //gameOver = true;
             break;
         case "crystal":
+            entityManager.speedUp();
             break;
     }
 }

@@ -117,7 +117,10 @@ turnOffGravity: function(){
     var timer = 30*NOMINAL_UPDATE_INTERVAL;
     this._characters[0].gravityPowerup = timer;
 },
-
+speedUp: function(){
+    var timer = 30*NOMINAL_UPDATE_INTERVAL;
+    this._characters[0].speedPowerup = timer;
+},
 generateCharacter : function(descr) {
     this._characters.push(new Character(descr));
 },
@@ -143,13 +146,18 @@ init: function() {
     this.resetPlatforms();
     this.killEffects();
     this.killPowerups();
+    this.killCharacter();
     //Generate the inital plaforms
     this._generateInitialPlatforms();
     //Generate the clock
     this._generateClock();
-    console.log(this._clock);
     //Generate the walls
     this.generateWalls();
+    this.generateCharacter({
+        cx :g_canvas.width/2,
+        cy :g_canvas.height,
+        _scale:5
+    });
     this.generateNotification("GO");
 },
 
@@ -173,6 +181,14 @@ killPlatforms: function () {
     while (c >= 0) {
         spatialManager.unregister(this._platforms[c]);
         this._platforms.splice(0, 1);
+        --c;
+    }
+},
+killCharacter: function () {
+    var c = this._characters.length-1;
+    while (c >= 0) {
+        spatialManager.unregister(this._characters[c]);
+        this._characters.splice(0, 1);
         --c;
     }
     

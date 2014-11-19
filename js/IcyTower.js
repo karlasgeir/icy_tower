@@ -19,13 +19,7 @@ var g_ctx = g_canvas.getContext("2d");
 // =====================
 // CREATE THE DEMON DUDE
 // =====================
-function createInitialCharacter() {
-    entityManager.generateCharacter({
-        cx :200,
-        cy :g_canvas.height,
-        _scale:5
-    });
-}
+    
 
 // =============
 // GATHER INPUTS
@@ -511,9 +505,6 @@ function preloadDone() {
         }
     }
 
-   
-
-    createInitialCharacter();
 
     main.init();
 }

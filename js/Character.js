@@ -24,6 +24,7 @@ function Character(descr) {
     this.isBouncing = false;    //True if the character is bouncing of a wall
     this.isOnFire = false;      //True if the character is on fire
     this.gravityPowerup = 0;
+    this.speedPowerup = -1;
 
 
     // Common inherited setup logic from Entity
@@ -61,7 +62,8 @@ Character.prototype.NOMINALS = {
     BOUNCE_ROTATION: 1.5,           //The velocity multiplier when bouncing off the wall rotating
     BOUNCE:1,                       //The velocity multiplier when bouncing off the wall normally
     FIRE_LAUNCH_MULTIPLIER:-2,      //How far from the character fire will spit out
-    FireTickRate:15                 //How fast the fire animation is
+    FireTickRate:15,                //How fast the fire animation is
+    SPEEDUP:1.3
 };
 
 
@@ -133,11 +135,19 @@ Character.prototype.update = function (du) {
     //Update game height
     this.gameHeight = g_canvas.height - this.cy - this.activeSprite.height/2 + g_GAME_HEIGHT;
 
-    //Increment gravity powerup if neccesary
+    //Increment powerup if neccesary
     if(this.gravityPowerup > 0){
+
         this.gravityPowerup -= du;
         if(this.gravityPowerup < 0) this.gravityPowerup = 0;
     } 
+    if (this.speedPowerup > 0){
+        console.log("I have powerup");
+        this.speedPowerup -= du;
+        if(this.speedPowerup < 0) this.speedPowerup = 0;
+    }
+
+
     //He can collide
     this.handleCollision();
 
@@ -209,25 +219,13 @@ Character.prototype.handleCollision = function(du){
             this.currPlatform = isHit;
         }
         else if(isHit && isHit instanceof Power){
-            if (isHit.type=="crystal") {
-                this.NOMINALS.ACCELX = 0.4;
-                this.NOMINALS.MAX_ACCELX = 1.8;
-                this.NOMINALS.MAX_VELX=14;
-                setTimeout(this.resetxvel,2000);
-            };
             isHit.handleCollision();
             isHit.kill();
 
         }
     }
 };
-Character.prototype.resetxvel = function(){
-    this.NOMINALS.ACCELX = 0.2;
-    this.NOMINALS.MAX_ACCELX = 0.8;
-    this.NOMINALS.MAX_VELX=12;
 
-
-}
  
 var g_COMBO_PLAT_IDS = [];
 Character.prototype.handleCombo = function() {
@@ -253,7 +251,6 @@ Character.prototype.setCombo = function() {
     var arrayLength = g_COMBO_PLAT_IDS.length;
     var currentID = g_COMBO_PLAT_IDS[arrayLength-1];
     var lastID = g_COMBO_PLAT_IDS[arrayLength-2];
-    console.log(g_FIREBOLTS);
 
     var comboBreaker = currentID - lastID;
 
@@ -421,8 +418,14 @@ Character.prototype.computeSubStep = function (du) {
     this.gameOver();
 };
 Character.prototype.computeAccelX = function(du){
+        
+
     //Shorter notation
-    var accelX = this.NOMINALS.ACCELX
+    var speedup = 1;
+    if(this.speedPowerup > 0) speedup = this.NOMINALS.SPEEDUP; 
+    var accelX = this.NOMINALS.ACCELX * speedup;
+    var maxaccX = this.NOMINALS.MAX_ACCELX*speedup;
+    var slow = this.NOMINALS.SLOW*speedup;
     //If no directional key is pressed and not jumping
     if (!keys[this.KEY_RIGHT] && !keys[this.KEY_LEFT]) {
         //If the character is stationary we do nothing
@@ -430,24 +433,24 @@ Character.prototype.computeAccelX = function(du){
         //If the character is moving left
         else if (this.velX<0) {
             //If the next velocity is going to change sign
-            if(this.velX + (this.accelX + this.NOMINALS.SLOW)*du >0) {
+            if(this.velX + (this.accelX + slow)*du >0) {
                 //Character should be stationary
                 this.accelX=0;
                 this.velX=0;
             }
             //We slow down the acceleration
-            else this.accelX += this.NOMINALS.SLOW;
+            else this.accelX += slow;
         }
         //If the character is moving right
         else if (this.velX>0) {
             //If the velocity is going to change sign
-            if(this.velX + (this.accelX+this.NOMINALS.SLOW)*du <0){
+            if(this.velX + (this.accelX+slow)*du <0){
                 //Character should be stationary
                 this.accelX=0;
                 this.velX=0;
             }
             //We slow down the acceleration
-            else this.accelX -= this.NOMINALS.SLOW;
+            else this.accelX -= slow;
         }
     }
     //If right is pressed
@@ -480,7 +483,7 @@ Character.prototype.computeAccelX = function(du){
         this.accelX -= accelX;
     }
     //Make sure the acceleration is in the correct range
-    this.accelX = util.clampRange(this.accelX,-this.NOMINALS.MAX_ACCELX,this.NOMINALS.MAX_ACCELX);
+    this.accelX = util.clampRange(this.accelX,-maxaccX,maxaccX);
 };
 
 
@@ -584,12 +587,16 @@ Character.prototype.applyAccelY = function(du){
     acceleration (using average velocity)
 */
 Character.prototype.applyAccelX = function(du){
+    var speedup = 1;
+    if(this.speedPowerup > 0) speedup = this.NOMINALS.SPEEDUP;
+    console.log(speedup);
+    var maxVelX = this.NOMINALS.MAX_VELX * speedup;
     //Calculate the final velocity
     var final_velX = this.velX + this.accelX*du;
     //Calculate the average velocity
     this.velX = (this.velX + final_velX)/2;
     //Make sure the velocity is in the correct range
-    this.velX = util.clampRange(this.velX,-this.NOMINALS.MAX_VELX,this.NOMINALS.MAX_VELX);
+    this.velX = util.clampRange(this.velX,-maxVelX,maxVelX);
     //Apply the velocity
     this.cx += this.velX*du;
 };
@@ -604,7 +611,6 @@ Character.prototype.computeGravity = function () {
     if(this.gravityPowerup > 0){
 
         gravity = 0.5*this.NOMINALS.GRAVITY;
-        console.log("GRAVITY",gravity);
     } 
     if(this.cy+this.activeSprite.height/2+NOMINAL_GRAVITY_MARGIN < g_canvas.height || g_GAME_HEIGHT !== 0 ){
         return g_useGravity ? gravity : 0;
