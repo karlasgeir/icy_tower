@@ -8,14 +8,16 @@ var g_gameover = {
 }
 
 var g_sound = {
-		intro:new Audio("res/sounds/intro.wav")
+		intro: new Audio("res/sounds/intro.wav"),
+		menuGreeting: new Audio("res/sounds/wazup.wav"),
+		gameGreeting: new Audio("res/sounds/hello.wav")
 }
 
 
 g_menu.render = function(ctx) {
 
 	if (gameOver) {
-		g_sound.intro.play();
+		//g_sound.intro.play();
 		var startGamePosX = g_canvas.width/2 - g_sprites.startGame.width/2;
 		var startGamePosY = g_canvas.height/2 - g_sprites.startGame.height/2;
 

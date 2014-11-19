@@ -1,6 +1,7 @@
 
 var g_mDown=false, g_mX=0, g_mY=0;
 
+
 function handleMousedown(evt) {
 
     g_mX = evt.pageX - g_canvas.offsetLeft;
@@ -11,6 +12,7 @@ function handleMousedown(evt) {
         if ((g_mX>=278 && g_mX<=519) && (g_mY>=270 && g_mY<=330)) {
             g_GAME_TOP_HEIGHT = 0;
             entityManager.init();
+            g_sound.gameGreeting.play();
             g_MENU_SCREEN=!g_MENU_SCREEN;
             gameOver = !gameOver;
         }
