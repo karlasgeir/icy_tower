@@ -12,10 +12,7 @@ var g_background =  {
 backgroundPic = function() {
 	var currentSprite;
 	//set our background image based on level
-	if (gameOver && !g_menu.gameStarted && !g_MENU_SCREEN){
-        g_background.cy = 0;
-        g_background.cx = 0;
-    }
+
     if (gameOver) {
 		currentSprite = g_sprites.backgroundMenu;
 	}
@@ -49,12 +46,23 @@ g_background.render = function(ctx) {
         }
     }
 }
-
+var prevGameOver = false;
 g_background.update = function(du) { 
+    
+    if (gameOver && !prevGameOver){
+        g_background.cy = 0;
+        g_background.cx = 0;
+        prevGameOver = true;
+    }
+    if(!gameOver){
+        prevGameOver = false;
+    }
+
+
 
     //backgroundPic() === g_sprites.backgroundMenu
     //backgroundPic() === g_sprites.gameBackground
-    if (gameOver && g_MENU_SCREEN) {
+    if (gameOver) {
         this.cx -=this.speed*du;
     }
 
