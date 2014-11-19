@@ -141,6 +141,9 @@ Character.prototype.update = function (du) {
     
     //Update game height
     this.gameHeight = g_canvas.height - this.cy - this.activeSprite.height/2 + g_GAME_HEIGHT;
+    if (this.gravityPowerup<=0) {
+        this.moonJump.muted = true;
+    }
 
     //Increment powerup if neccesary
     if(this.gravityPowerup > 0){
