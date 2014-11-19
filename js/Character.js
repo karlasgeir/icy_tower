@@ -104,6 +104,8 @@ Character.prototype.jumpSound = new Audio(
 //Hljóðprufa
 Character.prototype.jumpSound = new Audio("res/sounds/jump_01.wav");
 Character.prototype.jumpSound2 = new Audio("res/sounds/jump_02.wav");
+Character.prototype.bounce = new Audio("res/sounds/spreng.wav");
+
 
 /*
     This function updates everything about
@@ -367,6 +369,7 @@ Character.prototype.computeSubStep = function (du) {
     this.platsInCombo();
 
     //Performs the wallBounce
+    
     this.wallBounce();
 
     //Check for special cases
@@ -633,6 +636,7 @@ Character.prototype.computeThrustMag = function () {
 var REBOUNCE_LIMIT = 200;
 Character.prototype.wallBounce = function () {
     if(this.isBouncing){
+        this.bounce.play();
         if(this.cx+this.activeSprite.width/2 + REBOUNCE_LIMIT >= g_right_side ||
         (this.cx-this.activeSprite.width/2 - REBOUNCE_LIMIT <= g_left_side)){
             return;
