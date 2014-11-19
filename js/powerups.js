@@ -49,7 +49,7 @@ function Power(descr) {
             this.type="skull";
             this.activeSprite = this.sprite.reaper;
             break;
-        case (rand <= 70):
+        case (rand <= 40):
             this.type = "fire";
             this.activeSprite = this.sprite.fire;
             break;
