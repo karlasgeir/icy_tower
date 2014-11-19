@@ -148,6 +148,7 @@ Entity.prototype.isColliding = function () {
 */
 Entity.prototype.wrapPosition = function () {
     this.cx = util.clampRange(this.cx, g_left_side + this.activeSprite.width/2, g_right_side-this.activeSprite.width/2);
+    //We want the character to be able to drop below the canvas if he's not at the bottom
     if(g_GAME_HEIGHT === 0){
         this.cy = util.clampRange(this.cy, this.activeSprite.height/2, g_canvas.height-this.activeSprite.height/2);
     }
