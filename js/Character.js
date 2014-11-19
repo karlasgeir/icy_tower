@@ -5,7 +5,7 @@
 /* jshint browser: true, devel: true, globalstrict: true */
 // A generic contructor which accepts an arbitrary descriptor object
 function Character(descr) {
-    this._scale = 1;            //The scale that the sprite is drawn in
+    this._scale = 5;            //The scale that the sprite is drawn in
     this.rememberResets();      //Sets the reset positions
     this._jumping = false;      //True if character is jumping
     this._falling = false;      //True if character is falling
@@ -35,6 +35,9 @@ function Character(descr) {
     this.sprite = this.sprite || g_sprites.character; //This is an object of sprites
     //This is an active sprite (the sprite that is beeing drawn)
     this.activeSprite = this.activeSprite || g_sprites.character.idle[0];
+    this.cx = g_canvas.width/2;
+    this.cy = g_canvas.height - this.activeSprite.height/2;
+
 };
 
 //Create an Entity
