@@ -74,7 +74,7 @@ Wall.prototype.update = function (du) {
 */
 Wall.prototype.halt = function(){
     this.verticalSpeed = 0;
-};
+}
 /*
     this function resets the wall
 */
