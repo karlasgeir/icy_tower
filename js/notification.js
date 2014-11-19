@@ -93,10 +93,7 @@ Notification.prototype.render = function(ctx) {
 
 
 Notification.prototype.update = function (du) {
-
 	
-	
-
 	if(this._isDeadNow){return entityManager.KILL_ME_NOW;}
 
 	if (gameOver || g_MENU_SCREEN) {
@@ -104,23 +101,9 @@ Notification.prototype.update = function (du) {
 		return;
 	}
 
-	var randWooshSFX = util.randRange(0,3);
-	var randspinSFX = util.randRange(0,2);
-	var pickedWooshSFX = this.wooshSFXOne;
-	var pickedSpinSFX = this.spinSFXOne;
-
-	if (randWooshSFX<=3) {
-		pickedWooshSFX = this.wooshSFXThree;
-	} else if (randWooshSFX<=2) {
-		pickedWooshSFX = this.wooshSFXTwo;
-		pickedSpinSFX = this.spinSFXTwo;
-	} else if (randWooshSFX<=1) {
-		pickedWooshSFX = this.wooshSFXOne;
-		pickedSpinSFX = this.spinSFXOne;
-	}
 	if (this.activeSprite === this.sprite.hurryup) {
 		this.cy -= this.hurryUpSpeed*du;
-		pickedSpinSFX.play();
+		this.spinSFXTwo.play();
 	}
 
 	var randomFactor = util.randRange(-3,3);
@@ -136,7 +119,7 @@ Notification.prototype.update = function (du) {
 		this.speed = 20;
 		this.cx +=this.speed*du;
 		this.rotation += 2;
-		pickedSpinSFX.play();
+		this.spinSFXTwo.play();
 
 		if(this.doExplotion)entityManager.generateFlame(
         this.cx+dX, 
@@ -155,7 +138,7 @@ Notification.prototype.update = function (du) {
 	}
 	if (this.timeInMiddle <= 0 && this.cx<=g_canvas.width+this.activeSprite.width/2) {
 		if (this.activeSprite === this.sprite.go) {
-			pickedWooshSFX.play();
+			this.wooshSFXThree.play();
 		} else {
 			this.comboFW.play();
 		}
@@ -167,5 +150,5 @@ Notification.prototype.update = function (du) {
 		this.kill();
 	}
 
-
+	console.log(this.spinSFXTwo);
 }

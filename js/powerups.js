@@ -63,7 +63,7 @@ function Power(descr) {
             break;
         default:
             this.type = false;
-            this.activeSprite = false
+            this.activeSprite = false;
     } 
     this.width = this.activeSprite[0].height*this.scale;
     this.height = this.activeSprite[0].width*this.scale;

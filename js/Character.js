@@ -288,7 +288,6 @@ Character.prototype.setCombo = function() {
     if (comboBreaker >= 2) {
         g_COMBO = true;
     } else {
-        console.log(g_GAME_HEIGHT);
         g_PLATS_GONE_IN_COMBO = 0;
         g_PLATS_IN_COMBO = [];
         g_FIREBOLTS = 0;
