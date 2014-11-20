@@ -79,7 +79,7 @@ Power.prototype.dead = new Audio("res/sounds/dead.wav");
 
 Power.prototype.update = function (du) {
     spatialManager.unregister(this);
-     
+
     //Check for death
     if (this._isDeadNow) {
         if (gameOver) { return;}
@@ -147,7 +147,7 @@ Power.prototype.handleCollision = function(){
             break;
         case "ruby":
             entityManager.turnOffGravity();
-            entityManager.generateNotification("SUPERJUMP",2);
+            entityManager.generateNotification("SUPERJUMP",0.4);
             break;
         case "skull":
             this.dead.play();
@@ -157,7 +157,7 @@ Power.prototype.handleCollision = function(){
             this.speedPU.play();
             entityManager.speedUp();
             entityManager.generateEffect(this.cx,this.cy,"FIREBLAST");
-            entityManager.generateNotification("SUPERBOOST",2);
+            entityManager.generateNotification("SUPERBOOST",0.4);
             break;
     }
 }

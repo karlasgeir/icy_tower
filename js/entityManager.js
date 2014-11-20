@@ -189,7 +189,7 @@ init: function() {
     //Generate the walls
     this.generateWalls();
     this.generateCharacter();
-    this.generateNotification("GO");
+    this.generateNotification("GO",0.5);
 },
 
 

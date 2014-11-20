@@ -53,7 +53,6 @@ Clock.prototype.update = function (du) {
     //Let the clock tick
 	var tickRate = this.timer/18;
 	this.indicatorRotation +=tickRate*du;
-
 	var circle = 2*Math.PI;
 	var speedInfluence = 0.5;
 	var jumpInfluence = 0.75;
@@ -62,7 +61,7 @@ Clock.prototype.update = function (du) {
 		if (!gameOver) this.alarmClock.play();
 		this.rotateClock = true;
         //generate the notification
-        entityManager.generateNotification("HURRYUP",2);
+        entityManager.generateNotification("HURRYUP",0.4);
 		this.indicatorRotation = 0;
         //Increase the vertical speed of just about everything
 		if (g_VERTICAL_SPEED>2.5) return; //Don't want it to get out of hand though
@@ -89,7 +88,7 @@ Clock.prototype.update = function (du) {
     var flameVelX = randomFactor*(relVelX); 
     var flameVelY = randomFactor*(relVelY);
     var flameGrav = 0.1;
-    
+
 
 	if (this.rotateClock) {
 
