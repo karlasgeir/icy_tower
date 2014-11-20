@@ -8,6 +8,7 @@
 
 var NOMINAL_START_POS = -100;
 function Notification(type,scale){
+	//Initial values
 	this.timeInMiddle = 600/NOMINAL_UPDATE_INTERVAL;
 	this.rotation = 0;
 	this.speed = 3;
@@ -17,7 +18,7 @@ function Notification(type,scale){
 
 	this.cy =  util.randRange(200, 400);
 	this.cx = NOMINAL_START_POS;
-
+	//swich dependant on the type of notification
 	switch(type){
 		case "GO":
 			this.activeSprite = this.sprite.go;
@@ -73,7 +74,7 @@ function Notification(type,scale){
 Notification.prototype.scale = 1;
 
 Notification.prototype = new Entity();
-
+//Audio for the notifications
 Notification.prototype.comboFW = new Audio("res/sounds/flameWind.wav");
 Notification.prototype.rotationSFX = new Audio("res/sounds/rotationSFX.wav");
 Notification.prototype.spinSFXOne = new Audio("res/sounds/spinsAndWooshes/spinOne.wav");
@@ -82,6 +83,9 @@ Notification.prototype.wooshSFXOne = new Audio("res/sounds/spinsAndWooshes/woosh
 Notification.prototype.wooshSFXTwo = new Audio("res/sounds/spinsAndWooshes/wooshTwo.wav");
 Notification.prototype.wooshSFXThree = new Audio("res/sounds/spinsAndWooshes/wooshThree.wav");
 
+/*
+	Render notifications
+*/
 Notification.prototype.render = function(ctx) {
 	if (!gameOver) {
 		var oldscale = this.activeSprite.scale;
@@ -91,9 +95,11 @@ Notification.prototype.render = function(ctx) {
 	}
 };
 
-
+/*
+	Update notifications
+*/
 Notification.prototype.update = function (du) {
-	
+	//Check for death
 	if(this._isDeadNow){return entityManager.KILL_ME_NOW;}
 
 	if (gameOver || g_MENU_SCREEN) {
@@ -106,6 +112,9 @@ Notification.prototype.update = function (du) {
 		this.spinSFXTwo.play();
 	}
 
+	/*
+		Do the flame particle calculations
+	*/
 	var randomFactor = util.randRange(-3,3);
 
     var flameVelX = randomFactor*(this.speed); 
@@ -115,12 +124,14 @@ Notification.prototype.update = function (du) {
     var dY = -Math.cos(this.rotation);
     var flameGrav = 0.5;
 
+    //If the notification isn't half way accross the screen
 	if (this.cx < g_canvas.width/2) {
+		//Rotate and go left 
 		this.speed = 20;
 		this.cx +=this.speed*du;
 		this.rotation += 2;
 		this.spinSFXTwo.play();
-
+		//Generate fire particles on some notifications
 		if(this.doExplotion)entityManager.generateFlame(
         this.cx+dX, 
         this.cy+dY,
@@ -131,22 +142,27 @@ Notification.prototype.update = function (du) {
 		return;
 	} 
 	
+	//Stay in the middle for the specified time
 	if (this.cx >= g_canvas.width/2 && this.timeInMiddle > 0) {
 		this.cx = g_canvas.width/2;
 		this.rotation = 0;
 		this.timeInMiddle -=du;
 	}
-	if (this.timeInMiddle <= 0 && this.cx<=g_canvas.width+this.activeSprite.width/2) {
+	//When the time is up
+	if (this.timeInMiddle <= 0 && this.cx<=g_canvas.width+this.activeSprite.getWidth()/2) {
 		if (this.activeSprite === this.sprite.go) {
 			this.wooshSFXThree.play();
 		} else {
 			this.comboFW.play();
 		}
+		//Go right fast
 		this.speed = 50;
 		this.cx +=this.speed*du;
+		//Do explotions if there should be explotions
 		if(this.doExplotion) entityManager.generateEffect(this.cx,this.cy,"FIREBLAST");
 	}
-	if(this.cx > g_canvas.width+this.activeSprite.width/2){
+	//Kill it when it's off the canvas
+	if(this.cx > g_canvas.width+this.activeSprite.getWidth()/2){
 		this.kill();
 	}
 }

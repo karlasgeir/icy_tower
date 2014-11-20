@@ -130,21 +130,19 @@ function requestPreloads() {
     var requiredImages = {
         character   : "res/spritesheet.png",
         character_rev  : "res/spritesheet-rev.png",
-	    platform : "res/platforms/platformspritesheet.png",
+	    platform : "res/platforms/platforms.png",
         backgroundMenu : "res/backgrounds/FlashFreeze.jpg",
         gameBackground : "res/backgrounds/gB7.png",
-        menu:"res/menu/menu.png",
+        menu:"res/menu.png",
         notifications : "res/notifications.png",
-        go : "res/comboLogos/go.png",
         fireball: "res/fireballz.png",
         power: "res/powerUps/power_sheet.png",
         wallsprite : "res/walls/bigger/wallBig2.png",
-        numbers: "res/scoreNumbers/numbersspritesheet.png",
+        numbers: "res/numbers.png",
         flameTail: "res/effects/flamethrower.png",
-        fire: "res/Ground/fire/firespritesheet.png",
-        clock: "res/clock/clock.png",
-        indicator: "res/clock/indicator.png",
-        explotion: "res/explotion/explotionspritesheet.png",
+        fire: "res/effects/fire.png",
+        clock: "res/clock.png",
+        explotion: "res/effects/explotion.png",
         flash: "res/effects/flash_a.png",
         fireBlast: "res/effects/fireball_hit.png",
         reaper: "res/powerUps/reaper.png",
@@ -153,7 +151,7 @@ function requestPreloads() {
         spacePlatform: "res/platforms/spacePlatform.png",
         spaceSuit: "res/powerUps/spaceSuit.png",
         spaceSuitReversed:"res/powerUps/spaceSuit-reverse.png",
-        redBricks: "res/backgrounds/gBfire.png"
+        redBricks: "res/backgrounds/gBfire.png",
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -173,8 +171,8 @@ function preloadDone() {
     g_sprites.spacePlatform = new Sprite(g_images.spacePlatform,g_images.spacePlatform.width,g_images.spacePlatform.height,0,0);
 
     //Clock and its indicator
-    g_sprites.clock = new Sprite(g_images.clock,g_images.clock.width,g_images.clock.height,0,0);
-    g_sprites.indicator = new Sprite(g_images.indicator,g_images.indicator.width,g_images.indicator.height,0,0);
+    g_sprites.clock = new Sprite(g_images.clock,100,100,1,1);
+    g_sprites.indicator = new Sprite(g_images.clock,100,100,102,1);
 
     //Effects
     g_sprites.effects ={
@@ -511,23 +509,25 @@ function preloadDone() {
 
     //Sprites for the wall
     g_sprites.wallsprite = new Sprite(g_images.wallsprite,g_images.wallsprite.width,g_images.wallsprite.height,0,0);
+
+
      //Sprites for the menus
     g_sprites.backgroundMenu = new Sprite(
         g_images.backgroundMenu,g_images.backgroundMenu.width,g_images.backgroundMenu.height,0,0);
     g_sprites.menu = {
         mainMenu:{
-            normal:new Sprite(g_images.menu,291,73,1538,13),
-            hover: new Sprite(g_images.menu,291,73,1,100),
+            normal:new Sprite(g_images.menu,810,200,4551,101,0.5),
+            hover: new Sprite(g_images.menu,810,200,1,403,0.5),
         },
         gameOver:{
-            normal:new Sprite(g_images.menu,471,97,1,1),
-            hover: new Sprite(g_images.menu,471,97,474,1),
+            normal:new Sprite(g_images.menu,983,200,1,1,0.6),
+            hover: new Sprite(g_images.menu,1005,200,986,1,0.6),
         },
-        logo:new Sprite(g_images.menu,589,93,947,3),
-        score:new Sprite(g_images.menu,179,69,294,102),
+        logo:new Sprite(g_images.menu,2556,400,1993,1,0.3),
+        score:new Sprite(g_images.menu,529,200,812,403,0.3),
         start:{
-            normal:new Sprite(g_images.menu,238,59,475,107),
-            hover: new Sprite(g_images.menu,238,59,715,107),
+            normal:new Sprite(g_images.menu,819,200,1343,403,0.5),
+            hover: new Sprite(g_images.menu,819,200,2164,403,0.5),
         }
     };
     //The game background

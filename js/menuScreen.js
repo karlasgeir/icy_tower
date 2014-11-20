@@ -2,7 +2,7 @@
 var g_menu = {
 	gameStarted: false,
 	blinkCountdown: -1, //Countdown for the key
-	blinkRate: 3*NOMINAL_UPDATE_INTERVAL //rate of blink
+	blinkRate: 3*NOMINAL_UPDATE_INTERVAL, //rate of blink
 }
 
 
@@ -14,7 +14,10 @@ g_menu.update = function(du){
 		//Pressing enter starts the game
 		if(eatKey(ENTER_KEY)) g_menu.startGame();
 		//check if mouse is clicked and in the right place
-		if(util.isInside(g_mouse.x,g_mouse.y,278,519,310,370)){
+		w=g_sprites.menu.start.normal.getWidth();
+		h=g_sprites.menu.start.normal.getHeight();
+		if(util.isInside(g_mouse.x,g_mouse.y,g_canvas.width/2-w/2,g_canvas.width/2+w/2,
+			g_canvas.height/2,g_canvas.height/2+h)){
 			this.activeSprite = g_sprites.menu.start.hover;
 	    	if (g_mouse.Down ) {
 	    		//Make sure the mouse click is one shot
@@ -42,7 +45,11 @@ g_menu.update = function(du){
     		else this.gameOverSprite = g_sprites.menu.gameOver.hover;
     		isRed = !isRed;
     	}
-    	if (util.isInside(g_mouse.x,g_mouse.y,255,542,270,330)){
+    	//check if mouse is clicked and in the right place
+    	w=g_sprites.menu.mainMenu.normal.getWidth();
+		h=g_sprites.menu.mainMenu.normal.getHeight();
+    	if (util.isInside(g_mouse.x,g_mouse.y,g_canvas.width/2-w/2,g_canvas.width/2+w/2,
+			g_canvas.height/2-h/2,g_canvas.height/2+h/2)){
     		this.activeSprite = g_sprites.menu.mainMenu.hover;
 	    	if(g_mouse.Down||eatKey(ENTER_KEY)){
 				//Make sure the mouse click is one shot
@@ -69,14 +76,13 @@ g_menu.render = function(ctx){
 var SPACE_BETWEEN_TEXT = 30;
 g_menu.renderMenu = function(ctx) {
 	//g_sound.intro.play();
-	var startGamePosX = g_canvas.width/2 - g_sprites.menu.start.normal.width/2;
-	var startGamePosY = g_canvas.height/2 - g_sprites.menu.start.normal.height/2+SPACE_BETWEEN_TEXT;
+	var posX = g_canvas.width/2;
+	var startGamePosY = g_canvas.height/2 + g_sprites.menu.start.normal.getHeight()/2;
 
-	var logoPosX = g_canvas.width/2 - g_sprites.menu.logo.width/2;
-	var logoPosY = startGamePosY - SPACE_BETWEEN_TEXT - g_sprites.menu.logo.height;
+	var logoPosY = startGamePosY - SPACE_BETWEEN_TEXT - g_sprites.menu.logo.getHeight();
 	
-	this.activeSprite.drawAt(ctx, startGamePosX, startGamePosY,0);
-	g_sprites.menu.logo.drawAt(ctx, logoPosX, logoPosY, 0);
+	this.activeSprite.drawCentredAt(ctx, posX, startGamePosY,0);
+	g_sprites.menu.logo.drawCentredAt(ctx, posX, logoPosY, 0);
 }
 
 /*
@@ -84,19 +90,20 @@ g_menu.renderMenu = function(ctx) {
 */
 g_menu.renderGameOver = function(ctx) {
 	//Get main menu position
-	var mainMenuPosX = g_canvas.width/2 - g_sprites.menu.mainMenu.normal.width/2;
-	var mainMenuPosY = g_canvas.height/2 - g_sprites.menu.mainMenu.normal.height/2;
+	var posX = g_canvas.width/2;
+	var sprite = g_sprites.menu;
+
+	var mainMenuPosY = g_canvas.height/2;
 	//Get score position
-	var scorePosX = g_canvas.width/2 - g_sprites.menu.score.width/2 - g_SCORE.getWidth()/2;
-	var scorePosY = mainMenuPosY + g_sprites.menu.score.height;
+	var scorePosX = g_canvas.width/2- g_SCORE.getWidth()/2;
+	var scorePosY = mainMenuPosY + sprite.score.getHeight() + sprite.mainMenu.normal.getHeight()/2;
 	//Get game over position
-	var gameOverPosX = g_canvas.width/2 - g_sprites.menu.gameOver.normal.width/2;
-	var gameOverPosY = mainMenuPosY - g_sprites.menu.gameOver.normal.height;
+	var gameOverPosY = mainMenuPosY - sprite.gameOver.normal.getHeight() ;
 	//Draw the sprites
-	this.gameOverSprite.drawAt(ctx, gameOverPosX, gameOverPosY, 0);
-	this.activeSprite.drawAt(ctx, mainMenuPosX, mainMenuPosY,0);
-	g_sprites.menu.score.drawAt(ctx, scorePosX, scorePosY, 0);
-	g_SCORE.renderFinalScore(ctx,scorePosX + g_sprites.menu.score.width,scorePosY+g_sprites.menu.score.height/2);		
+	this.gameOverSprite.drawCentredAt(ctx, posX, gameOverPosY, 0);
+	this.activeSprite.drawCentredAt(ctx, posX, mainMenuPosY,0);
+	sprite.score.drawCentredAt(ctx, scorePosX, scorePosY, 0);
+	g_SCORE.renderFinalScore(ctx,scorePosX+sprite.score.getWidth()/2,scorePosY);		
 } 
 
 /*

@@ -35,6 +35,8 @@ var g_MOVE_SCREEN = 0;      //The screen movement rate
 var g_left_side = 0                 //The left side of the screen
 var g_right_side = g_canvas.width;  //The right side of the screen
 
+var g_bottom = g_canvas.height;
+
 var g_MENU_SCREEN = true;           //Tells you if the menu screen is on
 
 var g_TOP_FLOOR;                    //Holds the top platform

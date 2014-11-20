@@ -14,13 +14,13 @@
 
 // Construct a "sprite" from the given `image`,
 //
-function Sprite(image, width, height, x,y) {
+function Sprite(image, width, height, x,y,scale) {
     this.image = image;
     this.width = width;
     this.height = height;
     this.x = x;
     this.y = y;
-    this.scale = 1;
+    this.scale = scale || 1;
 }
 
 /*
@@ -41,6 +41,20 @@ Sprite.prototype.drawAt = function (ctx, x, y, rotation) {
     ctx.drawImage(this.image,this.x,this.y, w,h,x,y,w,h);
     ctx.restore();
 };
+
+/*
+    Get the width of the sprite
+*/
+Sprite.prototype.getWidth = function(){
+    return this.width*this.scale;
+};
+
+/*
+    Get the width of the sprite
+*/
+Sprite.prototype.getHeight = function(){
+    return this.height*this.scale;
+}
 
 /*
     Draws this sprite with it's left upper corner in
@@ -110,6 +124,13 @@ Sprite.prototype.drawWrappedCentredAt = function (ctx, cx, cy, rotation) {
     this.drawWrappedVerticalCentredAt(ctx, cx, cy, rotation);
     this.drawWrappedVerticalCentredAt(ctx, cx - sw, cy, rotation);
     this.drawWrappedVerticalCentredAt(ctx, cx + sw, cy, rotation);
+};
+
+Sprite.drawWrappedHorizontalCentredAt = function(ctx,cx,cy){
+    var sw = g_canvas.width
+    this.drawCentredAt(ctx,cx,cy);
+    this.drawCentredAt(ctx,cx-sw,cy);
+    this.drawCentredAt(ctx,cx+sw,cy);
 };
 
 /*
