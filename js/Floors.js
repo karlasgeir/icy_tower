@@ -54,9 +54,9 @@ Platform.prototype.margin = SPACE_BETWEEN_PLATFORMS;
 */
 Platform.prototype.platPosition = function() {
 
-    var leftSide = g_sprites.wallsprite.width/2;
+    var leftSide = g_sprites.wallsprite.getWidth()/2;
     var rightSide = g_canvas.width - leftSide;
-
+    console.log(leftSide);
     this.cx = util.randRange(leftSide  + this.scale*this.platWidth/2,rightSide - this.scale*this.platWidth/2);
 };
 
@@ -68,28 +68,28 @@ Platform.prototype.platPicker = function() {
 
     var sprite_base = this.sprite;
     if(this.id<100) {
-        SCALE_ONE = 2;
-        SCALE_TWO = 3;
+        SCALE_ONE = 1.8;
+        SCALE_TWO = 2.6;
         this.activeSprite = sprite_base.normal.whole;
     }
     if(this.id>=100) {
         this.activeSprite = sprite_base.snow;
-        SCALE_ONE = 2;
-        SCALE_TWO = 2.5;
+        SCALE_ONE = 1.6;
+        SCALE_TWO = 2.4;
     }
     if(this.id>=200) {
         this.activeSprite = sprite_base.wood.whole;
-        SCALE_ONE = 1.8;
-        SCALE_TWO = 2.3;
+        SCALE_ONE = 1.4;
+        SCALE_TWO = 2.1;
     }
     if(this.id>=300) {
         this.activeSprite = sprite_base.lava;
-        SCALE_ONE = 1.6;
-        SCALE_TWO = 2.1;
+        SCALE_ONE = 1.3;
+        SCALE_TWO = 1.9;
     }
     if(this.id>=400) {
         this.activeSprite = sprite_base.rainbow.whole;
-        SCALE_ONE= 1.3;
+        SCALE_ONE= 1.1;
         SCALE_TWO = 1.5;
     }
 
