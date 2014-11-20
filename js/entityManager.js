@@ -173,15 +173,7 @@ generateEffect: function(cx,cy,type){
     initialised setup
 */
 init: function() {
-    //Reset variables
-    g_COMBO_PLAT_IDS = [];
-    g_PLATS_IN_COMBO = [];
-    g_COMBO = false;
-    g_GAME_HEIGHT  = 0;
-    g_FIREBOLTS = 0;
-    g_SCORE = new Score();
-    g_SCORE_MULTIPLIER = 1;
-    g_VERTICAL_SPEED = 0.5;
+    
     //Reset things
     this.resetCharacters();
     this.resetWalls();

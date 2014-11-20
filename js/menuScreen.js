@@ -1,19 +1,22 @@
 
 var g_menu = {
-	gameStarted: false	
+	gameStarted: false,
+	blinkCountdown: -1, //Countdown for the key
+	blinkRate: 3*NOMINAL_UPDATE_INTERVAL //rate of blink
 }
+
+
+var isRed = false; //Tells you if the blink is red
 var ENTER_KEY = 13; //The key code for enter
-var BLINK_COUNTDOWN = -1;
-var BLINK_RATE = 3*NOMINAL_UPDATE_INTERVAL;
-var isRed = false;
 g_menu.update = function(du){
 	//If we are at the menu screen
 	if(g_MENU_SCREEN){
+		//Pressing enter starts the game
+		if(eatKey(ENTER_KEY)) g_menu.startGame();
 		//check if mouse is clicked and in the right place
-		//Or if the enter key is pushed
 		if(util.isInside(g_mouse.x,g_mouse.y,278,519,310,370)){
 			this.activeSprite = g_sprites.menu.start.hover;
-	    	if (g_mouse.Down ||eatKey(ENTER_KEY)) {
+	    	if (g_mouse.Down ) {
 	    		//Make sure the mouse click is one shot
 	    		g_mouse.Down=false;
 	    		//Start the game
@@ -26,12 +29,15 @@ g_menu.update = function(du){
 	//Or if the enter key is pushed
 
     else{ 
-    	if(BLINK_COUNTDOWN === -1) this.gameOverSprite = g_sprites.menu.gameOver.normal;
-    	if(BLINK_COUNTDOWN < BLINK_RATE){
-    		BLINK_COUNTDOWN += du;
+    	//Press enter to move to menu screen
+    	if(eatKey(ENTER_KEY))g_MENU_SCREEN=!g_MENU_SCREEN;
+    	//Choose sprite for blink
+    	if(this.blinkCountdown === -1) this.gameOverSprite = g_sprites.menu.gameOver.normal;
+    	if(this.blinkCountdown < this.blinkRate){
+    		this.blinkCountdown += du;
     	}
     	else{
-    		BLINK_COUNTDOWN = 0;
+    		this.blinkCountdown = 0;
     		if(isRed) this.gameOverSprite = g_sprites.menu.gameOver.normal;
     		else this.gameOverSprite = g_sprites.menu.gameOver.hover;
     		isRed = !isRed;
@@ -77,23 +83,37 @@ g_menu.renderMenu = function(ctx) {
 	This function renders the Game Over menu
 */
 g_menu.renderGameOver = function(ctx) {
-		var mainMenuPosX = g_canvas.width/2 - g_sprites.menu.mainMenu.normal.width/2;
-		var mainMenuPosY = g_canvas.height/2 - g_sprites.menu.mainMenu.normal.height/2;
-
-		var scorePosX = g_canvas.width/2 - g_sprites.menu.score.width/2 - g_SCORE.getWidth()/2;
-		var scorePosY = mainMenuPosY + g_sprites.menu.score.height;
-
-		var gameOverPosX = g_canvas.width/2 - g_sprites.menu.gameOver.normal.width/2;
-		var gameOverPosY = mainMenuPosY - g_sprites.menu.gameOver.normal.height;
-
-		this.gameOverSprite.drawAt(ctx, gameOverPosX, gameOverPosY, 0);
-		this.activeSprite.drawAt(ctx, mainMenuPosX, mainMenuPosY,0);
-		g_sprites.menu.score.drawAt(ctx, scorePosX, scorePosY, 0);
-		g_SCORE.renderFinalScore(ctx,scorePosX + g_sprites.menu.score.width,scorePosY+g_sprites.menu.score.height/2);		
+	//Get main menu position
+	var mainMenuPosX = g_canvas.width/2 - g_sprites.menu.mainMenu.normal.width/2;
+	var mainMenuPosY = g_canvas.height/2 - g_sprites.menu.mainMenu.normal.height/2;
+	//Get score position
+	var scorePosX = g_canvas.width/2 - g_sprites.menu.score.width/2 - g_SCORE.getWidth()/2;
+	var scorePosY = mainMenuPosY + g_sprites.menu.score.height;
+	//Get game over position
+	var gameOverPosX = g_canvas.width/2 - g_sprites.menu.gameOver.normal.width/2;
+	var gameOverPosY = mainMenuPosY - g_sprites.menu.gameOver.normal.height;
+	//Draw the sprites
+	this.gameOverSprite.drawAt(ctx, gameOverPosX, gameOverPosY, 0);
+	this.activeSprite.drawAt(ctx, mainMenuPosX, mainMenuPosY,0);
+	g_sprites.menu.score.drawAt(ctx, scorePosX, scorePosY, 0);
+	g_SCORE.renderFinalScore(ctx,scorePosX + g_sprites.menu.score.width,scorePosY+g_sprites.menu.score.height/2);		
 } 
 
+/*
+	This function starts a new game
+*/
 g_menu.startGame = function(){
+	//Reset variables
+    g_COMBO_PLAT_IDS = [];
+    g_PLATS_IN_COMBO = [];
+    g_COMBO = false;
+    g_GAME_HEIGHT  = 0;
+    g_FIREBOLTS = 0;
+    g_SCORE = new Score();
+    g_SCORE_MULTIPLIER = 1;
+    g_VERTICAL_SPEED = 0.5;
 	g_GAME_TOP_HEIGHT = 0;
+	//Start initialize the entity manager
     entityManager.init();
     g_sound.gameGreeting.play();
     g_MENU_SCREEN=!g_MENU_SCREEN;
