@@ -23,6 +23,11 @@ function Sprite(image, width, height, x,y) {
     this.scale = 1;
 }
 
+/*
+    Draws this sprite rotated with an angle of rotation 
+    with it's left upper corner in
+    the (x,y) position
+*/
 Sprite.prototype.drawAt = function (ctx, x, y, rotation) {
     if (rotation === undefined) rotation = 0;
 
@@ -37,6 +42,10 @@ Sprite.prototype.drawAt = function (ctx, x, y, rotation) {
     ctx.restore();
 };
 
+/*
+    Draws this sprite with it's left upper corner in
+    the (x,y) position stretched to the width w and height h 
+*/
 Sprite.prototype.drawStretchedAt = function(ctx,x,y,w,h){
     ctx.save();
     ctx.translate(x,y);
@@ -46,6 +55,10 @@ Sprite.prototype.drawStretchedAt = function(ctx,x,y,w,h){
     ctx.restore();
 };
 
+/*
+    Draws this sprite rotated with an angle of rotation 
+    centred in the position (cx,cy)
+*/
 Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation) {
     if (rotation === undefined) rotation = 0;
     
@@ -65,6 +78,10 @@ Sprite.prototype.drawCentredAt = function (ctx, cx, cy, rotation) {
     ctx.restore();
 };
 
+/*
+    Draws this sprite rotated with an angle of rotation 
+    centred in the position (cx,cy) with only it's width scaled
+*/
 Sprite.prototype.drawCentredAtScaleWidth = function (ctx, cx, cy, rotation) {
     if (rotation === undefined) rotation = 0;
     
@@ -83,6 +100,10 @@ Sprite.prototype.drawCentredAtScaleWidth = function (ctx, cx, cy, rotation) {
     ctx.restore();
 }; 
 
+/*
+    Draws this sprite rotated with an angle of rotation 
+    centred in the position (cx,cy), and wrapped
+*/
 Sprite.prototype.drawWrappedCentredAt = function (ctx, cx, cy, rotation) {
 
     var sw = g_canvas.width
@@ -91,6 +112,10 @@ Sprite.prototype.drawWrappedCentredAt = function (ctx, cx, cy, rotation) {
     this.drawWrappedVerticalCentredAt(ctx, cx + sw, cy, rotation);
 };
 
+/*
+    Draws this sprite rotated with an angle of rotation 
+    centred in the position (cx,cy), and wrapped vertically
+*/
 Sprite.prototype.drawWrappedVerticalCentredAt = function (ctx, cx, cy, rotation) {
 
     // Get "screen height"

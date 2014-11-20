@@ -126,3 +126,9 @@ strokeCenteredBox: function(ctx,x,y,w,h,rotation,scale){
 }
 
 };
+
+util.isInside = function(x,y,xmin,xmax,ymin,ymax){
+    if(!this.isBetween(x, xmin, xmax)) return false;
+    if(!this.isBetween(y, ymin, ymax)) return false;
+    return true;
+};

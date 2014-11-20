@@ -51,6 +51,7 @@ function updateSimulation(du) {
     
     entityManager.update(du);
     g_background.update(du);
+    if(gameOver)g_menu.update(du);
     g_comboLogos.checkCombos();
 }
 
@@ -109,12 +110,10 @@ function renderSimulation(ctx) {
         g_SCORE.render(ctx);
     }
 
-    if (gameOver && g_MENU_SCREEN) {
-        g_menu.render(ctx); 
+    if(gameOver){
+        g_menu.render(ctx);
     }
-    if (gameOver && !g_MENU_SCREEN){
-        g_gameover.render(ctx);
-    }
+    
 
     if (g_renderSpatialDebug) spatialManager.render(ctx);
 }
@@ -134,11 +133,12 @@ function requestPreloads() {
 	    platform : "res/platforms/platformspritesheet.png",
         backgroundMenu : "res/backgrounds/FlashFreeze.jpg",
         gameBackground : "res/backgrounds/gB7.png",
-        logo : "res/backgrounds/logo.png",
-        startGame : "res/backgrounds/start.png",
-        mainMenu : "res/backgrounds/mainMenu.png",
-        gameOver : "res/backgrounds/gameOver.png",
-        score : "res/backgrounds/score.png",
+        menu:"res/menu/menu.png",
+        //logo : "res/menu/logo.png",
+        //startGame : "res/menu/start.png",
+        //mainMenu : "res/menu/mainMenu.png",
+        //gameOver : "res/menu/gameOver.png",
+        //score : "res/menu/score.png",
         notifications : "res/comboLogos/combospritesheet.png",
         go : "res/comboLogos/go.png",
         fireball: "res/fireballz.png",
@@ -276,7 +276,7 @@ function preloadDone() {
         ]
     }
 
-    //Fire on the ground
+    //Fire sprites
     g_sprites.fire = {
 
         flameTail : [
@@ -423,7 +423,7 @@ function preloadDone() {
         sign:new Sprite(g_images.platform,41,21,428,431)
     };
 
-    //Power sprite
+    //Sprites for powerups
      g_sprites.power = {
         ruby:[
             new Sprite(g_images.power,41,60,0,66),
@@ -519,12 +519,29 @@ function preloadDone() {
      //Sprites for the menus
     g_sprites.backgroundMenu = new Sprite(
         g_images.backgroundMenu,g_images.backgroundMenu.width,g_images.backgroundMenu.height,0,0);
+    g_sprites.menu = {
+        mainMenu:{
+            normal:new Sprite(g_images.menu,291,73,1538,13),
+            hover: new Sprite(g_images.menu,291,73,1,100),
+        },
+        gameOver:{
+            normal:new Sprite(g_images.menu,471,97,1,1),
+            hover: new Sprite(g_images.menu,471,97,474,1),
+        },
+        logo:new Sprite(g_images.menu,589,93,947,3),
+        score:new Sprite(g_images.menu,179,69,294,102),
+        start:{
+            normal:new Sprite(g_images.menu,238,59,475,107),
+            hover: new Sprite(g_images.menu,238,59,715,107),
+        }
+    };
+    /*
     g_sprites.mainMenu = new Sprite(g_images.mainMenu,g_images.mainMenu.width,g_images.mainMenu.height,0,0);
     g_sprites.logo = new Sprite(g_images.logo,g_images.logo.width,g_images.logo.height,0,0);
     g_sprites.startGame = new Sprite(g_images.startGame,g_images.startGame.width,g_images.startGame.height,0,0);
     g_sprites.score = new Sprite(g_images.score,g_images.score.width,g_images.score.height,0,0);
     g_sprites.gameOver = new Sprite(g_images.gameOver,g_images.gameOver.width,g_images.gameOver.height,0,0);
-
+    */
     //The game background
     g_sprites.gameBackground = new Sprite(
         g_images.gameBackground,g_images.gameBackground.width,g_images.gameBackground.height,0,0);
@@ -563,7 +580,7 @@ function preloadDone() {
     }
     
 
-    //Sprites for powerups and addons
+    //Sprites for the fireball
     g_sprites.fireball = {
         rotating: {
             0: new Sprite(g_images.fireball, 13, 10, 5, 35),
@@ -579,7 +596,7 @@ function preloadDone() {
         },
     }
 
-    //Sprites for the character
+    //Sprites for the fireball character
     g_sprites.fireGonzales = [
             new Sprite(g_images.fireGonzales,86,68,20,20),
             new Sprite(g_images.fireGonzales,99,73,137,19),
@@ -589,6 +606,7 @@ function preloadDone() {
             new Sprite(g_images.fireGonzales,102,83,261,146)
     ],
 
+    //Sprites for the character
     g_sprites.character = {
         idle:{
             0: new Sprite(g_images.character,30,52,50,162),

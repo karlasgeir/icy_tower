@@ -1,7 +1,13 @@
 "use strict";
-//Construct a new explotion
+/*
+    Effect constructor
+    Takes in cx,cy and type
+    Creates an effect in cx,cy of a specified type
+*/
 function Effect(cx,cy,type) {
+    //The sprites
     this.sprite = g_sprites.effects;
+    //Determine type of effect
     switch(type){
         case "EXPLOTION":
             this.activeSprite = this.sprite.explotion;
@@ -13,6 +19,7 @@ function Effect(cx,cy,type) {
             this.activeSprite = this.sprite.fireBlast;
             break;
     }
+    //Initialise values
     this.type = type;
     this.width = this.sprite.width;
     this.height = this.sprite.height;
@@ -25,34 +32,37 @@ function Effect(cx,cy,type) {
     this.shouldDraw=true;
 };
 
+//Create entity
 Effect.prototype = new Entity();
-
+/*
+    Render the effect
+*/
 Effect.prototype.render = function(ctx){
-
-    if(this.shouldDraw){
-
-        if(this.type === "FLASH" && this.cx <= wallWidth*2){
+    //Rendering for flash
+    if(this.type === "FLASH"){
+        var wallWidth = entityManager._Walls[0].wallWidth;
+        //Right side
+        if(this.cx <= wallWidth){
             this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy);
         }
-
-        if(this.type === "FLASH"){
-            var wallWidth = entityManager._Walls[0].wallWidth;
-            if(this.cx <= wallWidth){
-                this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy);
-            }
-            else{
-                this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy,Math.PI);
-            }
-        }       
-        else if(this.type === "FIREBLAST") {
-            this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy);
+        //Left side
+        else{
+            this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy,Math.PI);
         }
+    }
+    //Rendering for fireblast
+    else if(this.type === "FIREBLAST" || this.type ==="EXPLOTION") {
+        this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy);
     }
 };
 
+/*
+    Updates the effects
+*/
 Effect.prototype.update = function(du){
     //Check for death
     if(this._isDeadNow){return entityManager.KILL_ME_NOW;}
+    //Desides when to change sprites
     if(this.animTicker < this.animTickRate){
         this.animTicker += du;
     }
@@ -62,6 +72,9 @@ Effect.prototype.update = function(du){
     }
 }
 
+/*
+    Changes sprite
+*/
 Effect.prototype.changeSprite = function(){
     if(this.animFrame < this.activeSprite.length-1){
         if(this.type === "EXPLOTION"){
@@ -70,7 +83,6 @@ Effect.prototype.changeSprite = function(){
         else this.animFrame +=1;
     }
     else {
-        this.shouldDraw = false;
         this.kill();
     }
 }

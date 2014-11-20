@@ -5,23 +5,21 @@
 "use strict";
 
 /* jshint browser: true, devel: true, globalstrict: true */
-
+//This holds most of the stuff for the combos
 var g_comboLogos = {
-	cx: 0,
-	cy: g_canvas.height/2,
-	timeInMiddle: 600/NOMINAL_UPDATE_INTERVAL,
-	rotation: 0,
-	speed : 3,
 	isOn : []
 };
-
+/*
+	Desides what to do with each combo
+*/
 g_comboLogos.checkCombos = function () {
 
 	var arrayLength = this.isOn.length;
 	var plats = g_PLATS_GONE_IN_COMBO;
 	var currentNotification = {name:"",scale:1};
 	var shouldDraw = false;
-
+	//Desides what to do dependant on how many
+	//platforms are in the combo
 	if (plats>5 && plats<=14) {
 		currentNotification.name = "GOOD";
 		currentNotification.scale = 1;
@@ -94,15 +92,19 @@ g_comboLogos.checkCombos = function () {
 		g_FIREBOLTS = 50;
 		
 	}
-
+	//Resets the combo
 	if (!g_COMBO) {
-		this.resetNotification();
+		this.isOn = [];
 		g_SCORE_MULTIPLIER =1;
 	}
-	//return currentNotification;
+	//Draws the combo (only once for each combo)
 	if(shouldDraw) entityManager.generateNotification(currentNotification.name,currentNotification.scale);
 }
 
+/*
+	Checks if combo notification has been sent
+	before
+*/
 g_comboLogos.ifDoesntExist = function (item) {
 	var arrayLength = this.isOn.length;
 	for (var i = 0; i<arrayLength; i++) {
@@ -113,12 +115,3 @@ g_comboLogos.ifDoesntExist = function (item) {
 	this.isOn.push(item);
 	return true;
 }
-
-g_comboLogos.resetNotification = function() {
-	this.cx = 0;
-	this.cy = g_canvas.height/2;
-	this.timeInMiddle = 600/NOMINAL_UPDATE_INTERVAL;
-	this.rotation = 0;
-	this.speed = 3;
-	this.isOn = [];
-};

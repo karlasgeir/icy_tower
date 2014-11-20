@@ -6,9 +6,11 @@
 "use strict";
 
 /* jshint browser: true, devel: true, globalstrict: true */
-
+/*
+    The clock
+*/
 function Clock(descr) {
-
+    //initial values
 	this.sprite = g_sprites.clock;
     this.clockHeight = this.sprite.height;
     this.clockWidth = this.sprite.width/2;
@@ -25,39 +27,47 @@ function Clock(descr) {
 };
 
 Clock.prototype = new Entity();
-
+//Audio for the clock
 Clock.prototype.alarmClock = new Audio("res/sounds/alarmClock.wav");
-
+/*
+    A function to render the clock
+*/
 Clock.prototype.render = function (ctx) {
-
+    //Draw the clock
 	this.sprite.drawCentredAt(ctx, this.cx, this.cy, this.clockRotation);
-	g_sprites.indicator.drawCentredAt(ctx, this.cx, this.cy, this.indicatorRotation);
+	//Draw the indicator
+    g_sprites.indicator.drawCentredAt(ctx, this.cx, this.cy, this.indicatorRotation);
 };
 
+/*
+    A function to update the clock
+*/
 Clock.prototype.update = function (du) {
-	
-	//18
-	// ===============
-	// INDICATOR STUFF
-	// ===============
+	//We don't want it to start untill the 
+    //screen has moved once
 	if (g_GAME_HEIGHT === 0) { return;}
 
+    // =============
+    // INDICATOR STUFF
+    // =============
+    //Let the clock tick
 	var tickRate = this.timer/18;
 	this.indicatorRotation +=tickRate*du;
 
 	var circle = 2*Math.PI;
 	var speedInfluence = 0.5;
 	var jumpInfluence = 0.75;
-
+    //After each round on the clock
 	if (this.indicatorRotation>=circle) {
-		if (!gameOver) {
-			this.alarmClock.play();
-		}
+		if (!gameOver) this.alarmClock.play();
 		this.rotateClock = true;
+        //generate the notification
         entityManager.generateNotification("HURRYUP",2);
 		this.indicatorRotation = 0;
-		if (g_VERTICAL_SPEED>2.5) {return;}
+        //Increase the vertical speed of just about everything
+		if (g_VERTICAL_SPEED>2.5) return; //Don't want it to get out of hand though
 		g_VERTICAL_SPEED +=speedInfluence;
+        //Increase the jump height of the character
 		entityManager.increaseJumpHeight(jumpInfluence);
 	}
 
@@ -79,6 +89,7 @@ Clock.prototype.update = function (du) {
     var flameVelX = randomFactor*(relVelX); 
     var flameVelY = randomFactor*(relVelY);
     var flameGrav = 0.1;
+    
 
 	if (this.rotateClock) {
 

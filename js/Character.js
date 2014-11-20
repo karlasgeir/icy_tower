@@ -225,7 +225,6 @@ Character.prototype.checkPlatform = function(){
     platform and handles the collision
 */
 var TOP_PADDLE_HIT_HIGHT = 0;
-
 Character.prototype.handleCollision = function(du){
     //Get the colliding platform if any
     var isHit = this.isColliding();
@@ -256,7 +255,10 @@ Character.prototype.handleCollision = function(du){
     }
 };
 
- 
+/*
+    This function lists the platform ID's
+    to use in combos
+*/
 var g_COMBO_PLAT_IDS = [];
 Character.prototype.handleCombo = function() {
     
@@ -275,7 +277,10 @@ Character.prototype.handleCombo = function() {
     }
 };
 
-
+/*
+    This function checks if the combo is
+    broken
+*/
 Character.prototype.setCombo = function() {
 
     var arrayLength = g_COMBO_PLAT_IDS.length;
@@ -296,8 +301,11 @@ Character.prototype.setCombo = function() {
     }
 };
 
+/*
+    This function calculates the platforms
+    in the combo
+*/
 var g_PLATS_IN_COMBO = [];
-
 Character.prototype.platsInCombo = function() {
     
     var isHit = this.isColliding();
@@ -351,7 +359,7 @@ Character.prototype.makeFlames = function () {
 
     //Generate the flame
     if (entityManager._flameChar.length>=g_FIREBOLTS) { return;}
-    entityManager.generateFlameChar(
+    entityManager.generateFlame(
         this.cx + dX * launchDist,
         this.cy + dY * launchDist,
         flameVelX, 
@@ -450,6 +458,11 @@ Character.prototype.computeSubStep = function (du) {
     //Check for game over
     this.gameOver();
 };
+
+/*
+    This function calculates the acceleration in
+    the x direction
+*/
 Character.prototype.computeAccelX = function(du){
         
 
@@ -641,29 +654,17 @@ Character.prototype.computeGravity = function () {
     acceleration
 */
 Character.prototype.computeThrustMag = function () {
-
     var jumpThrust = this.NOMINALS.THRUST + this.jumpInfluence;
-    console.log(jumpThrust);
     //influence from the x velocity
     var speedInfluence = 0.1*Math.abs(this.velX);
-    //Needs more work
+    //If we press the jump key, and aren't already jumping
     if ((keys[this.KEY_JUMP] && !this._jumping) ) {
-        //Reset the y velocity
         this._jumping = true;
-        //We don't want x-velocity to decrease jump height
-        if (speedInfluence<1) {
-            if (this.gravityPowerup <= 0) {
-            this.jumpSoundLow.play();
-            }
-            return jumpThrust;
-        }
         //x-velocity can increase jump height
-        else {
-            if (this.gravityPowerup <= 0) {
-            this.jumpSoundHigh.play();
-            }
-            return jumpThrust*speedInfluence;
-        }
+        if(speedInfluence >= 1)  jumpThrust*=speedInfluence;
+        //If moonjump powerup isn't enabled we play the jump sound
+        if (this.gravityPowerup <= 0)  this.jumpSoundLow.play();
+        return jumpThrust;
     }
     return 0;
 
@@ -675,7 +676,7 @@ Character.prototype.computeThrustMag = function () {
 var REBOUNCE_LIMIT = 200;
 Character.prototype.wallBounce = function () {
     if(this.isBouncing){
-        if (gameOver) { return;}
+        if (gameOver) return;
         this.bounce.play();
         if(this.cx+this.getWidth()/2 + REBOUNCE_LIMIT >= g_right_side ||
         (this.cx-this.getWidth()/2 - REBOUNCE_LIMIT <= g_left_side)){
@@ -710,15 +711,18 @@ Character.prototype.wallBounce = function () {
     }
 };
 
+/*
+    This function checks if character is
+    dying
+*/
 Character.prototype.gameOver = function () {
-        var fallLength = this.NOMINALS.FALL_LENGTH;
-        //If the player has the fallength or fallen below the canvas
-        if (g_GAME_TOP_HEIGHT-fallLength > g_GAME_HEIGHT || this.cy-this.getHeight()/2 > g_canvas.height) {
-            //GAME IS OVER
-            if (gameOver!=true) {
-                this.dead.play();
-            }
-            gameOver = true;
+    var fallLength = this.NOMINALS.FALL_LENGTH;
+    //If the player has the fallength or fallen below the canvas
+    if (g_GAME_TOP_HEIGHT-this.NOMINALS.FALL_LENGTH > g_GAME_HEIGHT 
+        || this.cy-this.getHeight()/2 > g_canvas.height){
+        //GAME IS OVER
+        if (gameOver!=true) this.dead.play();
+        gameOver = true;
     }
 };
 
@@ -737,11 +741,16 @@ Character.prototype.reset = function () {
     this.setPos(this.reset_cx, this.reset_cy);
     this.halt();
 };
-
+/*
+    Function to get the width
+*/
 Character.prototype.getWidth = function(){
     return this.activeSprite.width*this._scale;
 };
 
+/*
+    Function to get the height
+*/
 Character.prototype.getHeight = function(){
     return this.activeSprite.height*this._scale;
 }
@@ -764,15 +773,18 @@ Character.prototype.render = function (ctx) {
     //Set scale
     this.activeSprite.scale = this._scale;
     //Draw the sprite
-    
     this.activeSprite.drawCentredAt(ctx, this.cx, this.cy,this.rotation);
     //Reset the scale
     this.activeSprite.scale = origScale;
+    //This below renders the fire around the demon sprite
     if((this.velY === 0 || this.currPlatform) && this.isOnFire){
+        //If we have powerups it shouldn't have the fire effect
         if (this.speedPowerup>0 || this.gravityPowerup>0) {
             return;
         }
+        //Draw the fire sprite
         g_sprites.fire.demonFire[this._animation.FireFrame].drawCentredAt(ctx,this.cx-this.getWidth()/6,this.cy+this.getHeight()/10);
+        //Increment the animation frame correctly
         if(this._animation.FireFrame === 0 && this._animation.revFire){
             this._animation.revFire = false;
             this._animation.FireFrame += 1;
@@ -787,6 +799,7 @@ Character.prototype.render = function (ctx) {
         }
         
     }
+    //Reset the values if he's not on fire anymore
     else {
         this.isOnFire = false;
         this._animation.FireFrame = 0 
@@ -814,27 +827,37 @@ Character.prototype.checkForRotation = function(velX,velY) {
 
 */
 Character.prototype.chooseSprite = function (velX,velY,nextX,nextY){
+    //Used to select the correct character
     var sprite_base = this.sprite;
+    //If we have the speed powerup
     if (this.speedPowerup>0) {
+        //Reset the animation 
         if (this._animation.Frame>=g_sprites.fireGonzales.length) {
             this._animation.Frame = 0;
         };
+        //Draw the fire sprite
         this.activeSprite = g_sprites.fireGonzales[this._animation.Frame];
+        //Increment the animation
         this._animation.Frame +=1;
+        //Increase the screen movement rate
         this.NOMINALS.SCREEN_MOVE_RATE=12;
         return;
     }
+    //If we have the gravity powerup
     if (this.gravityPowerup>0) {
+        //Set the sprite base to the space guy
         sprite_base = g_sprites.power.spaceSuit;
         this._scale = 1.3;
+        //Increase the screen movement rate
         this.NOMINALS.SCREEN_MOVE_RATE=12;
     }
     else{
+        //Reset to normal
         this._scale = 1;
         this.NOMINALS.SCREEN_MOVE_RATE=8;
     }
 
-        //Check if the jump is rotational
+    //Check if the jump is rotational
     this.checkForRotation(velX,velY);
     
     //Check if in transition

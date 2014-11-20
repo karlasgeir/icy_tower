@@ -1,5 +1,5 @@
-
-
+//This holds functions and values 
+//for the background
 var g_background =  {
 
     cx : 0,
@@ -8,11 +8,11 @@ var g_background =  {
     speed : 0.25,
     height: 600
 }
-
+/*
+    Desides which background pick to use
+*/
 backgroundPic = function() {
 	var currentSprite;
-	//set our background image based on level
-
     if (gameOver) {
 		currentSprite = g_sprites.backgroundMenu;
 	}
@@ -32,19 +32,21 @@ backgroundPic = function() {
     return currentSprite; 
 };
 
-
+/*
+    Render the background
+*/
 g_background.render = function(ctx) {
-
+    //Find the correct background picture
     var sprite = backgroundPic();
-
+    //If it's game over we are sidescrolling the background
     if (gameOver) {
         sprite.drawStretchedAt(ctx,this.cx,this.cy,this.width,this.height);
         sprite.drawStretchedAt(ctx,this.width-Math.abs(this.cx),this.cy,this.width,this.height);
-
         if (Math.abs(this.cx)>this.width) {
             this.cx = 0;
         }
     }
+    //If the game is on we are scrolling the background down
     if (!gameOver) {
 
         this.cx = g_canvas.width/2-sprite.width/2; 
@@ -56,26 +58,26 @@ g_background.render = function(ctx) {
         }
     }
 }
+
+/*
+    This function upgrades the background
+*/
 var prevGameOver = false;
 g_background.update = function(du) { 
-    
+    //Reset the position of the background
     if (gameOver && !prevGameOver){
         g_background.cy = 0;
         g_background.cx = 0;
         prevGameOver = true;
     }
-    if(!gameOver){
+    else if(!gameOver){
         prevGameOver = false;
     }
-
-
-
-    //backgroundPic() === g_sprites.backgroundMenu
-    //backgroundPic() === g_sprites.gameBackground
+    //If it's game over the background is sidescrolling
     if (gameOver) {
         this.cx -=this.speed*du;
     }
-
+    //If the game is on the background is scrolling down
     if (!gameOver && !g_MENU_SCREEN && g_GAME_HEIGHT>0) {
         this.cy +=this.speed*du;
     }

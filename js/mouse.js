@@ -1,31 +1,29 @@
-
-var g_mDown=false, g_mX=0, g_mY=0;
-
-
-function handleMousedown(evt) {
-
-    g_mX = evt.pageX - g_canvas.offsetLeft;
-    g_mY = evt.pageY - g_canvas.offsetTop;
-    g_mDown=true;
-
-    if (gameOver && g_MENU_SCREEN) {
-        if ((g_mX>=278 && g_mX<=519) && (g_mY>=270 && g_mY<=330)) {
-            g_GAME_TOP_HEIGHT = 0;
-            entityManager.init();
-            g_sound.gameGreeting.play();
-            g_MENU_SCREEN=!g_MENU_SCREEN;
-            gameOver = !gameOver;
-        }
-    }
+var g_mouse = {
+    Down:false,
+    x:0,
+    y:0
+};
 
 
-    if (gameOver && !g_MENU_SCREEN) {
-        if ((g_mX>=255 && g_mX<=542) && (g_mY>=270 && g_mY<=330)) {    
-            g_MENU_SCREEN=!g_MENU_SCREEN;          
-        }
-    }
+g_mouse.handleMousedown = function(evt) {
+    g_mouse.x = evt.pageX - g_canvas.offsetLeft;
+    g_mouse.y = evt.pageY - g_canvas.offsetTop;
+    g_mouse.Down=true;
+};
 
-    else {return;}
+g_mouse.handleMouseup = function(evt) {
+    g_mouse.x = evt.pageX - g_canvas.offsetLeft;
+    g_mouse.y = evt.pageY - g_canvas.offsetTop;
+    g_mouse.Down=false
+};
+
+g_mouse.handleMousemove = function(evt){
+    g_mouse.x = evt.pageX - g_canvas.offsetLeft;
+    g_mouse.y = evt.pageY - g_canvas.offsetTop;
 }
 
-window.addEventListener("mousedown", handleMousedown);
+
+
+window.addEventListener("mousedown", g_mouse.handleMousedown);
+window.addEventListener("mouseup",g_mouse.handleMouseup);
+window.addEventListener("mousemove",g_mouse.handleMousemove);

@@ -48,7 +48,6 @@ Platform.prototype.margin = SPACE_BETWEEN_PLATFORMS;
 /*
     This function desides the x position of the platform
 */
-
 Platform.prototype.platPosition = function() {
 
     var leftSide = g_sprites.wallsprite.width/2;
@@ -57,6 +56,10 @@ Platform.prototype.platPosition = function() {
     this.cx = util.randRange(leftSide  + this.scale*this.platWidth/2,rightSide - this.scale*this.platWidth/2);
 };
 
+/*
+    This function selects what kind of platform 
+    this is
+*/
 Platform.prototype.platPicker = function() {
 
     var sprite_base = this.sprite;
@@ -123,8 +126,6 @@ Platform.prototype.render = function (ctx) {
 /*
     This function updates the platform
 */
-
-
 Platform.prototype.update = function (du) {
     //Unregister from spatial manager
 	spatialManager.unregister(this);  
@@ -162,10 +163,17 @@ Platform.prototype.update = function (du) {
     }
 };
 
+/*
+    This function returns the ID of the
+    platform
+*/
 Platform.prototype.getID = function() {
     return this.id;
 }
 
+/*
+    This function resets the platforms
+*/
 Platform.prototype.reset = function () {
     entityManager.killPlatforms();
     g_NUMBER_OF_PLATFORMS = 0;

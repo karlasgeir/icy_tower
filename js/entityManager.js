@@ -76,44 +76,42 @@ generateFlame: function(cx, cy, velX, velY, gravity, rotation) {
     }));;
 },
 
-generateFlameChar: function(cx, cy, velX, velY, gravity, rotation) {
-    this._flameChar.push(new Flame({
-        cx   : cx,
-        cy   : cy,
-        velX : velX,
-        velY : velY,
-        ag   : gravity,
-        rotation : rotation
-    }));;
-},
-
+/*
+    Generates a notification
+*/
 generateNotification: function(type,scale){
     if(scale === undefined) scale = 1;
     this._Notifications.push(new Notification(type,scale));
 },
 
-_generateClock: function() {
-    this.generateClock();
-},
-
+/*
+    Generates the clock
+*/
 generateClock: function(descr) {
     this._clock.push(new Clock(descr));
 },
 
+/*
+    deferredSetup that desides in which order things
+    are drawn and updated
+*/
 deferredSetup : function () {
     this._categories = [
-                        this._platforms,
-                        this._characters,
-                        this._Walls,
-                        this._flame,
-                        this._flameChar,
-                        this._Effects,
-                        this._power,
-                        this._Notifications,
-                        this._clock
-                        ];
+        this._platforms,
+        this._characters,
+        this._Walls,
+        this._flame,
+        this._flameChar,
+        this._Effects,
+        this._power,
+        this._Notifications,
+        this._clock
+    ];
 },
 
+/*
+    Generates a platform in the correct place
+*/
 generatePlatform : function(descr) {
     g_TOP_FLOOR = new Platform(descr);
     var rand = util.randRange(0,10);
@@ -121,33 +119,59 @@ generatePlatform : function(descr) {
     this._platforms.push(g_TOP_FLOOR);
 },
 
+/*
+    Generates a powerup
+*/
 generatePower : function(descr) {
     this._power.push(new Power(descr));
 },
-
+/*
+    Powerup functions, should maybe rather be
+    implemented elsewhere
+*/
+/*
+    Changes the gravity
+*/
 turnOffGravity: function(){
     this._characters[0].speedPowerup = 0;
     var timer = 30*NOMINAL_UPDATE_INTERVAL;
     this._characters[0].gravityPowerup = timer;
 },
+/*
+    Speeds up the game
+*/
 speedUp: function(){
     this._characters[0].gravityPowerup =0;
     var timer = 30*NOMINAL_UPDATE_INTERVAL;
     this._characters[0].speedPowerup = timer;
 },
+/*
+    Increase the jump height of the character
+*/
 increaseJumpHeight:function(jumpInfluence){
     this._characters[0].jumpInfluence += jumpInfluence;
 },
+/*
+    Generate the character
+*/
 generateCharacter : function(descr) {
     this._characters.push(new Character(descr));
 },
+/*
+    Generate the walls
+*/
 generateWalls : function(descr) {
     this._Walls.push(new Wall(descr));
 },
+/*
+    Generate an effect
+*/
 generateEffect: function(cx,cy,type){
     this._Effects.push(new Effect(cx,cy,type));
 },
-
+/*
+    initialised setup
+*/
 init: function() {
     //Reset variables
     g_COMBO_PLAT_IDS = [];
@@ -169,13 +193,15 @@ init: function() {
     //Generate the inital plaforms
     this._generateInitialPlatforms();
     //Generate the clock
-    this._generateClock();
+    this.generateClock();
     //Generate the walls
     this.generateWalls();
     this.generateCharacter();
     this.generateNotification("GO");
 },
-
+/*
+    Kill all the powerups
+*/
 killPowerups: function(){
     var c = this._power.length-1;
     while (c >= 0) {
@@ -183,6 +209,9 @@ killPowerups: function(){
         --c;
     }
 },
+/*
+    Kill all the Effects
+*/
 killEffects: function(){
     var c = this._Effects.length-1;
     while (c >= 0) {
@@ -190,7 +219,9 @@ killEffects: function(){
         --c;
     }
 },
-
+/*
+    Kill all the Platforms
+*/
 killPlatforms: function () {
     var c = this._platforms.length-1;
     while (c >= 0) {
@@ -199,6 +230,10 @@ killPlatforms: function () {
         --c;
     }
 },
+
+/*
+    Kill all the notifications
+*/
 killNotifications: function () {
     var c = this._Notifications.length-1;
     while (c >= 0) {
@@ -206,6 +241,9 @@ killNotifications: function () {
         --c;
     }
 },
+/*
+    Kill the character
+*/
 killCharacter: function () {
     var c = this._characters.length-1;
     while (c >= 0) {
@@ -215,6 +253,9 @@ killCharacter: function () {
     }
     
 },
+/*
+    Functions that reset things
+*/
 resetCharacters: function() {
     this._forEachOf(this._characters, Character.prototype.reset);
 },
@@ -225,7 +266,9 @@ resetPlatforms: function() {
 resetWalls: function() {
     this._forEachOf(this._Walls, Wall.prototype.reset);
 },
-
+/*
+    Functions that halt things
+*/
 haltCharacters: function() {
     this._forEachOf(this._characters, Character.prototype.halt);
 },	
@@ -235,12 +278,16 @@ haltWalls: function() {
 haltPlatforms: function() {
     this._forEachOf(this._platforms, Platform.prototype.halt);
 },
-
+/*
+    Function that toogles if the platforms are shown
+*/
 togglePlatforms: function() {
     this._bShowPlatforms = !this._bShowPlatforms;
 },
 
-
+/*
+    This function updates all the entities
+*/
 update: function(du) {
 
     for (var c = 0; c < this._categories.length; ++c) {
@@ -256,23 +303,28 @@ update: function(du) {
                 aCategory.splice(i,1);
             }
             else {
+                //Force the game heigh to never go below 0
                 if(g_GAME_HEIGHT <0) {
                     g_GAME_HEIGHT = 0;
                 }
                 if (!(cat instanceof Notification) && !(cat instanceof Clock)) {
+                    //Move the screen if it should be moving
                     cat.setPos(pos.posX,pos.posY+g_MOVE_SCREEN*du);
                 }
                 ++i;
             }
         }
     }
-    //Hækkum game height
+    //Increase the game height
     g_GAME_HEIGHT += g_MOVE_SCREEN*du;
     if (g_GAME_HEIGHT> g_GAME_TOP_HEIGHT){ 
         g_GAME_TOP_HEIGHT = g_GAME_HEIGHT;
     }
 },
 
+/*
+    This function renders all the entities
+*/
 render: function(ctx) {
     var debugX = 10, debugY = 100;
 
