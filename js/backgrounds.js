@@ -4,9 +4,9 @@ var g_background =  {
 
     cx : 0,
     cy : 0,
-    width: 1000,
+    width: 600,
     speed : 0.25,
-    height: 1000
+    height: 600
 }
 /*
     Desides which background pick to use

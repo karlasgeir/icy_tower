@@ -137,7 +137,7 @@ function requestPreloads() {
         notifications : "res/notifications.png",
         fireball: "res/effects/fireballz.png",
         power: "res/powerUps/power_sheet.png",
-        wallsprite : "res/walls/bigger/biggest.png",
+        wallsprite : "res/walls/bigger/wallBig2.png",
         numbers: "res/numbers.png",
         flameTail: "res/effects/flamethrower.png",
         fire: "res/effects/fire.png",

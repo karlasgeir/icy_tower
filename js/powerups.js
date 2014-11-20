@@ -17,19 +17,17 @@ function Power(descr) {
     var rand= util.randRange(1,100);
     //Switch to determine which powerup is spawned
     switch(true){
-        /*
         case (rand <= 15):
             this.type="ruby";
             this.activeSprite = this.sprite.spaceSuit.idle;
             this.scale = 1;
             break;
-            */
-        case (rand <= 50):
+        case (rand <= 25):
             this.type="smaller";
             this.activeSprite = this.sprite.smaller;
             this.scale = 1;
             break;
-        case (rand <= 100):
+        case (rand <= 40):
             this.type="bigger";
             this.activeSprite = this.sprite.bigger;
             this.scale = 1;
