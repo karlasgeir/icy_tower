@@ -127,6 +127,10 @@ strokeCenteredBox: function(ctx,x,y,w,h,rotation,scale){
 
 };
 
+/*
+    This function checks if a specific position is 
+    inside a box
+*/
 util.isInside = function(x,y,xmin,xmax,ymin,ymax){
     if(!this.isBetween(x, xmin, xmax)) return false;
     if(!this.isBetween(y, ymin, ymax)) return false;

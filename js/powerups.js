@@ -15,6 +15,7 @@
 function Power(descr) {
     this.sprite = this.sprite || g_sprites.power;
     var rand= util.randRange(1,100);
+    //Switch to determine which powerup is spawned
     switch(true){
         case (rand <= 15):
             this.type="ruby";
@@ -43,13 +44,12 @@ function Power(descr) {
     this.velX = 0.5;
     this.width = this.activeSprite[0].height*this.scale;
     this.height = this.activeSprite[0].width*this.scale;
+    //Get the top platform
     this.Platform = g_TOP_FLOOR;
+    //Generate the powerup on the top of the platform
     this.cy= g_TOP_FLOOR.cy - g_TOP_FLOOR.halfHeight - this.height/2;
+    //Generate the powerup in a random position on the platform
     this.cx= util.randRange(g_TOP_FLOOR.cx - g_TOP_FLOOR.halfWidth,g_TOP_FLOOR.cx + g_TOP_FLOOR.halfWidth);
-    
-    //console.log("dfafdasfdasfdasÞ:   "+this.powerWidth);
-     this.powerID = 0;
-
  
 
 
@@ -65,18 +65,20 @@ function Power(descr) {
 Power.prototype = new Entity();
 
 
-//Power.prototype.lifeSpan = 2000 / NOMINAL_UPDATE_INTERVAL;
 // Initial, inheritable, default values
 Power.prototype.cx = 0;
 Power.prototype.cy = 0;
 Power.prototype.Width=this.powerWidth;
 Power.prototype.Height= this.powerHeight;
 
-//Hljod fyrir powerup
+//Sounds for powerups
 Power.prototype.coinsound = new Audio("res/sounds/smw_coin.wav");
 Power.prototype.speedPU = new Audio("res/sounds/speedPU.wav");
 Power.prototype.dead = new Audio("res/sounds/dead.wav");
 
+/*
+    Update the powerups
+*/
 Power.prototype.update = function (du) {
     spatialManager.unregister(this);
 
@@ -85,16 +87,17 @@ Power.prototype.update = function (du) {
         if (gameOver) { return;}
         return entityManager.KILL_ME_NOW;
     }
+    //Check if powerup has gone under the canvas
     this.checkForKill();
-
+    //Increment animation
     this.incrementFrame();
 
+    //Move the reaper from side to side
     if(this.type === "skull") this.moveReaper(du);
 
     if(g_GAME_HEIGHT > 0)
     { 
         //Begin scrolling
-        
         this.cy += g_VERTICAL_SPEED*du;
     }
 
@@ -107,21 +110,28 @@ Power.prototype.update = function (du) {
     } 
 };
 
-
+/*
+    This functionn moves the reaper
+*/
 Power.prototype.moveReaper = function(du){
+    //If he's at the right edge of the platform
     if(this.velX >0
         && this.cx + this.velX*du > this.Platform.cx + this.Platform.halfWidth){
         this.velX *= -1;
     }
+    //If he's at the left edge of the platform
     else if(this.velX < 0
         &&this.cx - this.velX*du < this.Platform.cx - this.Platform.halfWidth){
         this.velX *= -1;
     }
-    
+    //move
     this.cx += this.velX*du;
 
 }
 
+/*
+    Increment the animation frame
+*/
 Power.prototype.incrementFrame = function() {
     if(this._animTick < this._animTickRate){
         this._animTick += 1;
@@ -137,13 +147,16 @@ Power.prototype.incrementFrame = function() {
     }
 };
 
+/*
+    This function desides what each type of powerup
+    does
+*/
 Power.prototype.handleCollision = function(){
-    //TODO: make powerups do something
+    var COIN_SCORE = 20;
     switch(this.type){
         case "coin":
-            //TODO: change from magic number
             this.coinsound.play();
-            g_SCORE.score += 20;
+            g_SCORE.score += COIN_SCORE;
             break;
         case "ruby":
             entityManager.turnOffGravity();
@@ -162,6 +175,9 @@ Power.prototype.handleCollision = function(){
     }
 }
 
+/*
+    Render the powerup
+*/
 Power.prototype.render = function (ctx) {
     //save the original scale
     var origScale = this.activeSprite[this._animFrame].scale;
@@ -174,20 +190,25 @@ Power.prototype.render = function (ctx) {
     
 };
 
-Power.prototype.getID = function() {
-    return this.powerID;
-}
+/*
+    Function to check if powerup has gone under the canvas
+*/
 Power.prototype.checkForKill = function(){
     if(this.cy>g_canvas.height + this.activeSprite[0].height){
         this.kill();
     }
-
+};
+/*
+    Function to get the radius
+*/
 Power.prototype.getRadius = function(){
     return this.activeSprite[this._animFrame].height/2;
-}
+};
 
+/*
+    Function to get the size (height and width)
+*/
 Power.prototype.getSize = function(){
     return {width:this.activeSprite[this._animFrame].width*this.scale,height:this.activeSprite[this._animFrame].height*this.scale};
-}
-
 };
+
