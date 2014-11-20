@@ -351,7 +351,7 @@ Character.prototype.makeFlames = function () {
     var relVelY = dY * relVel;
 
     var randomXFactor = util.randRange(-3,3);
-    var randomYFactor = util.randRange(-6,6);
+    var randomYFactor = util.randRange(-4,4);
 
     var flameVelX = randomXFactor*(this.velX + relVelX); 
     var flameVelY = randomYFactor*(this.velY + relVelY);
