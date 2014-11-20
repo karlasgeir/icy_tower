@@ -53,11 +53,11 @@ Character.prototype.NOMINALS = {
     ROTATION_RATE: 20,              //Rate of rotation in rotation jump
     ANIM_FRAME_RATE: 12,            //Rate of sprite changes actually lower is faster
     SCREEN_MOVE_RATE: 8,            //Rate of screen movement 
-    SCREEN_TOP_LIMIT: 400,          //If the character goes above this position the screen moves up
+    SCREEN_TOP_LIMIT: 250,          //If the character goes above this position the screen moves up
     ACCELX: 0.2,                    //Nominal x-acceleration of the character
     SLOW: 1,                      //Nominal slowdown acceleration of the character
     MAX_ACCELX: 0.8,                //Maximum x-acceleration of the character
-    MAX_VELX:14,                    //Maximum x-velocity of the character
+    MAX_VELX:12,                    //Maximum x-velocity of the character
     JUMP_VEL: 1.25,                 //Nominal x-acceleration fraction when jumping
     GRAVITY: 1.6,                   //Nominal acceleration do to gravity
     ROTATION_JUMP_THRESHOLD: 10,    //the x velocity threshhold that determines

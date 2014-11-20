@@ -56,7 +56,7 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 _generateInitialPlatforms : function() {
-    var INITIAL_PLATFORMS = 16;
+    var INITIAL_PLATFORMS = 12;
     for (var i = 1; i<INITIAL_PLATFORMS; i++) {
         this.generatePlatform();
     }
