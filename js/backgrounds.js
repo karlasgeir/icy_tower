@@ -4,7 +4,7 @@ var g_background =  {
 
     cx : 0,
     cy : 0,
-    width: 600,
+    width: 800,
     speed : 0.25,
     height: 600
 }
@@ -19,7 +19,6 @@ backgroundPic = function() {
     if (!gameOver) {
         var gravPowerup = entityManager._characters[0].gravityPowerup;
         var speedPowerup = entityManager._characters[0].speedPowerup;
-       // console.log(entityManager._characters[0].gravityPowerup);
         if (gravPowerup>0) {
             currentSprite = g_sprites.space;
         } else if (speedPowerup>0) {

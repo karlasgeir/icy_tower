@@ -56,7 +56,6 @@ Platform.prototype.platPosition = function() {
 
     var leftSide = g_sprites.wallsprite.getWidth()/2;
     var rightSide = g_canvas.width - leftSide;
-    console.log(leftSide);
     this.cx = util.randRange(leftSide  + this.scale*this.platWidth/2,rightSide - this.scale*this.platWidth/2);
 };
 
@@ -141,6 +140,7 @@ Platform.prototype.update = function (du) {
     }
     if (this.shouldPowerScale) {
         this.platScale();
+        
     }
 
     //Update game height
