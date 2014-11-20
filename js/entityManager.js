@@ -56,7 +56,7 @@ KILL_ME_NOW : -1,
 // i.e. thing which need `this` to be defined.
 //
 _generateInitialPlatforms : function() {
-    var INITIAL_PLATFORMS = 12;
+    var INITIAL_PLATFORMS = 16;
     for (var i = 1; i<INITIAL_PLATFORMS; i++) {
         this.generatePlatform();
     }
@@ -145,6 +145,32 @@ speedUp: function(){
     var timer = 30*NOMINAL_UPDATE_INTERVAL;
     this._characters[0].speedPowerup = timer;
 },
+
+//Make platforms smaller
+smaller: function(){
+
+    var length = this._platforms.length;
+    SCALE_ONE = 1.5;
+    SCALE_TWO = 1.5;
+    for (var i=0; i<length; i++) {
+        this._platforms[i].shouldPowerScale = true;
+        this._platforms[i].scaleOne = SCALE_ONE;
+        this._platforms[i].scaleTwo = SCALE_TWO;
+    }
+},
+
+//Make platforms bigger
+bigger: function(){
+    var length = this._platforms.length;
+    SCALE_ONE = 3.5;
+    SCALE_TWO = 3.5;
+    for (var i=0; i<length; i++) {
+        this._platforms[i].shouldPowerScale = true;
+        this._platforms[i].scaleOne = SCALE_ONE;
+        this._platforms[i].scaleTwo = SCALE_TWO;
+    }
+},
+
 /*
     Increase the jump height of the character
 */

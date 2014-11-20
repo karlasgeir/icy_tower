@@ -132,7 +132,7 @@ function requestPreloads() {
         character_rev  : "res/spritesheet-rev.png",
 	    platform : "res/platforms/platforms.png",
         backgroundMenu : "res/backgrounds/FlashFreeze.jpg",
-        gameBackground : "res/backgrounds/gB7.png",
+        gameBackground : "res/backgrounds/newBackground.png",
         menu:"res/menu.png",
         notifications : "res/notifications.png",
         fireball: "res/effects/fireballz.png",
@@ -152,6 +152,7 @@ function requestPreloads() {
         spaceSuit: "res/powerUps/spaceSuit.png",
         spaceSuitReversed:"res/powerUps/spaceSuit-reverse.png",
         redBricks: "res/backgrounds/gBfire.png",
+        platS: "res/powerUps/powerpad.png"
     };
 
     imagesPreload(requiredImages, g_images, preloadDone);
@@ -418,6 +419,28 @@ function preloadDone() {
 
     //Sprites for powerups
      g_sprites.power = {
+
+        smaller: [
+            new Sprite(g_images.platS,53,53,14,418),
+            new Sprite(g_images.platS,55,55,93,418),
+            new Sprite(g_images.platS,53,54,176,418),
+            new Sprite(g_images.platS,54,53,256,418),
+            new Sprite(g_images.platS,54,56,337,418),
+            new Sprite(g_images.platS,54,54,419,418),
+            new Sprite(g_images.platS,56,53,497,418),
+            new Sprite(g_images.platS,53,57,581,418)
+        ],
+
+        bigger: [
+            new Sprite(g_images.platS,53,53,14,337),
+            new Sprite(g_images.platS,55,54,93,337),
+            new Sprite(g_images.platS,53,53,176,337),
+            new Sprite(g_images.platS,54,55,337,337),
+            new Sprite(g_images.platS,54,53,419,337),
+            new Sprite(g_images.platS,56,53,497,337),
+            new Sprite(g_images.platS,53,56,581,337)
+        ],
+
         ruby:[
             new Sprite(g_images.power,41,60,0,66),
             new Sprite(g_images.power,42,60,49,66),

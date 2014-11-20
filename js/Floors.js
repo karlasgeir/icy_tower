@@ -6,6 +6,9 @@
 // Platform constructor that creates a new platform in the
 // correct place
 var SPACE_BETWEEN_PLATFORMS = 80;
+var SCALE_ONE = 0;
+var SCALE_TWO = 0;
+
 function Platform(descr) {
     /*
         Initial settings that can be overwritten
@@ -21,8 +24,9 @@ function Platform(descr) {
     //Setup from descr (can override the above)
     this.setup(descr);
 
-    this.scaleOne = 2;
-    this.scaleTwo = 3;
+    this.shouldPowerScale = false;
+    this.scaleOne = SCALE_ONE;
+    this.scaleTwo = SCALE_TWO;
 
     //Generate the plaform
     this.platPicker();
@@ -64,27 +68,29 @@ Platform.prototype.platPicker = function() {
 
     var sprite_base = this.sprite;
     if(this.id<100) {
+        SCALE_ONE = 2;
+        SCALE_TWO = 3;
         this.activeSprite = sprite_base.normal.whole;
     }
     if(this.id>=100) {
         this.activeSprite = sprite_base.snow;
-        this.scaleOne = 1.5;
-        this.scaleTwo = 2;
+        SCALE_ONE = 2;
+        SCALE_TWO = 2.5;
     }
     if(this.id>=200) {
         this.activeSprite = sprite_base.wood.whole;
-        this.scaleOne = 1.4;
-        this.scaleTwo = 1.8;
+        SCALE_ONE = 1.8;
+        SCALE_TWO = 2.3;
     }
     if(this.id>=300) {
         this.activeSprite = sprite_base.lava;
-        this.scaleOne = 1.2;
-        this.scaleTwo = 1.5;
+        SCALE_ONE = 1.6;
+        SCALE_TWO = 2.1;
     }
     if(this.id>=400) {
         this.activeSprite = sprite_base.rainbow.whole;
-        this.scaleOne = 1;
-        this.scaleTwo = 1.3;
+        SCALE_ONE= 1.3;
+        SCALE_TWO = 1.5;
     }
 
 }
@@ -94,7 +100,7 @@ Platform.prototype.platPicker = function() {
 */
 
 Platform.prototype.platScale = function () {
-    this.scale = util.randRange(this.scaleOne,this.scaleTwo);
+    this.scale = util.randRange(this.scaleOne, this.scaleTwo);
 };
 
 /*
@@ -129,10 +135,12 @@ Platform.prototype.render = function (ctx) {
 Platform.prototype.update = function (du) {
     //Unregister from spatial manager
 	spatialManager.unregister(this);  
-
     //Check for death
 	if (this._isDeadNow) {
         return entityManager.KILL_ME_NOW;
+    }
+    if (this.shouldPowerScale) {
+        this.platScale();
     }
 
     //Update game height

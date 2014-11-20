@@ -17,17 +17,29 @@ function Power(descr) {
     var rand= util.randRange(1,100);
     //Switch to determine which powerup is spawned
     switch(true){
+        /*
         case (rand <= 15):
             this.type="ruby";
             this.activeSprite = this.sprite.spaceSuit.idle;
             this.scale = 1;
             break;
-        case (rand <=20):
+            */
+        case (rand <= 50):
+            this.type="smaller";
+            this.activeSprite = this.sprite.smaller;
+            this.scale = 1;
+            break;
+        case (rand <= 100):
+            this.type="bigger";
+            this.activeSprite = this.sprite.bigger;
+            this.scale = 1;
+            break;
+        case (rand <=50):
             this.type="skull";
             this.activeSprite = this.sprite.reaper;
             this.scale =1;
             break;
-        case (rand <= 40):
+        case (rand <= 65):
             this.type = "fire";
             this.activeSprite = this.sprite.fire;
             this.scale = 1;
@@ -154,6 +166,12 @@ Power.prototype.incrementFrame = function() {
 Power.prototype.handleCollision = function(){
     var COIN_SCORE = 20;
     switch(this.type){
+        case "smaller":
+            entityManager.smaller();
+            break;
+        case "bigger":
+            entityManager.bigger();
+            break;
         case "coin":
             this.coinsound.play();
             g_SCORE.score += COIN_SCORE;
