@@ -134,11 +134,6 @@ function requestPreloads() {
         backgroundMenu : "res/backgrounds/FlashFreeze.jpg",
         gameBackground : "res/backgrounds/gB7.png",
         menu:"res/menu/menu.png",
-        //logo : "res/menu/logo.png",
-        //startGame : "res/menu/start.png",
-        //mainMenu : "res/menu/mainMenu.png",
-        //gameOver : "res/menu/gameOver.png",
-        //score : "res/menu/score.png",
         notifications : "res/comboLogos/combospritesheet.png",
         go : "res/comboLogos/go.png",
         fireball: "res/fireballz.png",
@@ -535,13 +530,6 @@ function preloadDone() {
             hover: new Sprite(g_images.menu,238,59,715,107),
         }
     };
-    /*
-    g_sprites.mainMenu = new Sprite(g_images.mainMenu,g_images.mainMenu.width,g_images.mainMenu.height,0,0);
-    g_sprites.logo = new Sprite(g_images.logo,g_images.logo.width,g_images.logo.height,0,0);
-    g_sprites.startGame = new Sprite(g_images.startGame,g_images.startGame.width,g_images.startGame.height,0,0);
-    g_sprites.score = new Sprite(g_images.score,g_images.score.width,g_images.score.height,0,0);
-    g_sprites.gameOver = new Sprite(g_images.gameOver,g_images.gameOver.width,g_images.gameOver.height,0,0);
-    */
     //The game background
     g_sprites.gameBackground = new Sprite(
         g_images.gameBackground,g_images.gameBackground.width,g_images.gameBackground.height,0,0);

@@ -88,7 +88,7 @@ generateNotification: function(type,scale){
     Generates the clock
 */
 generateClock: function(descr) {
-    this._clock.push(new Clock(descr));
+    this._clock[0]=new Clock(descr);
 },
 
 /*
@@ -199,6 +199,8 @@ init: function() {
     this.generateCharacter();
     this.generateNotification("GO");
 },
+
+
 /*
     Kill all the powerups
 */

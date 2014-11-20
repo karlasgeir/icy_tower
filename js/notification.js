@@ -149,6 +149,4 @@ Notification.prototype.update = function (du) {
 	if(this.cx > g_canvas.width+this.activeSprite.width/2){
 		this.kill();
 	}
-
-	console.log(this.spinSFXTwo);
 }
