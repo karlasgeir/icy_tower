@@ -90,8 +90,10 @@ findEntityInRange: function(posX, posY, width,height, gameHeight) {
         }
         //If the entity is a platform
         else if(e instanceof Platform){
+            var toplimit = 15;
+            var bottomlimit = 9;
             //We give it an imaginary box on (and into) the platform to collide with
-            if(util.isBetween(gameHeight,e.getGameHeight()-9,e.getGameHeight()+15)){
+            if(util.isBetween(gameHeight,e.getGameHeight()-bottomlimit,e.getGameHeight()+toplimit)){
                 if(posX - width/2 < pos.posX+size.width/2
                         && posX + width/2 > pos.posX - size.width/2){
                     return e;

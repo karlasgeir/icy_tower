@@ -135,7 +135,7 @@ function requestPreloads() {
         gameBackground : "res/backgrounds/gB7.png",
         menu:"res/menu.png",
         notifications : "res/notifications.png",
-        fireball: "res/fireballz.png",
+        fireball: "res/effects/fireballz.png",
         power: "res/powerUps/power_sheet.png",
         wallsprite : "res/walls/bigger/wallBig2.png",
         numbers: "res/numbers.png",
