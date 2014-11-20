@@ -132,7 +132,7 @@ function requestPreloads() {
         character_rev  : "res/spritesheet-rev.png",
 	    platform : "res/platforms/platforms.png",
         backgroundMenu : "res/backgrounds/FlashFreeze.jpg",
-        gameBackground : "res/backgrounds/newBackground.png",
+        gameBackground : "res/backgrounds/gB5.png",
         menu:"res/menu.png",
         notifications : "res/notifications.png",
         fireball: "res/effects/fireballz.png",

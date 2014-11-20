@@ -157,19 +157,20 @@ smaller: function(){
         this._platforms[i].scaleOne = SCALE_ONE;
         this._platforms[i].scaleTwo = SCALE_TWO;
         this._platforms[i].platScale();
-        this._platforms[i].platPosition();
     }
 },
 
 //Make platforms bigger
 bigger: function(){
     var length = this._platforms.length;
-    SCALE_ONE = 3;
-    SCALE_TWO = 3;
+    SCALE_ONE = 4;
+    SCALE_TWO = 4;
     for (var i=0; i<length; i++) {
         this._platforms[i].shouldPowerScale = true;
         this._platforms[i].scaleOne = SCALE_ONE;
         this._platforms[i].scaleTwo = SCALE_TWO;
+        this._platforms[i].platScale();
+        this._platforms[i].platPosition();
     }
 },
 
