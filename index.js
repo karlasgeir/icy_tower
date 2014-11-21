@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded',function()
     showHide("developheading","developmental");
     showHide("powerupsHeading","powerups");
     showHide("scoreHeading","score");
+    showHide("clockHeading","clock");
 });
 
 // A function to hide or show an element when
