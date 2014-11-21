@@ -18,15 +18,15 @@ function Platform(descr) {
     this.signSprite = this.sprite.sign;
     this.platHeight = this.activeSprite.height;
     this.platWidth = this.activeSprite.width;
-    this.scale  = this.scale  || 1;
     this.id = g_NUMBER_OF_PLATFORMS+1;
 
     //Setup from descr (can override the above)
     this.setup(descr);
 
     this.shouldPowerScale = false;
-    this.scaleOne = SCALE_ONE | 2;
-    this.scaleTwo = SCALE_TWO | 3;
+    this.scaleOne = SCALE_ONE || 2;
+    this.scaleTwo = SCALE_TWO || 3;
+    this.scale  = this.scale  || 1;
 
     //Generate the plaform
     this.platPicker();
