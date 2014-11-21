@@ -423,6 +423,7 @@ Character.prototype.computeSubStep = function (du) {
     this.handleCombo();
     this.setCombo();
     this.platsInCombo();
+    this.jumpKey();
 
     //Performs the wallBounce
     
@@ -458,6 +459,12 @@ Character.prototype.computeSubStep = function (du) {
     this.wrapPosition();
     //Check for game over
     this.gameOver();
+};
+
+Character.prototype.jumpKey = function () {
+    if (this.velY !==0) {
+        keys[this.KEY_JUMP] = false;
+    }
 };
 
 /*

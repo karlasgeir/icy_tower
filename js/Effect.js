@@ -88,7 +88,7 @@ Effect.prototype.update = function(du){
 Effect.prototype.changeSprite = function(){
     if(this.animFrame < this.activeSprite.length-1){
         if(this.type === "EXPLOTION"){
-            this.animFrame +=2;
+            this.animFrame +=1;
         }
         else this.animFrame +=1;
     }

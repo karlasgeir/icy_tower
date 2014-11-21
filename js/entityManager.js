@@ -146,12 +146,17 @@ speedUp: function(){
     this._characters[0].speedPowerup = timer;
 },
 
+reaper: function(){
+    keys[this._characters[0].KEY_JUMP] = true;
+    this._characters[0].velY += 10;
+},
+
 //Make platforms smaller
 smaller: function(){
 
     var length = this._platforms.length;
-    SCALE_ONE = 1.5;
-    SCALE_TWO = 1.5;
+    SCALE_ONE = 1;
+    SCALE_TWO = 1;
     for (var i=0; i<length; i++) {
         this._platforms[i].shouldPowerScale = true;
         this._platforms[i].scaleOne = SCALE_ONE;

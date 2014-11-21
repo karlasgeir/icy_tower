@@ -45,7 +45,7 @@ function Power(descr) {
         case (rand <= 100):
             this.type = "coin";
             this.activeSprite = this.sprite.coin;
-            this.scale = 0.8;
+            this.scale = 0.5;
             break;
         default:
             this.type = false;
@@ -84,7 +84,7 @@ Power.prototype.Height= this.powerHeight;
 //Sounds for powerups
 Power.prototype.coinsound = new Audio("res/sounds/smw_coin.wav");
 Power.prototype.speedPU = new Audio("res/sounds/speedPU.wav");
-Power.prototype.dead = new Audio("res/sounds/dead.wav");
+Power.prototype.slash = new Audio("res/sounds/reaperSlash.wav");
 
 /*
     Update the powerups
@@ -92,8 +92,10 @@ Power.prototype.dead = new Audio("res/sounds/dead.wav");
 Power.prototype.update = function (du) {
     spatialManager.unregister(this);
 
+    console.log(entityManager._characters[0].velY)
+
     //Check for death
-    if (this._isDeadNow) {
+    if (this._isDeadNow && this.type !== "skull") {
         if (gameOver) { return;}
         return entityManager.KILL_ME_NOW;
     }
@@ -113,7 +115,6 @@ Power.prototype.update = function (du) {
 
     //Make sure it sticks to the platform
     this.cy = this.Platform.cy - this.Platform.halfHeight - this.getSize().height/2;
-
 
     if(!gameOver){
          spatialManager.register(this);
@@ -179,8 +180,8 @@ Power.prototype.handleCollision = function(){
             entityManager.generateNotification("SUPERJUMP",0.4);
             break;
         case "skull":
-            this.dead.play();
-            gameOver = true;
+            this.slash.play();
+            entityManager.reaper();
             break;
         case "fire":
             this.speedPU.play();
