@@ -25,8 +25,8 @@ function Platform(descr) {
     this.setup(descr);
 
     this.shouldPowerScale = false;
-    this.scaleOne = SCALE_ONE;
-    this.scaleTwo = SCALE_TWO;
+    this.scaleOne = SCALE_ONE | 2;
+    this.scaleTwo = SCALE_TWO | 3;
 
     //Generate the plaform
     this.platPicker();
@@ -35,11 +35,13 @@ function Platform(descr) {
     this.halfWidth = this.platWidth/2;
     this.halfHeight = this.platHeight/2
 
-    g_NUMBER_OF_PLATFORMS += 1;         //Increment the number of platforms
-    if(g_TOP_FLOOR instanceof Platform){
+    if(g_NUMBER_OF_PLATFORMS > 0){
         this.cy = g_TOP_FLOOR.cy - g_TOP_FLOOR.activeSprite.height/2 - SPACE_BETWEEN_PLATFORMS;
     }
-    else this.cy = g_canvas.height - SPACE_BETWEEN_PLATFORMS/2;
+    else{ 
+        this.cy = g_canvas.height - SPACE_BETWEEN_PLATFORMS;
+    }
+    g_NUMBER_OF_PLATFORMS += 1;         //Increment the number of platforms
     
 };
 //Create entity
@@ -184,7 +186,6 @@ Platform.prototype.getID = function() {
 Platform.prototype.reset = function () {
     entityManager.killPlatforms();
     g_NUMBER_OF_PLATFORMS = 0;
-    g_TOP_FLOOR = g_canvas.height;
 }
 
 

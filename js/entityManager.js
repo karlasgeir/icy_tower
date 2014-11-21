@@ -149,6 +149,8 @@ speedUp: function(){
 
 reaper: function(){
     this.generateEffect(this._characters[0].cx,this._characters[0].cy,"SPLATTER");
+    this._characters[0].currPlatform=false;
+    this._characters[0]._jumping=true;
     this._characters[0].velY += 10;
 },
 

@@ -68,7 +68,7 @@ unregister: function(entity) {
 /*
     Function to find if there could be any entities colliding
 */
-findEntityInRange: function(posX, posY, width,height, gameHeight) {
+findEntityInRange: function(posX, posY, width,height, prevY) {
     for (var entity in this._entities) {
         var e = this._entities[entity];
         var pos=e.getPos();
@@ -93,7 +93,8 @@ findEntityInRange: function(posX, posY, width,height, gameHeight) {
             var toplimit = 15;
             var bottomlimit = 9;
             //We give it an imaginary box on (and into) the platform to collide with
-            if(util.isBetween(gameHeight,e.getGameHeight()-bottomlimit,e.getGameHeight()+toplimit)){
+            //if(util.isBetween(gameHeight,e.getGameHeight()-bottomlimit,e.getGameHeight()+toplimit)){
+            if(prevY <= pos.posY - size.height && posY >= pos.posY - size.height){
                 if(posX - width/2 < pos.posX+size.width/2
                         && posX + width/2 > pos.posX - size.width/2){
                     return e;

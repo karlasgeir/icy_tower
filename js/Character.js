@@ -399,7 +399,6 @@ Character.prototype.computeRotation = function(du){
 */
 Character.prototype.computeSubStep = function (du) {
 
-
     //Register the position before change
     this.prevX = this.cx;
     this.prevY = this.cy;
