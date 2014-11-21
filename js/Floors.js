@@ -139,8 +139,7 @@ Platform.prototype.update = function (du) {
         return entityManager.KILL_ME_NOW;
     }
     if (this.shouldPowerScale) {
-        this.platScale();
-        
+        this.platScale();  
     }
 
     //Update game height

@@ -10,22 +10,24 @@ function Effect(cx,cy,type) {
     //Determine type of effect
     switch(type){
         case "EXPLOTION":
-            this.activeSprite = this.sprite.explotion;
+            this.activeSprite = this.sprite.flameTail;
+            this.scale = 1.5;
             break;
         case "FLASH":
             this.activeSprite = this.sprite.flash;
+            this.scale = 1;
             break;
         case "FIREBLAST":
             this.activeSprite = this.sprite.fireBlast;
+            this.scale = 1;
             break;
     }
     //Initialise values
     this.type = type;
-    this.width = this.sprite.width;
-    this.height = this.sprite.height;
+    this.width = this.activeSprite[0].width*this.scale;
+    this.height = this.activeSprite[0].height*this.scale;
     this.cx = cx;
     this.cy = cy;
-    this.scale = 1;
     this.animFrame = 0;
     this.animTicker = 0;
     this.animTickRate = 1;
@@ -38,6 +40,12 @@ Effect.prototype = new Entity();
     Render the effect
 */
 Effect.prototype.render = function(ctx){
+
+    //save the original scale
+    var origScale = this.activeSprite[this.animFrame].scale;
+    // pass my scale into the sprite, for drawing
+    this.activeSprite[this.animFrame].scale = this.scale;
+
     //Rendering for flash
     if(this.type === "FLASH"){
         var wallWidth = entityManager._Walls[0].wallWidth;
@@ -54,6 +62,8 @@ Effect.prototype.render = function(ctx){
     else if(this.type === "FIREBLAST" || this.type ==="EXPLOTION") {
         this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy);
     }
+
+    this.activeSprite[this.animFrame].scale = origScale;
 };
 
 /*
@@ -78,7 +88,7 @@ Effect.prototype.update = function(du){
 Effect.prototype.changeSprite = function(){
     if(this.animFrame < this.activeSprite.length-1){
         if(this.type === "EXPLOTION"){
-            this.animFrame += 7;
+            this.animFrame +=2;
         }
         else this.animFrame +=1;
     }

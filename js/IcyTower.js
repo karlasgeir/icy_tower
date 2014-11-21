@@ -267,11 +267,7 @@ function preloadDone() {
             new Sprite(g_images.explotion,82,89,670,935),
             new Sprite(g_images.explotion,82,91,798,933),
             new Sprite(g_images.explotion,83,92,926,932)
-        ]
-    }
-
-    //Fire sprites
-    g_sprites.fire = {
+        ],
 
         flameTail : [
             new Sprite(g_images.flameTail,24,10,7,61),
@@ -300,9 +296,12 @@ function preloadDone() {
             new Sprite(g_images.flameTail,34,44,719,418),
             new Sprite(g_images.flameTail,19,40,90,542),
             new Sprite(g_images.flameTail,18,39,219,540),
-            new Sprite(g_images.flameTail,14,38,351,538),
-            new Sprite(g_images.flameTail,12,35,480,538)
-            ],
+            new Sprite(g_images.flameTail,14,38,351,538)
+        ]
+    };
+
+    //Fire sprites
+    g_sprites.fire = {
 
         demonFire: [
 

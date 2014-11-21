@@ -166,11 +166,24 @@ bigger: function(){
     SCALE_ONE = 4;
     SCALE_TWO = 4;
     for (var i=0; i<length; i++) {
+        var xPos = this._platforms[i].cx;
+        var yPos = this._platforms[i].cy;
         this._platforms[i].shouldPowerScale = true;
         this._platforms[i].scaleOne = SCALE_ONE;
         this._platforms[i].scaleTwo = SCALE_TWO;
         this._platforms[i].platScale();
         this._platforms[i].platPosition();
+
+        /*
+        var platWidth = this._platforms[i].platWidth;
+        var interval = platWidth/2;
+        var influence = 0;
+        for (var j=0; j<3; j++) {
+            influence += interval;
+            this.generateEffect(xPos+influence,yPos,"FIREBLAST");
+            this.generateEffect(xPos-influence,yPos,"FIREBLAST");
+        }
+        */
     }
 },
 
