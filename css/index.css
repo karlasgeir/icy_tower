@@ -11,8 +11,7 @@ main{
     margin:auto;
     display:block;
     height:100%;
-    text-align:center;
-    
+    text-align:center; 
 }
 
 
@@ -91,7 +90,7 @@ ul h4{
 
 
 
-#controls, #developmental{
+#controls,  #powerups, #score, #developmental{
     display:none;
 }
 

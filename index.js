@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded',function()
     // Adds hide/show on click to the following elements
     showHide("contlheading", "controls");
     showHide("developheading","developmental");
+    showHide("powerupsHeading","powerups");
+    showHide("scoreHeading","score");
 });
 
 // A function to hide or show an element when
