@@ -152,6 +152,7 @@ function requestPreloads() {
         spaceSuit: "res/powerUps/spaceSuit.png",
         spaceSuitReversed:"res/powerUps/spaceSuit-reverse.png",
         redBricks: "res/backgrounds/gBfire.png",
+        blood: "res/effects/bloodsplatter.png",
         platS: "res/powerUps/powerpad.png"
     };
 
@@ -185,7 +186,16 @@ function preloadDone() {
             new Sprite(g_images.flash,77,59,301,36),
             new Sprite(g_images.flash,72,62,51,161),
             new Sprite(g_images.flash,58,48,192,171),
-            new Sprite(g_images.flash,43,43,321,176),
+            new Sprite(g_images.flash,43,43,321,176)
+        ],
+
+        blood: [
+            new Sprite(g_images.blood,214,191,161,164),
+            new Sprite(g_images.blood,279,283,637,114),
+            new Sprite(g_images.blood,310,299,1134,111),
+            new Sprite(g_images.blood,325,313,95,620),
+            new Sprite(g_images.blood,342,321,600,617),
+            new Sprite(g_images.blood,341,331,119,610)
         ],
 
     //Fireblast

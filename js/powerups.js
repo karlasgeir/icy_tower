@@ -92,8 +92,6 @@ Power.prototype.slash = new Audio("res/sounds/reaperSlash.wav");
 Power.prototype.update = function (du) {
     spatialManager.unregister(this);
 
-    console.log(entityManager._characters[0].velY)
-
     //Check for death
     if (this._isDeadNow && this.type !== "skull") {
         if (gameOver) { return;}
@@ -186,7 +184,6 @@ Power.prototype.handleCollision = function(){
         case "fire":
             this.speedPU.play();
             entityManager.speedUp();
-            entityManager.generateEffect(this.cx,this.cy,"FIREBLAST");
             entityManager.generateNotification("SUPERBOOST",0.4);
             break;
     }

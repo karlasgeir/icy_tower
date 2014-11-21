@@ -141,13 +141,14 @@ turnOffGravity: function(){
     Speeds up the game
 */
 speedUp: function(){
+    this.generateEffect(this._characters[0].cx,this._characters[0].cy,"FIREBLAST");
     this._characters[0].gravityPowerup =0;
     var timer = 30*NOMINAL_UPDATE_INTERVAL;
     this._characters[0].speedPowerup = timer;
 },
 
 reaper: function(){
-    keys[this._characters[0].KEY_JUMP] = true;
+    this.generateEffect(this._characters[0].cx,this._characters[0].cy,"SPLATTER");
     this._characters[0].velY += 10;
 },
 

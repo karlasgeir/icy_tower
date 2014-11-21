@@ -21,6 +21,10 @@ function Effect(cx,cy,type) {
             this.activeSprite = this.sprite.fireBlast;
             this.scale = 1;
             break;
+        case "SPLATTER":
+            this.activeSprite = this.sprite.blood;
+            this.scale = 0.3;
+            break;
     }
     //Initialise values
     this.type = type;
@@ -59,7 +63,7 @@ Effect.prototype.render = function(ctx){
         }
     }
     //Rendering for fireblast
-    else if(this.type === "FIREBLAST" || this.type ==="EXPLOTION") {
+    else if(this.type === "FIREBLAST" || this.type ==="EXPLOTION" || this.type ==="SPLATTER") {
         this.activeSprite[this.animFrame].drawCentredAt(ctx,this.cx,this.cy);
     }
 
