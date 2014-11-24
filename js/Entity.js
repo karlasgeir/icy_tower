@@ -132,7 +132,7 @@ Entity.prototype.findHitEntity = function () {
     var pos = this.getPos();
     var size = this.getSize();
     return spatialManager.findEntityInRange(
-        pos.posX, pos.posY, size.width,size.height, this.prevY
+        pos.posX, pos.posY, size.width,size.height, this.gameHeight
     );
 };
 
